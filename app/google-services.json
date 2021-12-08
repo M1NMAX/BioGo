@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "976441130525",
+    "project_id": "biogo-54daa",
+    "storage_bucket": "biogo-54daa.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:976441130525:android:4764caa2556cfef819d0f4",
+        "android_client_info": {
+          "package_name": "dev.biogo"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "976441130525-gf7apvlpj8vshngmfq01fg0grmbc07kg.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "dev.biogo",
+            "certificate_hash": "dcf33cc4427834760bc1569bb076a422fe47c633"
+          }
+        },
+        {
+          "client_id": "976441130525-v30eddh299dvu3he1uuklqpdmut0vpnk.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "dev.biogo",
+            "certificate_hash": "2492c7fa827a5a858cf2f89ff35798a3f835df68"
+          }
+        },
+        {
+          "client_id": "976441130525-gni8hpl1c6sdcf9mraqlas96vrr300pr.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDB2VAffEuK822ZzebTjgAkPjveti36_k8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "976441130525-gni8hpl1c6sdcf9mraqlas96vrr300pr.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

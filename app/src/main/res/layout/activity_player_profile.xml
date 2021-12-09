@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+
+        tools:context=".ProfileFragment"
+        android:orientation="vertical"
+        android:layout_centerHorizontal="true">
+
+
+    <ImageView
+        android:id="@+id/userAvatar"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_marginBottom="20dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="100dp"
+        app:srcCompat="@drawable/avatar_user"
+        android:contentDescription="player avatar">
+    </ImageView>
+    <TextView
+        android:id="@+id/username"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+
+        android:text="Luis Silva"
+        android:textSize="20dp"
+        android:layout_gravity="center"
+        android:textAlignment="center">
+    </TextView>
+    <TextView
+        android:id="@+id/points"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="70dp"
+        android:text="Points: 3000 xp"
+        android:textSize="20dp"
+        android:layout_gravity="center"
+        android:textAlignment="center">
+    </TextView>
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+</ScrollView>

@@ -11,6 +11,9 @@
         android:theme="@style/Theme.BioGo"
         android:usesCleartextTraffic="true">
         <activity
+            android:name=".PlayerProfileActivity"
+            android:exported="true" />
+        <activity
             android:name=".PhotoActivity"
             android:exported="true" />
         <activity

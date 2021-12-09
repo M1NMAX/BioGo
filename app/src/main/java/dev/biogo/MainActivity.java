@@ -99,9 +99,9 @@ public class MainActivity extends AppCompatActivity implements NavigationBarView
                 Log.d("CameraX", "onSensorChanged: CameraMode");
 
                 //ACTIVATE CAMERA
-                /*Intent intent = new Intent();
+                Intent intent = new Intent();
                 intent.setAction(MediaStore.ACTION_IMAGE_CAPTURE);
-                startActivity(intent);*/
+                startActivity(intent);
 
             } else if ((absX > 0) && (absX < 1) && (absY > 9) && (absY < 11) && (absZ > 0) && (absZ < 1)) {
 

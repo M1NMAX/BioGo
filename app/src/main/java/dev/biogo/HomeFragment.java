@@ -68,7 +68,6 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
 
-
     }
 
     FloatingActionButton fabAddPhoto;
@@ -105,6 +104,14 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         String name = user.getDisplayName();
         username.setText(name);
         Picasso.get().load(photoUrl).into(userAvatar);
+
+        // Player profile view
+        ImageView player1 = view.findViewById(R.id.playerProfileView1);
+        player1.setOnClickListener((view1)->{
+            Intent playerProfileIntent = new Intent(getActivity(), PlayerProfileActivity.class);
+            startActivity(playerProfileIntent);
+        });
+
 
         return view;
     }

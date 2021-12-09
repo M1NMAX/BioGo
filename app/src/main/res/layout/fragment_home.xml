@@ -69,7 +69,7 @@
                 app:cardCornerRadius="10dp">
 
                 <ImageView
-                    android:id="@+id/imageView6"
+                    android:id="@+id/playerProfileView1"
                     android:layout_width="match_parent"
                     android:layout_height="150dp"
                     app:srcCompat="@drawable/img_cat" />

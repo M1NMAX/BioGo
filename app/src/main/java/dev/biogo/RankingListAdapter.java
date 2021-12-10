@@ -12,6 +12,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.squareup.picasso.Picasso;
+
 import java.util.List;
 
 public class RankingListAdapter extends ArrayAdapter<User> {
@@ -37,12 +39,12 @@ public class RankingListAdapter extends ArrayAdapter<User> {
         TextView medals = convertView.findViewById(R.id.rankingListView_medals);
         TextView trophies = convertView.findViewById(R.id.rankingListView_trophies);
 
-        profilePic.setImageURI(Uri.parse(user.getProfileImgUri()));
+        Picasso.get().load(Uri.parse(user.getProfileImgUri())).into(profilePic);
         username.setText(user.getUsername());
-        ranking.setText(String.valueOf(user.getStatus().getRanking()));
-        xp.setText(String.valueOf(user.getStatus().getXp()));
-        medals.setText(String.valueOf(user.getStatus().getMedals()));
-        trophies.setText(String.valueOf(user.getStatus().getTrophies()));
+        ranking.setText("Position: "+String.valueOf(user.getStatus().getRanking()));
+        xp.setText(String.valueOf(user.getStatus().getXp())+" XP");
+        medals.setText(String.valueOf(user.getStatus().getMedals())+" Medals");
+        trophies.setText(String.valueOf(user.getStatus().getTrophies())+" Trophies");
 
         return convertView;
     }

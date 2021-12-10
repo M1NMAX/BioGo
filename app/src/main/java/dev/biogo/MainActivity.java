@@ -59,6 +59,7 @@ public class MainActivity extends AppCompatActivity implements NavigationBarView
     HomeFragment homeFragment = new HomeFragment();
     SearchFragment searchFragment = new SearchFragment();
     ProfileFragment profileFragment = new ProfileFragment();
+    MapFragment mapFragment = new MapFragment();
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -73,6 +74,9 @@ public class MainActivity extends AppCompatActivity implements NavigationBarView
                 return true;
             case R.id.profile:
                 getSupportFragmentManager().beginTransaction().replace(R.id.container, profileFragment).commit();
+                return true;
+            case R.id.googleMap:
+                getSupportFragmentManager().beginTransaction().replace(R.id.container, mapFragment).commit();
                 return true;
 
 

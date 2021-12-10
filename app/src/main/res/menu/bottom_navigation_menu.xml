@@ -18,9 +18,9 @@
         tools:ignore="MenuTitle" />
 
     <item
-        android:id="@+id/other"
+        android:id="@+id/googleMap"
         android:enabled="true"
-        android:icon="@drawable/img_other"
+        android:icon="@drawable/ic_baseline_map_24"
         tools:ignore="MenuTitle" />
 
 

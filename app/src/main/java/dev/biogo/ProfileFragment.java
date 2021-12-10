@@ -4,8 +4,10 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +17,11 @@ import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
 /**
@@ -28,6 +35,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
+
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -54,6 +62,9 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
         fragment.setArguments(args);
         return fragment;
     }
+    private static final String TAG = "ProfileFragment";
+    DatabaseReference mDatabase;
+    User currentUser;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -62,6 +73,24 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+        mDatabase = FirebaseDatabase.getInstance("https://biogo-54daa-default-rtdb.europe-west1.firebasedatabase.app/")
+                .getReference();
+        FirebaseUser cUser = FirebaseAuth.getInstance().getCurrentUser();
+
+        DatabaseReference userRef = mDatabase.child("users").child(cUser.getUid());
+        userRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                currentUser = snapshot.getValue(User.class);
+                Log.d(TAG, "onDataChange: "+currentUser.toString());
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Log.d(TAG, "onCancelled: "+error.toException());
+            }
+        });
     }
 
     @Override
@@ -81,6 +110,8 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
         //User data
         ImageView userAvatar = view.findViewById(R.id.userAvatar);
         TextView username = view.findViewById(R.id.username);
+
+        Log.d(TAG, "onCreateView: "+currentUser);
 
         //User data from  firebaseAuth
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();

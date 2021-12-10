@@ -22,11 +22,16 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
+import java.util.HashMap;
 
 public class StartActivity extends AppCompatActivity {
     private static final String TAG = "StartActivity";
     private final int RC_SIGN_IN = 100;
     private FirebaseAuth mAuth;
+    private DatabaseReference mDataBase;
     Button startButton;
     SignInButton signInButton;
 
@@ -38,6 +43,8 @@ public class StartActivity extends AppCompatActivity {
         setContentView(R.layout.activity_start);
 
         mAuth = FirebaseAuth.getInstance();
+        mDataBase = FirebaseDatabase.getInstance("https://biogo-54daa-default-rtdb.europe-west1.firebasedatabase.app/")
+                .getReference();
 
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken("976441130525-gni8hpl1c6sdcf9mraqlas96vrr300pr.apps.googleusercontent.com")
@@ -98,6 +105,19 @@ public class StartActivity extends AppCompatActivity {
                             // Sign in success, update UI with the signed-in user's information
                             Log.d(TAG, "signInWithCredential:success");
                             FirebaseUser user = mAuth.getCurrentUser();
+                            Status initStatus = new Status(0, 0, 0, 30);
+                            User newUser = new User(user.getPhotoUrl().toString(), user.getDisplayName(), initStatus);
+                            mDataBase.child("users").child(user.getUid()).setValue(newUser);
+
+                            /*HashMap<String, Object> playerStatus = new HashMap<>();
+                            playerStatus.put("trophies", 0);
+                            playerStatus.put("medals", 0);
+                            playerStatus.put("ranking", 0);
+                            playerStatus.put("xp", 30);
+                            mDataBase.child("users").child(user.getUid()).child("username").setValue(user.getDisplayName());
+                            mDataBase.child("users").child(user.getUid()).child("status").updateChildren(playerStatus);*/
+
+
                             updateUI(user);
                         } else {
                             // If sign in fails, display a message to the user.
@@ -113,6 +133,7 @@ public class StartActivity extends AppCompatActivity {
     private void updateUI(FirebaseUser user) {
         Log.d(TAG, "updateUI: "+user);
         if(user != null){
+
 
             signInButton.setVisibility(SignInButton.GONE);
         }

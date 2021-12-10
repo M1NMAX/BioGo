@@ -32,9 +32,9 @@ public class RankingActivity extends AppCompatActivity {
                 .getReference();
 
         rankingListView = findViewById(R.id.rankingListView);
-        ArrayList<String> list = new ArrayList<>();
-        ArrayAdapter<String> adapter = new ArrayAdapter(this, R.layout.ranking_list_item, list);
-        rankingListView.setAdapter(adapter);
+        ArrayList<User> rankingList = new ArrayList<>();
+        RankingListAdapter rankingListAdapter = new RankingListAdapter(this, R.layout.ranking_list_item, rankingList);
+        rankingListView.setAdapter(rankingListAdapter);
 
 
 
@@ -42,13 +42,15 @@ public class RankingActivity extends AppCompatActivity {
         usersRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                list.clear();
+                rankingList.clear();
                 for (DataSnapshot snapshot: dataSnapshot.getChildren() ){
-                    list.add(snapshot.child("username").getValue().toString());
-                    Log.i(TAG, "onDataChange: "+snapshot.child("username").getValue());
+                    User user = snapshot.getValue(User.class);
+
+                    rankingList.add(user);
+                    Log.i(TAG, "onDataChange: "+user.getStatus().getXp());
                 }
-                Log.d(TAG, "onDataChange: "+list.size());
-                adapter.notifyDataSetChanged();
+                Log.d(TAG, "onDataChange: "+rankingList.size());
+                rankingListAdapter.notifyDataSetChanged();
             }
 
             @Override

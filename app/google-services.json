@@ -1,6 +1,7 @@
 {
   "project_info": {
     "project_number": "976441130525",
+    "firebase_url": "https://biogo-54daa-default-rtdb.europe-west1.firebasedatabase.app",
     "project_id": "biogo-54daa",
     "storage_bucket": "biogo-54daa.appspot.com"
   },
@@ -13,6 +14,14 @@
         }
       },
       "oauth_client": [
+        {
+          "client_id": "976441130525-13kerdgjhshhc15musmosc68nf8dof0m.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "dev.biogo",
+            "certificate_hash": "8b98c693d1e8c830caa5cfe133b9f45c6bb01d42"
+          }
+        },
         {
           "client_id": "976441130525-gf7apvlpj8vshngmfq01fg0grmbc07kg.apps.googleusercontent.com",
           "client_type": 1,

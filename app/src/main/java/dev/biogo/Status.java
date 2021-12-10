@@ -1,6 +1,9 @@
 package dev.biogo;
 
-public class Status {
+import android.os.Parcel;
+import android.os.Parcelable;
+
+public class Status implements Parcelable {
     private int medals, ranking, trophies, xp;
 
     public Status(){}
@@ -11,6 +14,25 @@ public class Status {
         this.trophies = trophies;
         this.xp = xp;
     }
+
+    protected Status(Parcel in) {
+        medals = in.readInt();
+        ranking = in.readInt();
+        trophies = in.readInt();
+        xp = in.readInt();
+    }
+
+    public static final Creator<Status> CREATOR = new Creator<Status>() {
+        @Override
+        public Status createFromParcel(Parcel in) {
+            return new Status(in);
+        }
+
+        @Override
+        public Status[] newArray(int size) {
+            return new Status[size];
+        }
+    };
 
     public int getMedals() {
         return medals;
@@ -26,5 +48,28 @@ public class Status {
 
     public int getXp() {
         return xp;
+    }
+
+    @Override
+    public String toString() {
+        return "Status{" +
+                "medals=" + medals +
+                ", ranking=" + ranking +
+                ", trophies=" + trophies +
+                ", xp=" + xp +
+                '}';
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeInt(medals);
+        parcel.writeInt(ranking);
+        parcel.writeInt(trophies);
+        parcel.writeInt(xp);
     }
 }

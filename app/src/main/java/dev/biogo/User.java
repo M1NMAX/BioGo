@@ -1,8 +1,10 @@
 package dev.biogo;
 
-import android.net.Uri;
 
-public class User {
+import android.os.Parcel;
+import android.os.Parcelable;
+
+public class User implements Parcelable {
     private String profileImgUri;
     private String username;
     private Status status;
@@ -14,6 +16,23 @@ public class User {
         this.username = username;
         this.status = status;
     }
+
+    protected User(Parcel in) {
+        profileImgUri = in.readString();
+        username = in.readString();
+    }
+
+    public static final Creator<User> CREATOR = new Creator<User>() {
+        @Override
+        public User createFromParcel(Parcel in) {
+            return new User(in);
+        }
+
+        @Override
+        public User[] newArray(int size) {
+            return new User[size];
+        }
+    };
 
     public String getProfileImgUri() {
         return profileImgUri;
@@ -39,5 +58,23 @@ public class User {
         this.status = status;
     }
 
+    @Override
+    public String toString() {
+        return "User{" +
+                "profileImgUri='" + profileImgUri + '\'' +
+                ", username='" + username + '\'' +
+                ", status=" + status +
+                '}';
+    }
 
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeString(profileImgUri);
+        parcel.writeString(username);
+    }
 }

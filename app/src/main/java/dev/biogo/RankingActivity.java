@@ -24,6 +24,9 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 
 public class RankingActivity extends AppCompatActivity implements AdapterView.OnItemClickListener {
     private static final String TAG = "RankingActivity";
@@ -56,6 +59,12 @@ public class RankingActivity extends AppCompatActivity implements AdapterView.On
                     rankingList.add(user);
                     counter--;
                 }
+                Collections.sort(rankingList, new Comparator<User>() {
+                    @Override
+                    public int compare(User user, User otherUser) {
+                        return user.getStatus().getRanking() - otherUser.getStatus().getRanking();
+                    }
+                });
                 rankingListAdapter.notifyDataSetChanged();
             }
 

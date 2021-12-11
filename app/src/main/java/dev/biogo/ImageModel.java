@@ -5,11 +5,11 @@ public class ImageModel {
     private String lng;
     private String imgUrl;
     private String specieName;
-    private Classification classification;
+    private ClassificationEnum classification;
 
     public ImageModel(){}
 
-    public ImageModel( String lat, String lng, String imgUrl, String specieName, Classification classification) {
+    public ImageModel( String lat, String lng, String imgUrl, String specieName, ClassificationEnum classification) {
         this.lat = lat;
         this.lng = lng;
         this.imgUrl = imgUrl;
@@ -51,11 +51,11 @@ public class ImageModel {
         this.specieName = specieName;
     }
 
-    public Classification getClassification() {
+    public ClassificationEnum getClassification() {
         return classification;
     }
 
-    public void setClassification(Classification classification) {
+    public void setClassification(ClassificationEnum classification) {
         this.classification = classification;
     }
 

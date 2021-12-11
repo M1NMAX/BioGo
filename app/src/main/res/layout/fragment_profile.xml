@@ -17,7 +17,7 @@
 
 
         <ImageView
-            android:id="@+id/userAvatar"
+            android:id="@+id/currentUserProfilePic"
             android:layout_width="100dp"
             android:layout_height="100dp"
             android:layout_marginBottom="20dp"
@@ -27,7 +27,7 @@
             android:contentDescription="player avatar">
         </ImageView>
         <TextView
-            android:id="@+id/username"
+            android:id="@+id/currentUserName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
 
@@ -38,6 +38,7 @@
 
         </TextView>
         <TextView
+            android:id="@+id/currentUserXp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="70dp"
@@ -153,6 +154,7 @@
                         android:textStyle="bold" />
 
                     <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/currentUserRanking"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_marginLeft="10dp"

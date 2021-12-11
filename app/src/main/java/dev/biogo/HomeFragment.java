@@ -13,7 +13,6 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.fragment.app.Fragment;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -170,7 +169,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                     fileRef.getDownloadUrl().addOnSuccessListener(uri -> {
 
                         //Save image data in the database
-                        ImageModel image = new ImageModel("0", "0", uri.toString(), "N/A", Classification.PENDING);
+                        ImageModel image = new ImageModel("0", "0", uri.toString(), "N/A", ClassificationEnum.PENDING);
                         mDataBase.child("images").child(user.getUid()).setValue(image);
 
                         pd.dismiss();

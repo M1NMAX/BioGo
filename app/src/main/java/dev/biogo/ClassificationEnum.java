@@ -1,6 +1,6 @@
 package dev.biogo;
 
-public enum Classification {
+public enum ClassificationEnum {
         VALID,
         PENDING,
         NOT_VALID,

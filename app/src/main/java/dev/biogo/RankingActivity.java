@@ -19,6 +19,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.io.Serializable;
@@ -42,16 +43,18 @@ public class RankingActivity extends AppCompatActivity implements AdapterView.On
         RankingListAdapter rankingListAdapter = new RankingListAdapter(this, R.layout.ranking_list_item, rankingList);
         rankingListView.setAdapter(rankingListAdapter);
 
-
-        DatabaseReference usersRef = mDatabase.child("users");
+        Query usersRef = mDatabase.child("users").orderByChild("status/xp");
         usersRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                int counter = (int) dataSnapshot.getChildrenCount();
                 rankingList.clear();
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                     //You can remove the current auth user
                     User user = snapshot.getValue(User.class);
+                    user.getStatus().setRanking(counter);
                     rankingList.add(user);
+                    counter--;
                 }
                 rankingListAdapter.notifyDataSetChanged();
             }

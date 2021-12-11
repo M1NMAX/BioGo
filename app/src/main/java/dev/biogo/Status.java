@@ -50,6 +50,22 @@ public class Status implements Parcelable {
         return xp;
     }
 
+    public void setMedals(int medals) {
+        this.medals = medals;
+    }
+
+    public void setRanking(int ranking) {
+        this.ranking = ranking;
+    }
+
+    public void setTrophies(int trophies) {
+        this.trophies = trophies;
+    }
+
+    public void setXp(int xp) {
+        this.xp = xp;
+    }
+
     @Override
     public String toString() {
         return "Status{" +

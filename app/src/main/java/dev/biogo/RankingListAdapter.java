@@ -29,22 +29,19 @@ public class RankingListAdapter extends ArrayAdapter<User> {
         User user = getItem(position);
 
 
-        if (convertView == null){
+        if (convertView == null) {
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.ranking_list_item, parent, false);
         }
         ImageView profilePic = convertView.findViewById(R.id.rankingListView_profilePic);
         TextView username = convertView.findViewById(R.id.rankingListView_username);
         TextView ranking = convertView.findViewById(R.id.rankingListView_ranking);
         TextView xp = convertView.findViewById(R.id.rankingListView_xp);
-        TextView medals = convertView.findViewById(R.id.rankingListView_medals);
-        TextView trophies = convertView.findViewById(R.id.rankingListView_trophies);
+
 
         Picasso.get().load(Uri.parse(user.getProfileImgUri())).into(profilePic);
         username.setText(user.getUsername());
-        ranking.setText("Position: "+String.valueOf(user.getStatus().getRanking()));
-        xp.setText(String.valueOf(user.getStatus().getXp())+" XP");
-        medals.setText(String.valueOf(user.getStatus().getMedals())+" Medals");
-        trophies.setText(String.valueOf(user.getStatus().getTrophies())+" Trophies");
+        ranking.setText("Position: " + user.getRanking());
+        xp.setText(user.getXp() + " XP");
 
         return convertView;
     }

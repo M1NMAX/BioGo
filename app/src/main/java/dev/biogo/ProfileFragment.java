@@ -77,8 +77,8 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
                 //update current user profile
                 Picasso.get().load(user.getProfileImgUri()).into(currentUserProfilePic);
                 currentUserName.setText(user.getUsername());
-                currentUserXp.setText(user.getStatus().getXp() + " XP");
-                currentUserRanking.setText(String.valueOf(user.getStatus().getRanking()));
+                currentUserXp.setText(user.getXp() + " XP");
+                currentUserRanking.setText(String.valueOf(user.getRanking()));
 
             }
 

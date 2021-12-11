@@ -1,11 +1,6 @@
 package dev.biogo;
 
 public class ImageModel {
-    public enum Classification {
-        VALID,
-        PENDING,
-        NOT_VALID,
-    }
     private String lat;
     private String lng;
     private String imgUrl;

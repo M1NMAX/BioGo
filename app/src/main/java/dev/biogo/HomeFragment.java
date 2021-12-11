@@ -36,11 +36,9 @@ import com.squareup.picasso.Picasso;
 public class HomeFragment extends Fragment implements View.OnClickListener {
 
 
-
     public HomeFragment() {
         // Required empty public constructor
     }
-
 
 
     private static final String TAG = "HomeFragment";
@@ -95,7 +93,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
 
         // Player profile view
         ImageView player1 = view.findViewById(R.id.playerProfileView1);
-        player1.setOnClickListener((view1)->{
+        player1.setOnClickListener((view1) -> {
             Intent playerProfileIntent = new Intent(getActivity(), PlayerProfileActivity.class);
             startActivity(playerProfileIntent);
         });
@@ -137,14 +135,15 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
 
 
     }
+
     ActivityResultLauncher<Intent> imageActivityResultLauncher = registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(),
             new ActivityResultCallback<ActivityResult>() {
                 @Override
                 public void onActivityResult(ActivityResult result) {
-                    if(result.getResultCode() == Activity.RESULT_OK){
+                    if (result.getResultCode() == Activity.RESULT_OK) {
                         Intent data = result.getData();
-                        if (data!=  null) {
+                        if (data != null) {
                             imageUri = data.getData();
                             uploadImage();
                         }
@@ -161,25 +160,23 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
     }
 
     private void uploadImage() {
-        ProgressDialog pd= new ProgressDialog(getContext());
+        ProgressDialog pd = new ProgressDialog(getContext());
         pd.setMessage("Uploading");
         pd.show();
-        if (imageUri != null){
+        if (imageUri != null) {
             StorageReference fileRef = FirebaseStorage.getInstance().getReference()
                     .child("image/").child(String.valueOf(System.currentTimeMillis()));
             fileRef.putFile(imageUri).addOnCompleteListener(task ->
                     fileRef.getDownloadUrl().addOnSuccessListener(uri -> {
-                String url = uri.toString();
-                Log.d(TAG, "onSuccess: "+url);
 
-                ImageModel image = new ImageModel( "0", "0", url, "N/A", ImageModel.Classification.PENDING);
-                        Log.d(TAG, "uploadImage: "+image.toString());
-                mDataBase.child("images").child(user.getUid()).setValue(image);
+                        //Save image data in the database
+                        ImageModel image = new ImageModel("0", "0", uri.toString(), "N/A", Classification.PENDING);
+                        mDataBase.child("images").child(user.getUid()).setValue(image);
 
-                pd.dismiss();
-                Toast.makeText(getContext(), "Success", Toast.LENGTH_LONG).show();
+                        pd.dismiss();
+                        Toast.makeText(getContext(), "Image uploaded Successfully", Toast.LENGTH_LONG).show();
 
-            }));
+                    }));
         }
 
     }

@@ -105,18 +105,8 @@ public class StartActivity extends AppCompatActivity {
                             // Sign in success, update UI with the signed-in user's information
                             Log.d(TAG, "signInWithCredential:success");
                             FirebaseUser user = mAuth.getCurrentUser();
-                            Status initStatus = new Status(0, 0, 0, 30);
-                            User newUser = new User(user.getPhotoUrl().toString(), user.getDisplayName(), initStatus);
+                            User newUser = new User(user.getPhotoUrl().toString(), user.getDisplayName(), 30, 0);
                             mDataBase.child("users").child(user.getUid()).setValue(newUser);
-
-                            /*HashMap<String, Object> playerStatus = new HashMap<>();
-                            playerStatus.put("trophies", 0);
-                            playerStatus.put("medals", 0);
-                            playerStatus.put("ranking", 0);
-                            playerStatus.put("xp", 30);
-                            mDataBase.child("users").child(user.getUid()).child("username").setValue(user.getDisplayName());
-                            mDataBase.child("users").child(user.getUid()).child("status").updateChildren(playerStatus);*/
-
 
                             updateUI(user);
                         } else {
@@ -133,8 +123,6 @@ public class StartActivity extends AppCompatActivity {
     private void updateUI(FirebaseUser user) {
         Log.d(TAG, "updateUI: "+user);
         if(user != null){
-
-
             signInButton.setVisibility(SignInButton.GONE);
         }
 

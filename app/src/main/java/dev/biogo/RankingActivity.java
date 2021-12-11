@@ -24,6 +24,9 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 
 public class RankingActivity extends AppCompatActivity implements AdapterView.OnItemClickListener {
     private static final String TAG = "RankingActivity";
@@ -43,7 +46,7 @@ public class RankingActivity extends AppCompatActivity implements AdapterView.On
         RankingListAdapter rankingListAdapter = new RankingListAdapter(this, R.layout.ranking_list_item, rankingList);
         rankingListView.setAdapter(rankingListAdapter);
 
-        Query usersRef = mDatabase.child("users").orderByChild("status/xp");
+        Query usersRef = mDatabase.child("users").orderByChild("xp");
         usersRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -52,10 +55,16 @@ public class RankingActivity extends AppCompatActivity implements AdapterView.On
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                     //You can remove the current auth user
                     User user = snapshot.getValue(User.class);
-                    user.getStatus().setRanking(counter);
+                    user.setRanking(counter);
                     rankingList.add(user);
                     counter--;
                 }
+                Collections.sort(rankingList, new Comparator<User>() {
+                    @Override
+                    public int compare(User user, User otherUser) {
+                        return user.getRanking() - otherUser.getRanking();
+                    }
+                });
                 rankingListAdapter.notifyDataSetChanged();
             }
 
@@ -71,13 +80,11 @@ public class RankingActivity extends AppCompatActivity implements AdapterView.On
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
         User user = (User) adapterView.getItemAtPosition(i);
-        Status status = user.getStatus();
 
         Toast.makeText(this, user.getUsername() + " profile", Toast.LENGTH_LONG).show();
 
         Intent playerProfileIntent = new Intent(this, PlayerProfileActivity.class);
-        playerProfileIntent.putExtra("userData",  user);
-        playerProfileIntent.putExtra("userStatus", status);
+        playerProfileIntent.putExtra("userData", user);
 
         startActivity(playerProfileIntent);
     }

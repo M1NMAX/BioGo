@@ -7,19 +7,24 @@ import android.os.Parcelable;
 public class User implements Parcelable {
     private String profileImgUri;
     private String username;
-    private Status status;
+    private int xp;
+    private int ranking;
 
     public User (){}
 
-    public User(String profileImgUri, String username, Status status) {
+
+    public User(String profileImgUri, String username, int xp, int ranking) {
         this.profileImgUri = profileImgUri;
         this.username = username;
-        this.status = status;
+        this.xp = xp;
+        this.ranking = ranking;
     }
 
     protected User(Parcel in) {
         profileImgUri = in.readString();
         username = in.readString();
+        xp = in.readInt();
+        ranking = in.readInt();
     }
 
     public static final Creator<User> CREATOR = new Creator<User>() {
@@ -38,7 +43,7 @@ public class User implements Parcelable {
         return profileImgUri;
     }
 
-    public void setProfileImgUri (String profileImgUri) {
+    public void setProfileImgUri(String profileImgUri) {
         this.profileImgUri = profileImgUri;
     }
 
@@ -50,21 +55,20 @@ public class User implements Parcelable {
         this.username = username;
     }
 
-    public Status getStatus() {
-        return status;
+    public int getXp() {
+        return xp;
     }
 
-    public void setStatus(Status status) {
-        this.status = status;
+    public void setXp(int xp) {
+        this.xp = xp;
     }
 
-    @Override
-    public String toString() {
-        return "User{" +
-                "profileImgUri='" + profileImgUri + '\'' +
-                ", username='" + username + '\'' +
-                ", status=" + status +
-                '}';
+    public int getRanking() {
+        return ranking;
+    }
+
+    public void setRanking(int ranking) {
+        this.ranking = ranking;
     }
 
     @Override
@@ -76,5 +80,7 @@ public class User implements Parcelable {
     public void writeToParcel(Parcel parcel, int i) {
         parcel.writeString(profileImgUri);
         parcel.writeString(username);
+        parcel.writeInt(xp);
+        parcel.writeInt(ranking);
     }
 }

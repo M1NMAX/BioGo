@@ -26,6 +26,8 @@ import android.widget.Toast;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.squareup.picasso.Picasso;
@@ -43,16 +45,16 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
 
     private static final String TAG = "HomeFragment";
     private boolean isOpen = true;
+    private FloatingActionButton fabAddPhoto;
+    private FloatingActionButton fabUploadPhoto;
+    private Uri imageUri;
+    private DatabaseReference mDataBase;
+    private FirebaseUser user;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-
     }
-    FloatingActionButton fabAddPhoto;
-    FloatingActionButton fabUploadPhoto;
-    private Uri imageUri;
 
 
     @Override
@@ -60,6 +62,10 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_home, container, false);
+
+        //Firebase Database
+        mDataBase = FirebaseDatabase.getInstance("https://biogo-54daa-default-rtdb.europe-west1.firebasedatabase.app/")
+                .getReference();
 
         //FAB
         FloatingActionButton fabMain = view.findViewById(R.id.fabMain);
@@ -81,7 +87,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         seeRankingBtn.setOnClickListener(this);
 
         //User data from  firebaseAuth
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        user = FirebaseAuth.getInstance().getCurrentUser();
         Uri photoUrl = user.getPhotoUrl();
         String name = user.getDisplayName();
         username.setText(name);
@@ -165,6 +171,11 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                     fileRef.getDownloadUrl().addOnSuccessListener(uri -> {
                 String url = uri.toString();
                 Log.d(TAG, "onSuccess: "+url);
+
+                ImageModel image = new ImageModel( "0", "0", url, "N/A", ImageModel.Classification.PENDING);
+                        Log.d(TAG, "uploadImage: "+image.toString());
+                mDataBase.child("images").child(user.getUid()).setValue(image);
+
                 pd.dismiss();
                 Toast.makeText(getContext(), "Success", Toast.LENGTH_LONG).show();
 

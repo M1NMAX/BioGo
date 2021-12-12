@@ -169,8 +169,8 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                     fileRef.getDownloadUrl().addOnSuccessListener(uri -> {
 
                         //Save image data in the database
-                        ImageModel image = new ImageModel("0", "0", uri.toString(), "N/A", ClassificationEnum.PENDING);
-                        mDataBase.child("images").child(user.getUid()).setValue(image);
+                        ImageModel image = new ImageModel("0", "0", uri.toString(), "N/A", "N/A", ClassificationEnum.PENDING);
+                        mDataBase.child("images").child(user.getUid()).push().setValue(image);
 
                         pd.dismiss();
                         Toast.makeText(getContext(), "Image uploaded Successfully", Toast.LENGTH_LONG).show();

@@ -43,6 +43,9 @@ public class PlayerProfileActivity extends AppCompatActivity {
         TextView otherPlayerRanking = findViewById(R.id.otherPlayerRanking);
         otherPlayerRanking.setText(String.valueOf(otherUser.getRanking()));
 
+        TextView otherPlayerNSpecies = findViewById(R.id.otherPlayerNSpecies);
+        otherPlayerNSpecies.setText(String.valueOf(otherUser.getSpecies()));
+
         Button seeOtherCatalogBtn = findViewById(R.id.seeOtherPlayerCatalogBtn);
         seeOtherCatalogBtn.setText("See " + otherUser.getUsername() + "'s catalog");
 

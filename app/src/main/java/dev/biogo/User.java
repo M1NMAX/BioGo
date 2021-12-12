@@ -7,24 +7,30 @@ import android.os.Parcelable;
 public class User implements Parcelable {
     private String profileImgUri;
     private String username;
+    private String role;
     private int xp;
     private int ranking;
+    private int species;
 
     public User (){}
 
 
-    public User(String profileImgUri, String username, int xp, int ranking) {
+    public User(String profileImgUri, String username, String role, int xp, int ranking, int species) {
         this.profileImgUri = profileImgUri;
         this.username = username;
+        this.role = role;
         this.xp = xp;
         this.ranking = ranking;
+        this.species = species;
     }
 
     protected User(Parcel in) {
         profileImgUri = in.readString();
         username = in.readString();
+        role = in.readString();
         xp = in.readInt();
         ranking = in.readInt();
+        species = in.readInt();
     }
 
     public static final Creator<User> CREATOR = new Creator<User>() {
@@ -55,6 +61,14 @@ public class User implements Parcelable {
         this.username = username;
     }
 
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
+    }
+
     public int getXp() {
         return xp;
     }
@@ -71,6 +85,14 @@ public class User implements Parcelable {
         this.ranking = ranking;
     }
 
+    public int getSpecies() {
+        return species;
+    }
+
+    public void setSpecies(int species) {
+        this.species = species;
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -80,7 +102,9 @@ public class User implements Parcelable {
     public void writeToParcel(Parcel parcel, int i) {
         parcel.writeString(profileImgUri);
         parcel.writeString(username);
+        parcel.writeString(role);
         parcel.writeInt(xp);
         parcel.writeInt(ranking);
+        parcel.writeInt(species);
     }
 }

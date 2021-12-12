@@ -67,6 +67,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
         TextView currentUserName = view.findViewById(R.id.currentUserName);
         TextView currentUserXp = view.findViewById(R.id.currentUserXp);
         TextView currentUserRanking = view.findViewById(R.id.currentUserRanking);
+        TextView currentUserNSpecies = view.findViewById(R.id.currentUserNSpecies);
 
 
         DatabaseReference userRef = mDatabase.child("users").child(firebaseUser.getUid());
@@ -79,6 +80,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
                 currentUserName.setText(user.getUsername());
                 currentUserXp.setText(user.getXp() + " XP");
                 currentUserRanking.setText(String.valueOf(user.getRanking()));
+                currentUserNSpecies.setText(String.valueOf(user.getSpecies()));
 
             }
 

@@ -5,19 +5,19 @@ public class ImageModel {
     private String lng;
     private String imgUrl;
     private String specieName;
+    private String evaluatedBy;
     private ClassificationEnum classification;
 
     public ImageModel(){}
 
-    public ImageModel( String lat, String lng, String imgUrl, String specieName, ClassificationEnum classification) {
+    public ImageModel(String lat, String lng, String imgUrl, String specieName, String evaluatedBy, ClassificationEnum classification) {
         this.lat = lat;
         this.lng = lng;
         this.imgUrl = imgUrl;
         this.specieName = specieName;
+        this.evaluatedBy = evaluatedBy;
         this.classification = classification;
     }
-
-
 
     public String getLat() {
         return lat;
@@ -51,6 +51,14 @@ public class ImageModel {
         this.specieName = specieName;
     }
 
+    public String getEvaluatedBy() {
+        return evaluatedBy;
+    }
+
+    public void setEvaluatedBy(String evaluatedBy) {
+        this.evaluatedBy = evaluatedBy;
+    }
+
     public ClassificationEnum getClassification() {
         return classification;
     }
@@ -62,10 +70,11 @@ public class ImageModel {
     @Override
     public String toString() {
         return "ImageModel{" +
-                ", lat='" + lat + '\'' +
+                "lat='" + lat + '\'' +
                 ", lng='" + lng + '\'' +
                 ", imgUrl='" + imgUrl + '\'' +
                 ", specieName='" + specieName + '\'' +
+                ", evaluatedBy='" + evaluatedBy + '\'' +
                 ", classification=" + classification +
                 '}';
     }

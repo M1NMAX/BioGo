@@ -31,6 +31,7 @@ import java.util.Comparator;
 public class RankingActivity extends AppCompatActivity implements AdapterView.OnItemClickListener {
     private static final String TAG = "RankingActivity";
     private DatabaseReference mDatabase;
+    private FirebaseUser firebaseUser;
     ListView rankingListView;
 
 
@@ -40,13 +41,16 @@ public class RankingActivity extends AppCompatActivity implements AdapterView.On
         setContentView(R.layout.activity_ranking);
         mDatabase = FirebaseDatabase.getInstance("https://biogo-54daa-default-rtdb.europe-west1.firebasedatabase.app/")
                 .getReference();
+        firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
 
         rankingListView = findViewById(R.id.rankingListView);
         ArrayList<User> rankingList = new ArrayList<>();
         RankingListAdapter rankingListAdapter = new RankingListAdapter(this, R.layout.ranking_list_item, rankingList);
         rankingListView.setAdapter(rankingListAdapter);
 
+
         Query usersRef = mDatabase.child("users").orderByChild("xp");
+        DatabaseReference userRankingRef = mDatabase.child("users").child(firebaseUser.getUid());
         usersRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -55,6 +59,9 @@ public class RankingActivity extends AppCompatActivity implements AdapterView.On
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                     //You can remove the current auth user
                     User user = snapshot.getValue(User.class);
+                    if (user.getProfileImgUri().equals(firebaseUser.getPhotoUrl().toString())){
+                        userRankingRef.child("ranking").setValue(counter);
+                    }
                     user.setRanking(counter);
                     rankingList.add(user);
                     counter--;

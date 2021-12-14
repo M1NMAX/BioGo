@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 
@@ -13,6 +14,7 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.fragment.app.Fragment;
 
+import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -42,11 +44,14 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
 
     private static final String TAG = "HomeFragment";
     private boolean isOpen = true;
-    private FloatingActionButton fabAddPhoto;
+    private FloatingActionButton fabTakePhoto;
     private FloatingActionButton fabUploadPhoto;
     private Uri imageUri;
     private DatabaseReference mDataBase;
     private FirebaseUser user;
+
+    static final int REQUEST_IMAGE_CAPTURE = 1;
+    ImageView imageView;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -66,10 +71,12 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
 
         //FAB
         FloatingActionButton fabMain = view.findViewById(R.id.fabMain);
-        fabAddPhoto = view.findViewById(R.id.fabAddPhoto);
+        fabTakePhoto = view.findViewById(R.id.fabTakePhoto);
         fabUploadPhoto = view.findViewById(R.id.fabUploadPhoto);
         fabMain.setOnClickListener(this);
         fabUploadPhoto.setOnClickListener(this);
+        fabTakePhoto.setOnClickListener(this);
+
 
         //User data
         ImageView userAvatar = view.findViewById(R.id.userAvatar);
@@ -97,6 +104,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
             startActivity(playerProfileIntent);
         });
 
+        imageView = view.findViewById(R.id.playerProfileView1);
 
         return view;
     }
@@ -117,18 +125,21 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
 
             case R.id.fabMain:
                 if (isOpen) {
-                    fabAddPhoto.show();
+                    fabTakePhoto.show();
                     fabUploadPhoto.show();
                     isOpen = false;
 
                 } else {
-                    fabAddPhoto.hide();
+                    fabTakePhoto.hide();
                     fabUploadPhoto.hide();
                     isOpen = true;
                 }
                 break;
             case R.id.fabUploadPhoto:
                 openImage();
+                break;
+            case R.id.fabTakePhoto:
+                takePhoto();
                 break;
         }
 
@@ -178,5 +189,20 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                     }));
         }
 
+    }
+    private void takePhoto(){
+        Intent takePictureIntent = new Intent();
+        takePictureIntent.setAction(MediaStore.ACTION_IMAGE_CAPTURE);
+        startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
+
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == Activity.RESULT_OK) {
+            Bundle extras = data.getExtras();
+            Bitmap imageBitmap = (Bitmap) extras.get("data");
+            imageView.setImageBitmap(imageBitmap);
+        }
     }
 }

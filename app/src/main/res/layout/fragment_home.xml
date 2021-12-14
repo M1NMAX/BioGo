@@ -176,12 +176,12 @@
             android:contentDescription="add"
             android:visibility="invisible"
             app:fabSize="normal"
-            app:layout_constraintBottom_toTopOf="@+id/fabAddPhoto"
+            app:layout_constraintBottom_toTopOf="@+id/fabTakePhoto"
             app:layout_constraintEnd_toEndOf="parent"
             app:srcCompat="@drawable/ic_baseline_add_photo_alternate_24" />
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/fabAddPhoto"
+            android:id="@+id/fabTakePhoto"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom|right"

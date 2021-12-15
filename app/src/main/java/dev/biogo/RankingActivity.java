@@ -24,7 +24,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 
-import dev.biogo.Adpaters.RankingListAdapter;
+import dev.biogo.Adapters.RankingListAdapter;
 import dev.biogo.Models.User;
 
 public class RankingActivity extends AppCompatActivity implements AdapterView.OnItemClickListener {

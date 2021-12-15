@@ -23,7 +23,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
-import dev.biogo.Adpaters.CatalogListAdapter;
+import dev.biogo.Adapters.CatalogListAdapter;
 import dev.biogo.Models.Photo;
 
 public class CatalogActivity extends AppCompatActivity implements AdapterView.OnItemClickListener {
@@ -43,7 +43,7 @@ public class CatalogActivity extends AppCompatActivity implements AdapterView.On
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
 
         catalogOwner = findViewById(R.id.catalogOwner);
-        catalogOwner.setText(firebaseUser.getDisplayName());
+        catalogOwner.setText(firebaseUser.getDisplayName()+ "'s catalog");
 
 
 

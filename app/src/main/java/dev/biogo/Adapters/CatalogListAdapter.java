@@ -1,4 +1,4 @@
-package dev.biogo.Adpaters;
+package dev.biogo.Adapters;
 
 import android.content.Context;
 import android.net.Uri;
@@ -33,10 +33,13 @@ public class CatalogListAdapter extends ArrayAdapter<Photo> {
             convertView= LayoutInflater.from(getContext()).inflate(R.layout.catalog_list_item, parent, false);
         }
         ImageView image = convertView.findViewById(R.id.catalogListView_image);
-        TextView title = convertView.findViewById(R.id.catalogListView_title);
+        TextView specieName = convertView.findViewById(R.id.catalogListView_specieName);
+        TextView classification = convertView.findViewById(R.id.catalogListView_classification);
+
 
         Picasso.get().load(Uri.parse(photo.getImgUrl())).into(image);
-        title.setText(photo.getClassification().toString());
+        specieName.append(photo.getSpecieName());
+        classification.append(photo.getClassification());
 
 
 

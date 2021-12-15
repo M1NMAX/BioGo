@@ -1,4 +1,4 @@
-package dev.biogo.Adpaters;
+package dev.biogo.Adapters;
 
 import android.content.Context;
 import android.net.Uri;

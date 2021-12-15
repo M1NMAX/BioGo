@@ -13,11 +13,11 @@ public class Photo implements Parcelable {
     private String evaluatedBy;
     private String ownerId;
     private String ownerName;
-    private ClassificationEnum classification;
+    private String classification;
 
     public Photo(){}
 
-    public Photo(String lat, String lng, String imgUrl, String specieName, String evaluatedBy, String ownerId, String ownerName, ClassificationEnum classification) {
+    public Photo(String lat, String lng, String imgUrl, String specieName, String evaluatedBy, String ownerId, String ownerName, String classification) {
         this.lat = lat;
         this.lng = lng;
         this.imgUrl = imgUrl;
@@ -36,6 +36,7 @@ public class Photo implements Parcelable {
         evaluatedBy = in.readString();
         ownerId = in.readString();
         ownerName = in.readString();
+        classification = in.readString();
     }
 
     public static final Creator<Photo> CREATOR = new Creator<Photo>() {
@@ -106,11 +107,11 @@ public class Photo implements Parcelable {
         this.ownerName = ownerName;
     }
 
-    public ClassificationEnum getClassification() {
+    public String getClassification() {
         return classification;
     }
 
-    public void setClassification(ClassificationEnum classification) {
+    public void setClassification(String classification) {
         this.classification = classification;
     }
 
@@ -124,7 +125,7 @@ public class Photo implements Parcelable {
                 ", evaluatedBy='" + evaluatedBy + '\'' +
                 ", ownerId='" + ownerId + '\'' +
                 ", ownerName='" + ownerName + '\'' +
-                ", classification=" + classification +
+                ", classification='" + classification + '\'' +
                 '}';
     }
 
@@ -142,5 +143,6 @@ public class Photo implements Parcelable {
         parcel.writeString(evaluatedBy);
         parcel.writeString(ownerId);
         parcel.writeString(ownerName);
+        parcel.writeString(classification);
     }
 }

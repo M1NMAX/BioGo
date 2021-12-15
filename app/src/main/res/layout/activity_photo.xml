@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    >
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/appBarLayout"
         android:layout_width="match_parent"
@@ -16,8 +15,8 @@
             android:id="@+id/appBarCatalog"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:title="@string/photo_Activity"
-            app:navigationIcon="@drawable/ic_baseline_arrow_back_24" />
+            app:navigationIcon="@drawable/ic_baseline_arrow_back_24"
+            app:title="@string/photo_Activity" />
 
     </com.google.android.material.appbar.AppBarLayout>
 
@@ -26,55 +25,91 @@
         android:id="@+id/photo_imgView"
         android:layout_width="389dp"
         android:layout_height="301dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="8dp"
         android:src="@drawable/img_cat"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/appBarLayout" />
 
 
-        <TextView
-            android:id="@+id/textView3"
-            android:layout_width="408dp"
-            android:layout_height="31dp"
-            android:text="Name: Cat"
-            android:textSize="20sp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/photo_imgView"
-            android:layout_marginTop="15dp"/>
+    <TextView
+        android:id="@+id/photo_specieName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="8dp"
+        android:text="Specie: "
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/photo_imgView" />
 
-        <TextView
-            android:id="@+id/textView6"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="15dp"
-            android:text="Photo taken by: Luis Silva "
-            android:textSize="20sp"
-            app:layout_constraintTop_toBottomOf="@+id/textView3"
-            tools:layout_editor_absoluteX="16dp" />
+    <TextView
+        android:id="@+id/photo_ownerName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="8dp"
+        android:text="Photo taken by: "
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/photo_specieName" />
 
-        <TextView
-            android:id="@+id/textView11"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="15dp"
-            android:text="Date: 02/12/2021 "
-            android:textSize="20sp"
-            app:layout_constraintTop_toBottomOf="@+id/textView6"
-            tools:layout_editor_absoluteX="16dp" />
-
-        <com.google.android.gms.maps.MapView
-            android:id="@+id/mapView"
-            android:layout_width="357dp"
-            android:layout_height="145dp"
-            android:layout_marginTop="32dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView11" />
-
-
+    <TextView
+        android:id="@+id/photo_classification"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="8dp"
+        android:text="Classification: "
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/photo_ownerName" />
 
 
+    <TextView
+        android:id="@+id/photo_location"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="8dp"
+        android:text="location: "
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/photo_classification" />
+
+    <TextView
+        android:id="@+id/photo_timestamp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="8dp"
+        android:text="Date: "
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/photo_location" />
+
+
+
+    <!--<com.google.android.gms.maps.MapView
+        android:id="@+id/mapView"
+        android:layout_width="357dp"
+        android:layout_height="145dp"
+        android:layout_marginTop="32dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/photo_timestamp" />-->
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

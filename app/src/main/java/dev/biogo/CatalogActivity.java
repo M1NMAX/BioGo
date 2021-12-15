@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -29,6 +30,7 @@ public class CatalogActivity extends AppCompatActivity implements AdapterView.On
     private static final String TAG = "CatalogActivity";
     private DatabaseReference mDataBase;
     private ListView catalogListView;
+    private TextView catalogOwner;
     private FirebaseUser firebaseUser;
 
     @Override
@@ -39,6 +41,11 @@ public class CatalogActivity extends AppCompatActivity implements AdapterView.On
         mDataBase = FirebaseDatabase.getInstance("https://biogo-54daa-default-rtdb.europe-west1.firebasedatabase.app/")
                 .getReference();
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+
+        catalogOwner = findViewById(R.id.catalogOwner);
+        catalogOwner.setText(firebaseUser.getDisplayName());
+
+
 
         catalogListView = findViewById(R.id.catalogListView);
         ArrayList<Photo> catalogList = new ArrayList<>();

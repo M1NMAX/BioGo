@@ -29,6 +29,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ServerValue;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.squareup.picasso.Picasso;
@@ -181,8 +182,9 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
             fileRef.putFile(imageUri).addOnCompleteListener(task ->
                     fileRef.getDownloadUrl().addOnSuccessListener(uri -> {
 
+
                         //Save image data in the database
-                        Photo photo = new Photo("0", "0", uri.toString(), "N/A", "N/A", user.getUid(),user.getDisplayName(),ClassificationEnum.PENDING);
+                        Photo photo = new Photo("0", "0", uri.toString(), "N/A", "N/A", user.getUid(), user.getDisplayName(), ClassificationEnum.PENDING.toString());
                         mDataBase.child("images").push().setValue(photo);
 
                         pd.dismiss();
@@ -192,7 +194,8 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         }
 
     }
-    private void takePhoto(){
+
+    private void takePhoto() {
         Intent takePictureIntent = new Intent();
         takePictureIntent.setAction(MediaStore.ACTION_IMAGE_CAPTURE);
         startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);

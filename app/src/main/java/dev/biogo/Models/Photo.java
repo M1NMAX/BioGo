@@ -3,8 +3,6 @@ package dev.biogo.Models;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import dev.biogo.ClassificationEnum;
-
 public class Photo implements Parcelable {
     private String lat;
     private String lng;
@@ -14,10 +12,11 @@ public class Photo implements Parcelable {
     private String ownerId;
     private String ownerName;
     private String classification;
+    private String createdAt;
 
     public Photo(){}
 
-    public Photo(String lat, String lng, String imgUrl, String specieName, String evaluatedBy, String ownerId, String ownerName, String classification) {
+    public Photo(String lat, String lng, String imgUrl, String specieName, String evaluatedBy, String ownerId, String ownerName, String classification, String createdAt) {
         this.lat = lat;
         this.lng = lng;
         this.imgUrl = imgUrl;
@@ -26,6 +25,7 @@ public class Photo implements Parcelable {
         this.ownerId = ownerId;
         this.ownerName = ownerName;
         this.classification = classification;
+        this.createdAt = createdAt;
     }
 
     protected Photo(Parcel in) {
@@ -37,19 +37,8 @@ public class Photo implements Parcelable {
         ownerId = in.readString();
         ownerName = in.readString();
         classification = in.readString();
+        createdAt = in.readString();
     }
-
-    public static final Creator<Photo> CREATOR = new Creator<Photo>() {
-        @Override
-        public Photo createFromParcel(Parcel in) {
-            return new Photo(in);
-        }
-
-        @Override
-        public Photo[] newArray(int size) {
-            return new Photo[size];
-        }
-    };
 
     public String getLat() {
         return lat;
@@ -115,6 +104,14 @@ public class Photo implements Parcelable {
         this.classification = classification;
     }
 
+    public String getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(String createdAt) {
+        this.createdAt = createdAt;
+    }
+
     @Override
     public String toString() {
         return "Photo{" +
@@ -126,8 +123,21 @@ public class Photo implements Parcelable {
                 ", ownerId='" + ownerId + '\'' +
                 ", ownerName='" + ownerName + '\'' +
                 ", classification='" + classification + '\'' +
+                ", createdAt='" + createdAt + '\'' +
                 '}';
     }
+
+    public static final Creator<Photo> CREATOR = new Creator<Photo>() {
+        @Override
+        public Photo createFromParcel(Parcel in) {
+            return new Photo(in);
+        }
+
+        @Override
+        public Photo[] newArray(int size) {
+            return new Photo[size];
+        }
+    };
 
     @Override
     public int describeContents() {
@@ -144,5 +154,6 @@ public class Photo implements Parcelable {
         parcel.writeString(ownerId);
         parcel.writeString(ownerName);
         parcel.writeString(classification);
+        parcel.writeString(createdAt);
     }
 }

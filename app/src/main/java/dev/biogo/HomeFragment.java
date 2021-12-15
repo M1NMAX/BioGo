@@ -29,11 +29,13 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ServerValue;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.squareup.picasso.Picasso;
 
+import java.util.Date;
+
+import dev.biogo.Enums.ClassificationEnum;
 import dev.biogo.Models.Photo;
 
 
@@ -184,7 +186,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
 
 
                         //Save image data in the database
-                        Photo photo = new Photo("0", "0", uri.toString(), "N/A", "N/A", user.getUid(), user.getDisplayName(), ClassificationEnum.PENDING.toString());
+                        Photo photo = new Photo("0", "0", uri.toString(), "N/A", "N/A", user.getUid(), user.getDisplayName(), ClassificationEnum.PENDING.toString(), new Date().toString());
                         mDataBase.child("images").push().setValue(photo);
 
                         pd.dismiss();

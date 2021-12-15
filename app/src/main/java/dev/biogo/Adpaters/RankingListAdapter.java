@@ -1,4 +1,4 @@
-package dev.biogo;
+package dev.biogo.Adpaters;
 
 import android.content.Context;
 import android.net.Uri;
@@ -15,6 +15,9 @@ import androidx.annotation.Nullable;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
+
+import dev.biogo.R;
+import dev.biogo.Models.User;
 
 public class RankingListAdapter extends ArrayAdapter<User> {
     public RankingListAdapter(@NonNull Context context, int resource, @NonNull List<User> users) {

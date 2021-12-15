@@ -40,6 +40,9 @@ public class PhotoActivity extends AppCompatActivity {
         TextView photo_location = findViewById(R.id.photo_location);
         photo_location.append(photo.getLat()+" Lat, "+photo.getLng()+" Lng");
 
+        TextView photo_createdAt = findViewById(R.id.photo_createdAt);
+        photo_createdAt.append(photo.getCreatedAt());
+
 
     }
 }

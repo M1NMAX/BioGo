@@ -1,4 +1,4 @@
-package dev.biogo;
+package dev.biogo.Models;
 
 
 import android.os.Parcel;

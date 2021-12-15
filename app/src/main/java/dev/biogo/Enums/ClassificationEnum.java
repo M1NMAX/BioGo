@@ -1,4 +1,4 @@
-package dev.biogo;
+package dev.biogo.Enums;
 
 public enum ClassificationEnum {
         VALID,

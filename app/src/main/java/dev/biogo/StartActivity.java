@@ -6,7 +6,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
 import android.widget.Button;
 
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
@@ -25,7 +24,8 @@ import com.google.firebase.auth.GoogleAuthProvider;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
-import java.util.HashMap;
+import dev.biogo.Enums.RoleEnum;
+import dev.biogo.Models.User;
 
 public class StartActivity extends AppCompatActivity {
     private static final String TAG = "StartActivity";
@@ -105,7 +105,7 @@ public class StartActivity extends AppCompatActivity {
                             // Sign in success, update UI with the signed-in user's information
                             Log.d(TAG, "signInWithCredential:success");
                             FirebaseUser user = mAuth.getCurrentUser();
-                            User newUser = new User(user.getPhotoUrl().toString(), user.getDisplayName(),"member", 30, 0, 0);
+                            User newUser = new User(user.getPhotoUrl().toString(), user.getDisplayName(), RoleEnum.MEMBER.toString(), 30, 0, 0);
                             mDataBase.child("users").child(user.getUid()).setValue(newUser);
 
                             updateUI(user);

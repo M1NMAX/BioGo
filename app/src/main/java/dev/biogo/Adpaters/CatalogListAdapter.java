@@ -16,11 +16,11 @@ import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
-import dev.biogo.ImageModel;
+import dev.biogo.Models.Photo;
 import dev.biogo.R;
 
-public class CatalogListAdpater extends ArrayAdapter<ImageModel> {
-    public CatalogListAdpater(@NonNull Context context, int resource, @NonNull List<ImageModel> objects) {
+public class CatalogListAdapter extends ArrayAdapter<Photo> {
+    public CatalogListAdapter(@NonNull Context context, int resource, @NonNull List<Photo> objects) {
         super(context, resource, objects);
     }
 
@@ -28,15 +28,15 @@ public class CatalogListAdpater extends ArrayAdapter<ImageModel> {
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
 
-        ImageModel imageModel = getItem(position);
+        Photo photo = getItem(position);
         if (convertView == null){
             convertView= LayoutInflater.from(getContext()).inflate(R.layout.catalog_list_item, parent, false);
         }
         ImageView image = convertView.findViewById(R.id.catalogListView_image);
         TextView title = convertView.findViewById(R.id.catalogListView_title);
 
-        Picasso.get().load(Uri.parse(imageModel.getImgUrl())).into(image);
-        title.setText(imageModel.getClassification().toString());
+        Picasso.get().load(Uri.parse(photo.getImgUrl())).into(image);
+        title.setText(photo.getClassification().toString());
 
 
 

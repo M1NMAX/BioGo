@@ -33,6 +33,8 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.squareup.picasso.Picasso;
 
+import dev.biogo.Models.Photo;
+
 
 public class HomeFragment extends Fragment implements View.OnClickListener {
 
@@ -180,8 +182,8 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                     fileRef.getDownloadUrl().addOnSuccessListener(uri -> {
 
                         //Save image data in the database
-                        ImageModel image = new ImageModel("0", "0", uri.toString(), "N/A", "N/A", ClassificationEnum.PENDING);
-                        mDataBase.child("images").child(user.getUid()).push().setValue(image);
+                        Photo photo = new Photo("0", "0", uri.toString(), "N/A", "N/A", user.getUid(),user.getDisplayName(),ClassificationEnum.PENDING);
+                        mDataBase.child("images").push().setValue(photo);
 
                         pd.dismiss();
                         Toast.makeText(getContext(), "Image uploaded Successfully", Toast.LENGTH_LONG).show();

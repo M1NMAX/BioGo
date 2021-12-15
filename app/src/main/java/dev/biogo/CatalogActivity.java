@@ -8,7 +8,6 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -18,11 +17,13 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
-import dev.biogo.Adpaters.CatalogListAdpater;
+import dev.biogo.Adpaters.CatalogListAdapter;
+import dev.biogo.Models.Photo;
 
 public class CatalogActivity extends AppCompatActivity implements AdapterView.OnItemClickListener {
     private static final String TAG = "CatalogActivity";
@@ -40,20 +41,20 @@ public class CatalogActivity extends AppCompatActivity implements AdapterView.On
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
 
         catalogListView = findViewById(R.id.catalogListView);
-        ArrayList<ImageModel> catalogList = new ArrayList<>();
-        CatalogListAdpater catalogListAdpater = new CatalogListAdpater(this, R.layout.catalog_list_item, catalogList);
-        catalogListView.setAdapter(catalogListAdpater);
+        ArrayList<Photo> catalogList = new ArrayList<>();
+        CatalogListAdapter catalogListAdapter = new CatalogListAdapter(this, R.layout.catalog_list_item, catalogList);
+        catalogListView.setAdapter(catalogListAdapter);
 
-        DatabaseReference imagesRef = mDataBase.child("images").child(firebaseUser.getUid());
+        Query imagesQuery = mDataBase.child("images").orderByChild("ownerId").equalTo(firebaseUser.getUid());
 
-        imagesRef.addValueEventListener(new ValueEventListener() {
+        imagesQuery.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                    ImageModel imageModel = snapshot.getValue(ImageModel.class);
-                    catalogList.add(imageModel);
+                    Photo photo = snapshot.getValue(Photo.class);
+                    catalogList.add(photo);
                 }
-                catalogListAdpater.notifyDataSetChanged();
+                catalogListAdapter.notifyDataSetChanged();
             }
 
             @Override
@@ -66,11 +67,11 @@ public class CatalogActivity extends AppCompatActivity implements AdapterView.On
 
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-        ImageModel imageModel = (ImageModel) adapterView.getItemAtPosition(i);
-        Toast.makeText(this, imageModel.getSpecieName(), Toast.LENGTH_LONG).show();
+        Photo photo = (Photo) adapterView.getItemAtPosition(i);
+        Toast.makeText(this, photo.getSpecieName(), Toast.LENGTH_LONG).show();
 
         Intent photoIntent = new Intent(this, PhotoActivity.class);
-        photoIntent.putExtra("photoData", imageModel);
+        photoIntent.putExtra("photoData", photo);
         startActivity(photoIntent);
     }
 }

@@ -9,6 +9,8 @@ import android.widget.ImageView;
 
 import com.squareup.picasso.Picasso;
 
+import dev.biogo.Models.Photo;
+
 public class PhotoActivity extends AppCompatActivity {
     private static final String TAG = "PhotoActivity";
 
@@ -18,11 +20,11 @@ public class PhotoActivity extends AppCompatActivity {
         setContentView(R.layout.activity_photo);
 
         Intent i = getIntent();
-        ImageModel imageModel = (ImageModel) i.getParcelableExtra("photoData");
+        Photo photo = (Photo) i.getParcelableExtra("photoData");
 
         //dynamically inflate photo activity
 
         ImageView photo_imgView = findViewById(R.id.photo_imgView);
-        Picasso.get().load(Uri.parse(imageModel.getImgUrl())).into(photo_imgView);
+        Picasso.get().load(Uri.parse(photo.getImgUrl())).into(photo_imgView);
     }
 }

@@ -3,10 +3,14 @@ package dev.biogo;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -20,7 +24,7 @@ import java.util.ArrayList;
 
 import dev.biogo.Adpaters.CatalogListAdpater;
 
-public class CatalogActivity extends AppCompatActivity {
+public class CatalogActivity extends AppCompatActivity implements AdapterView.OnItemClickListener {
     private static final String TAG = "CatalogActivity";
     private DatabaseReference mDataBase;
     private ListView catalogListView;
@@ -57,5 +61,16 @@ public class CatalogActivity extends AppCompatActivity {
                 Log.w(TAG, "onCancelled: ", error.toException());
             }
         });
+        catalogListView.setOnItemClickListener(this);
+    }
+
+    @Override
+    public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+        ImageModel imageModel = (ImageModel) adapterView.getItemAtPosition(i);
+        Toast.makeText(this, imageModel.getSpecieName(), Toast.LENGTH_LONG).show();
+
+        Intent photoIntent = new Intent(this, PhotoActivity.class);
+        photoIntent.putExtra("photoData", imageModel);
+        startActivity(photoIntent);
     }
 }

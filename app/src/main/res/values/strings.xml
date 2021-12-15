@@ -8,4 +8,5 @@
     <string name="specie_Activity">Specie</string>
     <string name="ranking_Activity">Ranking</string>
     <string name="settings_Activity">Settings</string>
+    <string name="photo_Activity">Photo</string>
 </resources>

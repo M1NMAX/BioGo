@@ -33,6 +33,17 @@
         app:layout_constraintTop_toBottomOf="@+id/appBarLayout" />
 
 
+    <fragment
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:id="@+id/google_map_main"
+        app:layout_constraintBottom_toTopOf="@+id/bottom_navigation"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/appBarLayout"
+        android:name="com.google.android.gms.maps.SupportMapFragment"/>
+
+
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottom_navigation"

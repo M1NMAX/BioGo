@@ -31,8 +31,6 @@ import android.widget.Toast;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.maps.CameraUpdateFactory;
-import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.tasks.CancellationTokenSource;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -199,11 +197,17 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
             }
     );
 
+
+
     private void openImage() {
         Intent imageIntent = new Intent();
         imageIntent.setType("image/");
         imageIntent.setAction(Intent.ACTION_GET_CONTENT);
         imageActivityResultLauncher.launch(imageIntent);
+    }
+
+    private String createImageName(){
+        return new SimpleDateFormat("yyyy_MM_dd_HH_mm_ss", Locale.UK).format(new Date());
     }
 
     private void uploadImage() {
@@ -212,7 +216,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         pd.show();
         if (imageUri != null) {
             StorageReference fileRef = FirebaseStorage.getInstance().getReference()
-                    .child("image/").child(String.valueOf(System.currentTimeMillis()));
+                    .child("image/").child(createImageName());
             fileRef.putFile(imageUri).addOnCompleteListener(task ->
                     fileRef.getDownloadUrl().addOnSuccessListener(uri -> {
 
@@ -235,19 +239,8 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
 
     }
 
-    String currentPhotoPath;
 
-    private File createImageFile() throws IOException {
-        // Create an image file name
-        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.UK).format(new Date());
-        String imageFileName = "JPEG_" + timeStamp + "_";
-        File storageDir = getActivity().getExternalFilesDir(Environment.DIRECTORY_PICTURES);
-        File image = File.createTempFile(imageFileName, ".jpg", storageDir);
 
-        // Save a file: path for use with ACTION_VIEW intents
-        currentPhotoPath = image.getAbsolutePath();
-        return image;
-    }
 
     private void takePhoto() {
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
@@ -255,7 +248,8 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
 
             File photoFile = null;
             try {
-                photoFile = createImageFile();
+                File storageDir = getActivity().getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+                photoFile = File.createTempFile(createImageName(), ".jpg", storageDir);
             } catch (IOException ex) {
                 Log.w(TAG, "takePhoto: " + ex.getMessage(), ex);
             }
@@ -277,7 +271,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                     currentLocation = task.getResult();
                     if (currentLocation != null)
                         uploadImage();
-                        Log.d(TAG, "getLocation: " + currentLocation.toString());
+                        Log.d(TAG, "getLocation: " + currentLocation);
 
                 } else {
                     Log.d(TAG, "Get location failed");
@@ -285,9 +279,6 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
             });
         } catch (SecurityException e) {
             Log.e("Exception %s", e.getMessage(), e);
-            Log.d(TAG, "getLocation: DFYGUHIJO");
         }
-
-
     }
 }

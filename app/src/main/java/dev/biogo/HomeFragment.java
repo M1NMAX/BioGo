@@ -3,6 +3,7 @@ package dev.biogo;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.ContentValues;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
@@ -12,9 +13,12 @@ import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
 
+import android.os.Environment;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -33,6 +37,10 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.squareup.picasso.Picasso;
 
+import java.io.File;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import dev.biogo.Enums.ClassificationEnum;
@@ -57,6 +65,8 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
 
     static final int REQUEST_IMAGE_CAPTURE = 1;
     ImageView imageView;
+
+    private Uri uri;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -167,6 +177,25 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
             }
     );
 
+    ActivityResultLauncher<Intent> takePictureActivityResultLauncher = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            new ActivityResultCallback<ActivityResult>() {
+                @Override
+                public void onActivityResult(ActivityResult result) {
+                    if (result.getResultCode() == Activity.RESULT_OK) {
+                        Bitmap bitmap;
+                        try {
+                            bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), imageUri);
+                            imageView.setImageBitmap(bitmap);
+                            uploadImage();
+                        } catch (IOException e) {
+                            Log.w(TAG, "onActivityResult: ",e );
+                        }
+                    }
+                }
+            }
+    );
+
     private void openImage() {
         Intent imageIntent = new Intent();
         imageIntent.setType("image/");
@@ -186,7 +215,9 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
 
 
                         //Save image data in the database
-                        Photo photo = new Photo("0", "0", uri.toString(), "N/A", "N/A", user.getUid(), user.getDisplayName(), ClassificationEnum.PENDING.toString(), new Date().toString());
+                        Photo photo = new Photo("0", "0", uri.toString(), "N/A", "N/A",
+                                user.getUid(), user.getDisplayName(), ClassificationEnum.PENDING.toString(),
+                                new Date().toString());
                         mDataBase.child("images").push().setValue(photo);
 
                         pd.dismiss();
@@ -197,19 +228,44 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
 
     }
 
-    private void takePhoto() {
-        Intent takePictureIntent = new Intent();
-        takePictureIntent.setAction(MediaStore.ACTION_IMAGE_CAPTURE);
-        startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
+    String currentPhotoPath;
 
+    private File createImageFile() throws IOException {
+        // Create an image file name
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        String imageFileName = "JPEG_" + timeStamp + "_";
+        File storageDir = getActivity().getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+        File image = File.createTempFile(imageFileName,".jpg",storageDir);
+
+        // Save a file: path for use with ACTION_VIEW intents
+        currentPhotoPath = image.getAbsolutePath();
+        return image;
     }
 
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == Activity.RESULT_OK) {
-            Bundle extras = data.getExtras();
-            Bitmap imageBitmap = (Bitmap) extras.get("data");
-            imageView.setImageBitmap(imageBitmap);
+    private void takePhoto() {
+        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+
+        if (takePictureIntent.resolveActivity(getActivity().getPackageManager()) != null) {
+
+            File photoFile = null;
+            try {
+                photoFile = createImageFile();
+            } catch (IOException ex) {
+                Log.w(TAG, "takePhoto: " + ex.getMessage().toString(), ex);
+            }
+            if (photoFile != null) {
+                imageUri = FileProvider.getUriForFile(getContext(), "dev.biogo", photoFile);
+                takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
+                takePictureActivityResultLauncher.launch(takePictureIntent);
+            }
         }
     }
+
+
+
+
+
+
+
+
 }

@@ -3,9 +3,9 @@ package dev.biogo;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.ProgressDialog;
-import android.content.ContentValues;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
 
@@ -28,6 +28,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.tasks.CancellationTokenSource;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -39,9 +46,9 @@ import com.squareup.picasso.Picasso;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.OutputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 
 import dev.biogo.Enums.ClassificationEnum;
 import dev.biogo.Models.Photo;
@@ -63,10 +70,11 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
     private DatabaseReference mDataBase;
     private FirebaseUser user;
 
-    static final int REQUEST_IMAGE_CAPTURE = 1;
+    private FusedLocationProviderClient fusedLocationClient;
+    private Location currentLocation;
+
     ImageView imageView;
 
-    private Uri uri;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -79,6 +87,8 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_home, container, false);
+        //Location
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(getActivity());
 
         //Firebase Database
         mDataBase = FirebaseDatabase.getInstance("https://biogo-54daa-default-rtdb.europe-west1.firebasedatabase.app/")
@@ -111,13 +121,6 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         String name = user.getDisplayName();
         username.setText(name);
         Picasso.get().load(photoUrl).into(userAvatar);
-
-        // Player profile view
-        ImageView player1 = view.findViewById(R.id.playerProfileView1);
-        player1.setOnClickListener((view1) -> {
-            Intent playerProfileIntent = new Intent(getActivity(), PlayerProfileActivity.class);
-            startActivity(playerProfileIntent);
-        });
 
         imageView = view.findViewById(R.id.playerProfileView1);
 
@@ -170,7 +173,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                         Intent data = result.getData();
                         if (data != null) {
                             imageUri = data.getData();
-                            uploadImage();
+                            getCurrentLocation();
                         }
                     }
                 }
@@ -187,9 +190,9 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                         try {
                             bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), imageUri);
                             imageView.setImageBitmap(bitmap);
-                            uploadImage();
+                            getCurrentLocation();
                         } catch (IOException e) {
-                            Log.w(TAG, "onActivityResult: ",e );
+                            Log.w(TAG, "onActivityResult: ", e);
                         }
                     }
                 }
@@ -213,15 +216,19 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
             fileRef.putFile(imageUri).addOnCompleteListener(task ->
                     fileRef.getDownloadUrl().addOnSuccessListener(uri -> {
 
+                        //Convert current Latitude and Longitude to String
+                        String lat = String.valueOf(currentLocation.getLatitude());
+                        String lng = String.valueOf(currentLocation.getLongitude());
 
                         //Save image data in the database
-                        Photo photo = new Photo("0", "0", uri.toString(), "N/A", "N/A",
+                        Photo photo = new Photo(lat, lng, uri.toString(), "N/A", "N/A",
                                 user.getUid(), user.getDisplayName(), ClassificationEnum.PENDING.toString(),
                                 new Date().toString());
                         mDataBase.child("images").push().setValue(photo);
 
                         pd.dismiss();
                         Toast.makeText(getContext(), "Image uploaded Successfully", Toast.LENGTH_LONG).show();
+
 
                     }));
         }
@@ -232,10 +239,10 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
 
     private File createImageFile() throws IOException {
         // Create an image file name
-        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.UK).format(new Date());
         String imageFileName = "JPEG_" + timeStamp + "_";
         File storageDir = getActivity().getExternalFilesDir(Environment.DIRECTORY_PICTURES);
-        File image = File.createTempFile(imageFileName,".jpg",storageDir);
+        File image = File.createTempFile(imageFileName, ".jpg", storageDir);
 
         // Save a file: path for use with ACTION_VIEW intents
         currentPhotoPath = image.getAbsolutePath();
@@ -244,14 +251,13 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
 
     private void takePhoto() {
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-
         if (takePictureIntent.resolveActivity(getActivity().getPackageManager()) != null) {
 
             File photoFile = null;
             try {
                 photoFile = createImageFile();
             } catch (IOException ex) {
-                Log.w(TAG, "takePhoto: " + ex.getMessage().toString(), ex);
+                Log.w(TAG, "takePhoto: " + ex.getMessage(), ex);
             }
             if (photoFile != null) {
                 imageUri = FileProvider.getUriForFile(getContext(), "dev.biogo", photoFile);
@@ -261,11 +267,27 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         }
     }
 
+    private void getCurrentLocation() {
+
+        try {
+            CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
+            Task<Location> locationRes = fusedLocationClient.getCurrentLocation(LocationRequest.PRIORITY_HIGH_ACCURACY, cancellationTokenSource.getToken());
+            locationRes.addOnCompleteListener(getActivity(), task -> {
+                if (task.isSuccessful()) {
+                    currentLocation = task.getResult();
+                    if (currentLocation != null)
+                        uploadImage();
+                        Log.d(TAG, "getLocation: " + currentLocation.toString());
+
+                } else {
+                    Log.d(TAG, "Get location failed");
+                }
+            });
+        } catch (SecurityException e) {
+            Log.e("Exception %s", e.getMessage(), e);
+            Log.d(TAG, "getLocation: DFYGUHIJO");
+        }
 
 
-
-
-
-
-
+    }
 }

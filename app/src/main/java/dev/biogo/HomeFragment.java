@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
 
@@ -12,9 +13,12 @@ import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
 
+import android.os.Environment;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,6 +28,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.tasks.CancellationTokenSource;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -33,7 +42,11 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.squareup.picasso.Picasso;
 
+import java.io.File;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 
 import dev.biogo.Enums.ClassificationEnum;
 import dev.biogo.Models.Photo;
@@ -55,8 +68,11 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
     private DatabaseReference mDataBase;
     private FirebaseUser user;
 
-    static final int REQUEST_IMAGE_CAPTURE = 1;
+    private FusedLocationProviderClient fusedLocationClient;
+    private Location currentLocation;
+
     ImageView imageView;
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -69,6 +85,8 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_home, container, false);
+        //Location
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(getActivity());
 
         //Firebase Database
         mDataBase = FirebaseDatabase.getInstance("https://biogo-54daa-default-rtdb.europe-west1.firebasedatabase.app/")
@@ -101,13 +119,6 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         String name = user.getDisplayName();
         username.setText(name);
         Picasso.get().load(photoUrl).into(userAvatar);
-
-        // Player profile view
-        ImageView player1 = view.findViewById(R.id.playerProfileView1);
-        player1.setOnClickListener((view1) -> {
-            Intent playerProfileIntent = new Intent(getActivity(), PlayerProfileActivity.class);
-            startActivity(playerProfileIntent);
-        });
 
         imageView = view.findViewById(R.id.playerProfileView1);
 
@@ -160,12 +171,33 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                         Intent data = result.getData();
                         if (data != null) {
                             imageUri = data.getData();
-                            uploadImage();
+                            getCurrentLocation();
                         }
                     }
                 }
             }
     );
+
+    ActivityResultLauncher<Intent> takePictureActivityResultLauncher = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            new ActivityResultCallback<ActivityResult>() {
+                @Override
+                public void onActivityResult(ActivityResult result) {
+                    if (result.getResultCode() == Activity.RESULT_OK) {
+                        Bitmap bitmap;
+                        try {
+                            bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), imageUri);
+                            imageView.setImageBitmap(bitmap);
+                            getCurrentLocation();
+                        } catch (IOException e) {
+                            Log.w(TAG, "onActivityResult: ", e);
+                        }
+                    }
+                }
+            }
+    );
+
+
 
     private void openImage() {
         Intent imageIntent = new Intent();
@@ -174,42 +206,79 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         imageActivityResultLauncher.launch(imageIntent);
     }
 
+    private String createImageName(){
+        return new SimpleDateFormat("yyyy_MM_dd_HH_mm_ss", Locale.UK).format(new Date());
+    }
+
     private void uploadImage() {
         ProgressDialog pd = new ProgressDialog(getContext());
         pd.setMessage("Uploading");
         pd.show();
         if (imageUri != null) {
             StorageReference fileRef = FirebaseStorage.getInstance().getReference()
-                    .child("image/").child(String.valueOf(System.currentTimeMillis()));
+                    .child("image/").child(createImageName());
             fileRef.putFile(imageUri).addOnCompleteListener(task ->
                     fileRef.getDownloadUrl().addOnSuccessListener(uri -> {
 
+                        //Convert current Latitude and Longitude to String
+                        String lat = String.valueOf(currentLocation.getLatitude());
+                        String lng = String.valueOf(currentLocation.getLongitude());
 
                         //Save image data in the database
-                        Photo photo = new Photo("0", "0", uri.toString(), "N/A", "N/A", user.getUid(), user.getDisplayName(), ClassificationEnum.PENDING.toString(), new Date().toString());
+                        Photo photo = new Photo(lat, lng, uri.toString(), "N/A", "N/A",
+                                user.getUid(), user.getDisplayName(), ClassificationEnum.PENDING.toString(),
+                                new Date().toString());
                         mDataBase.child("images").push().setValue(photo);
 
                         pd.dismiss();
                         Toast.makeText(getContext(), "Image uploaded Successfully", Toast.LENGTH_LONG).show();
+
 
                     }));
         }
 
     }
 
-    private void takePhoto() {
-        Intent takePictureIntent = new Intent();
-        takePictureIntent.setAction(MediaStore.ACTION_IMAGE_CAPTURE);
-        startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
 
+
+
+    private void takePhoto() {
+        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        if (takePictureIntent.resolveActivity(getActivity().getPackageManager()) != null) {
+
+            File photoFile = null;
+            try {
+                File storageDir = getActivity().getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+                photoFile = File.createTempFile(createImageName(), ".jpg", storageDir);
+            } catch (IOException ex) {
+                Log.w(TAG, "takePhoto: " + ex.getMessage(), ex);
+            }
+            if (photoFile != null) {
+                imageUri = FileProvider.getUriForFile(getContext(), "dev.biogo", photoFile);
+                takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
+                takePictureActivityResultLauncher.launch(takePictureIntent);
+            }
+        }
     }
 
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == Activity.RESULT_OK) {
-            Bundle extras = data.getExtras();
-            Bitmap imageBitmap = (Bitmap) extras.get("data");
-            imageView.setImageBitmap(imageBitmap);
+    private void getCurrentLocation() {
+
+        try {
+            CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
+            Task<Location> locationRes = fusedLocationClient.getCurrentLocation(LocationRequest.PRIORITY_HIGH_ACCURACY, cancellationTokenSource.getToken());
+            locationRes.addOnCompleteListener(getActivity(), task -> {
+                if (task.isSuccessful()) {
+                    currentLocation = task.getResult();
+                    if (currentLocation != null)
+                        uploadImage();
+                        Log.d(TAG, "getLocation: " + currentLocation);
+
+                } else {
+                    Log.d(TAG, "Get location failed");
+                }
+            });
+        } catch (SecurityException e) {
+            Log.e("Exception %s", e.getMessage(), e);
         }
     }
 }

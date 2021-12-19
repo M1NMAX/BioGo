@@ -4,7 +4,11 @@ package dev.biogo.Models;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.google.firebase.database.Exclude;
+
 public class User implements Parcelable {
+    @Exclude
+    private String userId;
     private String profileImgUri;
     private String username;
     private String role;
@@ -13,7 +17,6 @@ public class User implements Parcelable {
     private int species;
 
     public User (){}
-
 
     public User(String profileImgUri, String username, String role, int xp, int ranking, int species) {
         this.profileImgUri = profileImgUri;
@@ -24,26 +27,26 @@ public class User implements Parcelable {
         this.species = species;
     }
 
-    protected User(Parcel in) {
-        profileImgUri = in.readString();
-        username = in.readString();
-        role = in.readString();
-        xp = in.readInt();
-        ranking = in.readInt();
-        species = in.readInt();
+    @Override
+    public String toString() {
+        return "User{" +
+                "userId='" + userId + '\'' +
+                ", profileImgUri='" + profileImgUri + '\'' +
+                ", username='" + username + '\'' +
+                ", role='" + role + '\'' +
+                ", xp=" + xp +
+                ", ranking=" + ranking +
+                ", species=" + species +
+                '}';
     }
 
-    public static final Creator<User> CREATOR = new Creator<User>() {
-        @Override
-        public User createFromParcel(Parcel in) {
-            return new User(in);
-        }
+    public String getUserId() {
+        return userId;
+    }
 
-        @Override
-        public User[] newArray(int size) {
-            return new User[size];
-        }
-    };
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
 
     public String getProfileImgUri() {
         return profileImgUri;
@@ -93,6 +96,28 @@ public class User implements Parcelable {
         this.species = species;
     }
 
+    protected User(Parcel in) {
+        userId = in.readString();
+        profileImgUri = in.readString();
+        username = in.readString();
+        role = in.readString();
+        xp = in.readInt();
+        ranking = in.readInt();
+        species = in.readInt();
+    }
+
+    public static final Creator<User> CREATOR = new Creator<User>() {
+        @Override
+        public User createFromParcel(Parcel in) {
+            return new User(in);
+        }
+
+        @Override
+        public User[] newArray(int size) {
+            return new User[size];
+        }
+    };
+
     @Override
     public int describeContents() {
         return 0;
@@ -100,6 +125,7 @@ public class User implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeString(userId);
         parcel.writeString(profileImgUri);
         parcel.writeString(username);
         parcel.writeString(role);

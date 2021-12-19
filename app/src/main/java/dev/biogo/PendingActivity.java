@@ -23,13 +23,13 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 
 import dev.biogo.Adapters.CatalogAdapter;
+import dev.biogo.Enums.ClassificationEnum;
 import dev.biogo.Models.Photo;
 
-public class CatalogActivity extends AppCompatActivity implements CatalogAdapter.OnItemListener {
-    private static final String TAG = "CatalogActivity";
+public class PendingActivity extends AppCompatActivity implements CatalogAdapter.OnItemListener {
+    private static final String TAG = "PendingActivity";
     private DatabaseReference mDataBase;
     private RecyclerView catalogRView;
-    private TextView catalogOwner;
     private FirebaseUser firebaseUser;
     private ArrayList<Photo> photosList;
     private CatalogAdapter catalogListAdapter;
@@ -37,14 +37,11 @@ public class CatalogActivity extends AppCompatActivity implements CatalogAdapter
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_catalog);
-
+        setContentView(R.layout.activity_pending);
         mDataBase = FirebaseDatabase.getInstance("https://biogo-54daa-default-rtdb.europe-west1.firebasedatabase.app/")
                 .getReference();
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
 
-        catalogOwner = findViewById(R.id.catalogOwner);
-        catalogOwner.setText(firebaseUser.getDisplayName() + "'s catalog");
 
 
         catalogRView = findViewById(R.id.catalogRView);
@@ -56,15 +53,18 @@ public class CatalogActivity extends AppCompatActivity implements CatalogAdapter
         catalogListAdapter = new CatalogAdapter(this, photosList, this);
         catalogRView.setAdapter(catalogListAdapter);
 
-        Query imagesQuery = mDataBase.child("images").orderByChild("ownerId").equalTo(firebaseUser.getUid());
+        Query imagesQuery = mDataBase.child("images").orderByChild("classification").equalTo(ClassificationEnum.PENDING.toString());
 
         imagesQuery.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                photosList.clear();
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                     Photo photo = snapshot.getValue(Photo.class);
                     photo.setId(snapshot.getKey());
-                    photosList.add(photo);
+                    if(photo.getOwnerId().equals(firebaseUser.getUid()))
+                        photosList.add(photo);
                 }
                 catalogListAdapter.notifyDataSetChanged();
             }

@@ -2,6 +2,8 @@ package dev.biogo;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -23,13 +25,13 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
-import dev.biogo.Adapters.CatalogListAdapter;
+import dev.biogo.Adapters.CatalogAdapter;
 import dev.biogo.Models.Photo;
 
 public class CatalogActivity extends AppCompatActivity implements AdapterView.OnItemClickListener {
     private static final String TAG = "CatalogActivity";
     private DatabaseReference mDataBase;
-    private ListView catalogListView;
+    private RecyclerView catalogRView;
     private TextView catalogOwner;
     private FirebaseUser firebaseUser;
 
@@ -47,10 +49,14 @@ public class CatalogActivity extends AppCompatActivity implements AdapterView.On
 
 
 
-        catalogListView = findViewById(R.id.catalogListView);
-        ArrayList<Photo> catalogList = new ArrayList<>();
-        CatalogListAdapter catalogListAdapter = new CatalogListAdapter(this, R.layout.catalog_list_item, catalogList);
-        catalogListView.setAdapter(catalogListAdapter);
+        catalogRView = findViewById(R.id.catalogRView);
+        catalogRView.setHasFixedSize(true);
+        catalogRView.setLayoutManager(new LinearLayoutManager(this));
+
+        ArrayList<Photo> photosList = new ArrayList<>();
+
+        CatalogAdapter catalogListAdapter = new CatalogAdapter(this,  photosList);
+        catalogRView.setAdapter(catalogListAdapter);
 
         Query imagesQuery = mDataBase.child("images").orderByChild("ownerId").equalTo(firebaseUser.getUid());
 
@@ -59,7 +65,7 @@ public class CatalogActivity extends AppCompatActivity implements AdapterView.On
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                     Photo photo = snapshot.getValue(Photo.class);
-                    catalogList.add(photo);
+                    photosList.add(photo);
                 }
                 catalogListAdapter.notifyDataSetChanged();
             }
@@ -69,7 +75,8 @@ public class CatalogActivity extends AppCompatActivity implements AdapterView.On
                 Log.w(TAG, "onCancelled: ", error.toException());
             }
         });
-        catalogListView.setOnItemClickListener(this);
+
+
     }
 
     @Override

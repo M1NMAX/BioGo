@@ -103,18 +103,20 @@ public class PhotoActivity extends AppCompatActivity implements View.OnClickList
                             dialogInterface.dismiss();
                         })
                         .setPositiveButton(getResources().getText(R.string.evaluation_dialog_save), (dialogInterface, i)->{
+                            //TODO: hide EvaluationBtn
+                            //TODO: Update photoActivity UI
+
+                            //Hide dialog
                             dialogInterface.dismiss();
-                            Log.d(TAG, "onClick: "+ClassificationEnum.valueOf((String) singleItems[checkedItem]).getValue());
-                            //TODO: hide btn
-                            //TODO: update photoActivity UI
-
-
+                            //Update photo data in the database
+                            String newClassification = (String) singleItems[checkedItem];
                             Map<String, Object> update = new HashMap<>();
-                            update.put("classification", singleItems[checkedItem]);
+                            update.put("classification",newClassification );
                             update.put("evaluateBy", firebaseUser.getDisplayName());
                             photoRef.child(photo.getId()).updateChildren(update);
-                            int inc =ClassificationEnum.valueOf((String) singleItems[checkedItem]).getValue();
-                            ownerRef.child(photo.getOwnerId()).child("xp").setValue(ServerValue.increment(inc));
+                            //Update owner xp
+                            int incValue =ClassificationEnum.valueOf(newClassification).getValue();
+                            ownerRef.child(photo.getOwnerId()).child("xp").setValue(ServerValue.increment(incValue));
 
                         })
                         .setSingleChoiceItems(singleItems, checkedItem,( dialogInterface,  i)->checkedItem=i);

@@ -60,6 +60,8 @@ public class PendingActivity extends AppCompatActivity implements CatalogAdapter
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                     Photo photo = snapshot.getValue(Photo.class);
+                    photo.setId(snapshot.getKey());
+                    Log.d(TAG, "onDataChange: "+photo.toString());
                     if(photo.getOwnerId().equals(firebaseUser.getUid()))
                         photosList.add(photo);
                 }

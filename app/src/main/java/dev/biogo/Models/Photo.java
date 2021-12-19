@@ -3,7 +3,11 @@ package dev.biogo.Models;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.google.firebase.database.Exclude;
+
 public class Photo implements Parcelable {
+    @Exclude
+    private String id;
     private String lat;
     private String lng;
     private String imgUrl;
@@ -28,16 +32,12 @@ public class Photo implements Parcelable {
         this.createdAt = createdAt;
     }
 
-    protected Photo(Parcel in) {
-        lat = in.readString();
-        lng = in.readString();
-        imgUrl = in.readString();
-        specieName = in.readString();
-        evaluatedBy = in.readString();
-        ownerId = in.readString();
-        ownerName = in.readString();
-        classification = in.readString();
-        createdAt = in.readString();
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getLat() {
@@ -115,7 +115,8 @@ public class Photo implements Parcelable {
     @Override
     public String toString() {
         return "Photo{" +
-                "lat='" + lat + '\'' +
+                "id='" + id + '\'' +
+                ", lat='" + lat + '\'' +
                 ", lng='" + lng + '\'' +
                 ", imgUrl='" + imgUrl + '\'' +
                 ", specieName='" + specieName + '\'' +
@@ -125,6 +126,19 @@ public class Photo implements Parcelable {
                 ", classification='" + classification + '\'' +
                 ", createdAt='" + createdAt + '\'' +
                 '}';
+    }
+
+    protected Photo(Parcel in) {
+        id = in.readString();
+        lat = in.readString();
+        lng = in.readString();
+        imgUrl = in.readString();
+        specieName = in.readString();
+        evaluatedBy = in.readString();
+        ownerId = in.readString();
+        ownerName = in.readString();
+        classification = in.readString();
+        createdAt = in.readString();
     }
 
     public static final Creator<Photo> CREATOR = new Creator<Photo>() {
@@ -146,6 +160,7 @@ public class Photo implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeString(id);
         parcel.writeString(lat);
         parcel.writeString(lng);
         parcel.writeString(imgUrl);

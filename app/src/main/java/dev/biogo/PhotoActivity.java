@@ -14,28 +14,50 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.squareup.picasso.Picasso;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import dev.biogo.Enums.ClassificationEnum;
 import dev.biogo.Models.Photo;
 
 public class PhotoActivity extends AppCompatActivity implements View.OnClickListener {
     private static final String TAG = "PhotoActivity";
+    private FirebaseUser firebaseUser;
+    private Photo photo;
     private Button evaluateBtn;
     private MaterialAlertDialogBuilder dialogBuilder;
-    private static final CharSequence[] singleItems = {ClassificationEnum.VALID.toString(), ClassificationEnum.NOT_VALID.toString()};
-    private int checkedItem = 1;
+    private static final ClassificationEnum[] classificationEnumArray =  ClassificationEnum.values();
+    private static final CharSequence[] singleItems = new CharSequence[ClassificationEnum.values().length];
+    private int checkedItem = singleItems.length - 2;
+    private DatabaseReference photoRef;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_photo);
 
+        firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+        photoRef = FirebaseDatabase.getInstance("https://biogo-54daa-default-rtdb.europe-west1.firebasedatabase.app/")
+                .getReference().child("images");
+
         Intent i = getIntent();
-        Photo photo = (Photo) i.getParcelableExtra("photoData");
+        photo = (Photo) i.getParcelableExtra("photoData");
+
+        //Fill singleItems with ClassificationEnums
+        for (int e = 0; e < classificationEnumArray.length; e++){
+            singleItems[e] = classificationEnumArray[e].toString();
+
+        }
+
+
 
         //dynamically inflate photo activity
-
         ImageView photo_imgView = findViewById(R.id.photo_imgView);
         Picasso.get().load(Uri.parse(photo.getImgUrl())).into(photo_imgView);
 
@@ -75,11 +97,18 @@ public class PhotoActivity extends AppCompatActivity implements View.OnClickList
                         })
                         .setPositiveButton(getResources().getText(R.string.evaluation_dialog_save), (dialogInterface, i)->{
                             dialogInterface.dismiss();
-                            Log.d(TAG, "onClick: "+checkedItem);
+                            Log.d(TAG, "onClick: "+ClassificationEnum.valueOf((String) singleItems[checkedItem]).getValue());
                             //TODO: send result to database, hide btn  and update user xp
+                            //TODO: update photoActivity UI
+
+
+                            Map<String, Object> update = new HashMap<>();
+                            update.put("classification", singleItems[checkedItem]);
+                            update.put("evaluateBy", firebaseUser.getDisplayName());
+                            photoRef.child(photo.getId()).updateChildren(update);
 
                         })
-                        .setSingleChoiceItems(singleItems, 1, (dialogInterface, i) -> checkedItem =i);
+                        .setSingleChoiceItems(singleItems, checkedItem,( dialogInterface,  i)->checkedItem=i);
 
                 dialogBuilder.show();
 

@@ -48,19 +48,20 @@ public class RankingActivity extends AppCompatActivity implements AdapterView.On
         rankingListView.setAdapter(rankingListAdapter);
 
 
-        Query usersRef = mDatabase.child("users").orderByChild("xp");
-        DatabaseReference userRankingRef = mDatabase.child("users").child(firebaseUser.getUid());
-        usersRef.addValueEventListener(new ValueEventListener() {
+        Query usersQuery = mDatabase.child("users").orderByChild("xp");
+        DatabaseReference userRef = mDatabase.child("users");
+        usersQuery.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 int counter = (int) dataSnapshot.getChildrenCount();
                 rankingList.clear();
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                     //You can remove the current auth user
+                    //Log.d(TAG, "onDataChange: "+snapshot.getKey());
                     User user = snapshot.getValue(User.class);
-                    if (user.getProfileImgUri().equals(firebaseUser.getPhotoUrl().toString())){
-                        userRankingRef.child("ranking").setValue(counter);
-                    }
+                    user.setUserId(snapshot.getKey());
+                    userRef.child(user.getUserId()).child("ranking").setValue(counter);
+                    //Update UI
                     user.setRanking(counter);
                     rankingList.add(user);
                     counter--;

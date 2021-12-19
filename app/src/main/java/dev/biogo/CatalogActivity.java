@@ -63,6 +63,7 @@ public class CatalogActivity extends AppCompatActivity implements CatalogAdapter
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                     Photo photo = snapshot.getValue(Photo.class);
+                    photo.setId(snapshot.getKey());
                     photosList.add(photo);
                 }
                 catalogListAdapter.notifyDataSetChanged();

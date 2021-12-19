@@ -98,7 +98,7 @@ public class PhotoActivity extends AppCompatActivity implements View.OnClickList
                         .setPositiveButton(getResources().getText(R.string.evaluation_dialog_save), (dialogInterface, i)->{
                             dialogInterface.dismiss();
                             Log.d(TAG, "onClick: "+ClassificationEnum.valueOf((String) singleItems[checkedItem]).getValue());
-                            //TODO: send result to database, hide btn  and update user xp
+                            //TODO: hide btn  and update user xp
                             //TODO: update photoActivity UI
 
 

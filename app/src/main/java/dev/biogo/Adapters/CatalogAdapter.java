@@ -22,17 +22,21 @@ public class CatalogAdapter extends RecyclerView.Adapter<CatalogAdapter.CatalogV
 
     Context context;
     ArrayList<Photo> photos;
+    private OnItemListener mOnItemListener;
 
-    public CatalogAdapter(Context context, ArrayList<Photo> photos) {
+    public CatalogAdapter(Context context, ArrayList<Photo> photos, OnItemListener mOnItemListener) {
         this.context = context;
         this.photos = photos;
+        this.mOnItemListener = mOnItemListener;
     }
+
+
 
     @NonNull
     @Override
     public CatalogViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(context).inflate(R.layout.catalog_list_item, parent, false);
-        return new CatalogViewHolder(view);
+        return new CatalogViewHolder(view, mOnItemListener);
     }
 
     @Override
@@ -48,17 +52,32 @@ public class CatalogAdapter extends RecyclerView.Adapter<CatalogAdapter.CatalogV
         return photos.size();
     }
 
-    public class CatalogViewHolder extends RecyclerView.ViewHolder {
+
+    public class CatalogViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener  {
+        OnItemListener onItemListener;
         TextView specieName, classification;
         ImageView image;
 
 
-        public CatalogViewHolder(@NonNull View itemView) {
+        public CatalogViewHolder(@NonNull View itemView, OnItemListener onItemListener) {
             super(itemView);
 
             specieName = itemView.findViewById(R.id.catalogListView_specieName);
             classification = itemView.findViewById(R.id.catalogListView_classification);
             image = itemView.findViewById(R.id.catalogListView_image);
+            this.onItemListener = onItemListener;
+
+            itemView.setOnClickListener(this);
         }
+
+        @Override
+        public void onClick(View view) {
+            onItemListener.OnItemClick(getAdapterPosition());
+
+        }
+    }
+
+    public interface OnItemListener{
+         void OnItemClick(int position);
     }
 }

@@ -8,9 +8,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -28,12 +25,14 @@ import java.util.ArrayList;
 import dev.biogo.Adapters.CatalogAdapter;
 import dev.biogo.Models.Photo;
 
-public class CatalogActivity extends AppCompatActivity implements AdapterView.OnItemClickListener {
+public class CatalogActivity extends AppCompatActivity implements CatalogAdapter.OnItemListener {
     private static final String TAG = "CatalogActivity";
     private DatabaseReference mDataBase;
     private RecyclerView catalogRView;
     private TextView catalogOwner;
     private FirebaseUser firebaseUser;
+    private ArrayList<Photo> photosList;
+    private CatalogAdapter catalogListAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,17 +44,16 @@ public class CatalogActivity extends AppCompatActivity implements AdapterView.On
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
 
         catalogOwner = findViewById(R.id.catalogOwner);
-        catalogOwner.setText(firebaseUser.getDisplayName()+ "'s catalog");
-
+        catalogOwner.setText(firebaseUser.getDisplayName() + "'s catalog");
 
 
         catalogRView = findViewById(R.id.catalogRView);
         catalogRView.setHasFixedSize(true);
         catalogRView.setLayoutManager(new LinearLayoutManager(this));
 
-        ArrayList<Photo> photosList = new ArrayList<>();
+        photosList = new ArrayList<>();
 
-        CatalogAdapter catalogListAdapter = new CatalogAdapter(this,  photosList);
+        catalogListAdapter = new CatalogAdapter(this, photosList, this);
         catalogRView.setAdapter(catalogListAdapter);
 
         Query imagesQuery = mDataBase.child("images").orderByChild("ownerId").equalTo(firebaseUser.getUid());
@@ -79,13 +77,16 @@ public class CatalogActivity extends AppCompatActivity implements AdapterView.On
 
     }
 
+
     @Override
-    public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-        Photo photo = (Photo) adapterView.getItemAtPosition(i);
+    public void OnItemClick(int position) {
+
+        Photo photo = photosList.get(position);
         Toast.makeText(this, photo.getSpecieName(), Toast.LENGTH_LONG).show();
 
         Intent photoIntent = new Intent(this, PhotoActivity.class);
         photoIntent.putExtra("photoData", photo);
         startActivity(photoIntent);
+
     }
 }

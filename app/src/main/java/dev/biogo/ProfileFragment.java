@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -24,6 +25,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
+import dev.biogo.Enums.RoleEnum;
 import dev.biogo.Models.User;
 
 public class ProfileFragment extends Fragment implements View.OnClickListener {
@@ -63,6 +65,10 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
         Button seeRankingBtn = view.findViewById(R.id.seeRanking);
         seeRankingBtn.setOnClickListener(this);
 
+        //Pending List button
+        Button seePendingBtn = view.findViewById(R.id.seePending);
+        seePendingBtn.setOnClickListener(this);
+
         //User data
         ImageView currentUserProfilePic = view.findViewById(R.id.currentUserProfilePic);
         TextView currentUserName = view.findViewById(R.id.currentUserName);
@@ -82,6 +88,9 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
                 currentUserXp.setText(user.getXp() + " XP");
                 currentUserRanking.setText(String.valueOf(user.getRanking()));
                 currentUserNSpecies.setText(String.valueOf(user.getSpecies()));
+                if (user.getRole().equals(RoleEnum.MODERATOR.toString())){
+                    seePendingBtn.setVisibility(View.VISIBLE);
+                }
 
             }
 
@@ -104,6 +113,11 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
             case R.id.seeRanking:
                 Intent rankingIntent = new Intent(getActivity(), RankingActivity.class);
                 startActivity(rankingIntent);
+                break;
+            case R.id.seePending:
+                Toast.makeText(getContext(), "Pending", Toast.LENGTH_LONG).show();
+                Intent pendingIntent = new Intent(getActivity(), PendingActivity.class);
+                startActivity(pendingIntent);
                 break;
 
 

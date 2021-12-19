@@ -9,4 +9,10 @@
     <string name="ranking_Activity">Ranking</string>
     <string name="settings_Activity">Settings</string>
     <string name="photo_Activity">Photo</string>
+    <string name="pending_list">Pending List</string>
+    <string name="pending_Activity"> Pending</string>
+    <string name="photo_evaluate">Evaluate </string>
+    <string name="evaluation_dialog_title">Evaluate capture</string>
+    <string name="evaluation_dialog_save">Save </string>
+    <string name="evaluation_dialog_cancel">Cancel</string>
 </resources>

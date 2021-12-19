@@ -2,18 +2,29 @@ package dev.biogo;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.squareup.picasso.Picasso;
 
+import dev.biogo.Enums.ClassificationEnum;
 import dev.biogo.Models.Photo;
 
-public class PhotoActivity extends AppCompatActivity {
+public class PhotoActivity extends AppCompatActivity implements View.OnClickListener {
     private static final String TAG = "PhotoActivity";
+    private Button evaluateBtn;
+    private MaterialAlertDialogBuilder dialogBuilder;
+    private static final CharSequence[] singleItems = {ClassificationEnum.VALID.toString(), ClassificationEnum.NOT_VALID.toString()};
+    private int checkedItem = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +54,37 @@ public class PhotoActivity extends AppCompatActivity {
         TextView photo_createdAt = findViewById(R.id.photo_createdAt);
         photo_createdAt.append(photo.getCreatedAt());
 
+
+        //TODO: hide btn if user is the owner or user is not a moderator
+        //Evaluation
+        evaluateBtn = findViewById(R.id.evaluateBtn);
+        evaluateBtn.setOnClickListener(this);
+
+
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()){
+            case R.id.evaluateBtn:
+
+                dialogBuilder = new MaterialAlertDialogBuilder(this)
+                        .setTitle(getResources().getText(R.string.evaluation_dialog_title))
+                        .setNeutralButton(getResources().getText(R.string.evaluation_dialog_cancel), (dialogInterface, i) -> {
+                            dialogInterface.dismiss();
+                        })
+                        .setPositiveButton(getResources().getText(R.string.evaluation_dialog_save), (dialogInterface, i)->{
+                            dialogInterface.dismiss();
+                            Log.d(TAG, "onClick: "+checkedItem);
+                            //TODO: send result to database, hide btn  and update user xp
+
+                        })
+                        .setSingleChoiceItems(singleItems, 1, (dialogInterface, i) -> checkedItem =i);
+
+                dialogBuilder.show();
+
+                break;
+        }
 
     }
 }

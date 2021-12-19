@@ -103,6 +103,7 @@
                         android:textStyle="bold" />
 
                 </androidx.appcompat.widget.LinearLayoutCompat>
+
                 <androidx.appcompat.widget.LinearLayoutCompat
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -177,6 +178,16 @@
                     android:layout_height="wrap_content"
                     android:text="@string/ranking_Activity"
                     android:textColor="@color/pokemon_yellow"
+                    app:strokeColor="@color/pokemon_yellow" />
+
+                <Button
+                    android:id="@+id/seePending"
+                    style="?attr/materialButtonOutlinedStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/pending_list"
+                    android:textColor="@color/pokemon_yellow"
+                    android:visibility="gone"
                     app:strokeColor="@color/pokemon_yellow" />
 
 

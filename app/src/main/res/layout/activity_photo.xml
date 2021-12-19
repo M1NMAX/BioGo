@@ -100,6 +100,19 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/photo_location" />
 
+    <Button
+        android:id="@+id/evaluateBtn"
+        style="?attr/materialButtonOutlinedStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="@string/photo_evaluate"
+
+        android:textColor="@color/pokemon_yellow"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/photo_createdAt"
+        app:strokeColor="@color/pokemon_yellow" />
 
 
     <!--<com.google.android.gms.maps.MapView

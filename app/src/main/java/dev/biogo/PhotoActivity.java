@@ -18,6 +18,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ServerValue;
 import com.squareup.picasso.Picasso;
 
 import java.util.HashMap;
@@ -35,7 +36,9 @@ public class PhotoActivity extends AppCompatActivity implements View.OnClickList
     private static final ClassificationEnum[] classificationEnumArray =  ClassificationEnum.values();
     private static final CharSequence[] singleItems = new CharSequence[ClassificationEnum.values().length];
     private int checkedItem = singleItems.length - 2;
+    private DatabaseReference mDatabase;
     private DatabaseReference photoRef;
+    private DatabaseReference ownerRef;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,8 +46,12 @@ public class PhotoActivity extends AppCompatActivity implements View.OnClickList
         setContentView(R.layout.activity_photo);
 
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
-        photoRef = FirebaseDatabase.getInstance("https://biogo-54daa-default-rtdb.europe-west1.firebasedatabase.app/")
-                .getReference().child("images");
+        mDatabase = FirebaseDatabase.getInstance("https://biogo-54daa-default-rtdb.europe-west1.firebasedatabase.app/")
+                .getReference();
+
+        photoRef = mDatabase.child("images");
+        ownerRef = mDatabase.child("users");
+
 
         Intent i = getIntent();
         photo = (Photo) i.getParcelableExtra("photoData");
@@ -98,7 +105,7 @@ public class PhotoActivity extends AppCompatActivity implements View.OnClickList
                         .setPositiveButton(getResources().getText(R.string.evaluation_dialog_save), (dialogInterface, i)->{
                             dialogInterface.dismiss();
                             Log.d(TAG, "onClick: "+ClassificationEnum.valueOf((String) singleItems[checkedItem]).getValue());
-                            //TODO: hide btn  and update user xp
+                            //TODO: hide btn
                             //TODO: update photoActivity UI
 
 
@@ -106,6 +113,8 @@ public class PhotoActivity extends AppCompatActivity implements View.OnClickList
                             update.put("classification", singleItems[checkedItem]);
                             update.put("evaluateBy", firebaseUser.getDisplayName());
                             photoRef.child(photo.getId()).updateChildren(update);
+                            int inc =ClassificationEnum.valueOf((String) singleItems[checkedItem]).getValue();
+                            ownerRef.child(photo.getOwnerId()).child("xp").setValue(ServerValue.increment(inc));
 
                         })
                         .setSingleChoiceItems(singleItems, checkedItem,( dialogInterface,  i)->checkedItem=i);

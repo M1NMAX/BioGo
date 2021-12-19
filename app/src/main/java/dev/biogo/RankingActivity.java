@@ -57,7 +57,6 @@ public class RankingActivity extends AppCompatActivity implements AdapterView.On
                 rankingList.clear();
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                     //You can remove the current auth user
-                    //Log.d(TAG, "onDataChange: "+snapshot.getKey());
                     User user = snapshot.getValue(User.class);
                     user.setUserId(snapshot.getKey());
                     userRef.child(user.getUserId()).child("ranking").setValue(counter);

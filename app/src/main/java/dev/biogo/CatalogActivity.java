@@ -8,9 +8,11 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.material.appbar.MaterialToolbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -33,11 +35,21 @@ public class CatalogActivity extends AppCompatActivity implements CatalogAdapter
     private FirebaseUser firebaseUser;
     private ArrayList<Photo> photosList;
     private CatalogAdapter catalogListAdapter;
+    private MaterialToolbar back;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_catalog);
+
+        //back button
+        back = findViewById(R.id.appBarCatalog);
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
 
         mDataBase = FirebaseDatabase.getInstance("https://biogo-54daa-default-rtdb.europe-west1.firebasedatabase.app/")
                 .getReference();
@@ -74,6 +86,7 @@ public class CatalogActivity extends AppCompatActivity implements CatalogAdapter
                 Log.w(TAG, "onCancelled: ", error.toException());
             }
         });
+
 
 
     }

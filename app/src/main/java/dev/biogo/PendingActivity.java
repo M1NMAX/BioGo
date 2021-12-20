@@ -8,7 +8,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -28,8 +27,6 @@ import dev.biogo.Models.Photo;
 
 public class PendingActivity extends AppCompatActivity implements CatalogAdapter.OnItemListener {
     private static final String TAG = "PendingActivity";
-    private DatabaseReference mDataBase;
-    private RecyclerView catalogRView;
     private FirebaseUser firebaseUser;
     private ArrayList<Photo> photosList;
     private CatalogAdapter catalogListAdapter;
@@ -38,13 +35,12 @@ public class PendingActivity extends AppCompatActivity implements CatalogAdapter
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pending);
-        mDataBase = FirebaseDatabase.getInstance("https://biogo-54daa-default-rtdb.europe-west1.firebasedatabase.app/")
+        DatabaseReference mDataBase = FirebaseDatabase.getInstance("https://biogo-54daa-default-rtdb.europe-west1.firebasedatabase.app/")
                 .getReference();
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
 
 
-
-        catalogRView = findViewById(R.id.catalogRView);
+        RecyclerView catalogRView = findViewById(R.id.catalogRView);
         catalogRView.setHasFixedSize(true);
         catalogRView.setLayoutManager(new LinearLayoutManager(this));
 
@@ -62,9 +58,12 @@ public class PendingActivity extends AppCompatActivity implements CatalogAdapter
                 photosList.clear();
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                     Photo photo = snapshot.getValue(Photo.class);
-                    photo.setId(snapshot.getKey());
-                    if(photo.getOwnerId().equals(firebaseUser.getUid()))
-                        photosList.add(photo);
+                    if (photo != null) {
+                        photo.setId(snapshot.getKey());
+
+                        if (photo.getOwnerId().equals(firebaseUser.getUid()))
+                            photosList.add(photo);
+                    }
                 }
                 catalogListAdapter.notifyDataSetChanged();
             }

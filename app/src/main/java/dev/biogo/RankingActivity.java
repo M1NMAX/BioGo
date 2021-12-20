@@ -11,6 +11,7 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.google.android.material.appbar.MaterialToolbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -32,12 +33,23 @@ public class RankingActivity extends AppCompatActivity implements AdapterView.On
     private DatabaseReference mDatabase;
     private FirebaseUser firebaseUser;
     ListView rankingListView;
-
+    private MaterialToolbar back;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ranking);
+
+        //back button
+        back = findViewById(R.id.appBarRanking);
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
+
+
         mDatabase = FirebaseDatabase.getInstance("https://biogo-54daa-default-rtdb.europe-west1.firebasedatabase.app/")
                 .getReference();
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser();

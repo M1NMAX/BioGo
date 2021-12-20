@@ -12,7 +12,7 @@
         tools:ignore="MissingConstraints">
 
         <com.google.android.material.appbar.MaterialToolbar
-            android:id="@+id/appBarCatalog"
+            android:id="@+id/appBarRanking"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:title="@string/ranking_Activity"

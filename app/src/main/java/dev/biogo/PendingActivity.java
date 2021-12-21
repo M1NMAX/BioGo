@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.google.android.material.appbar.MaterialToolbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -35,19 +36,25 @@ public class PendingActivity extends AppCompatActivity implements CatalogAdapter
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pending);
+
+
+        //back button
+        MaterialToolbar back = findViewById(R.id.appBarPending);
+        back.setOnClickListener((view) -> finish());
+
         DatabaseReference mDataBase = FirebaseDatabase.getInstance("https://biogo-54daa-default-rtdb.europe-west1.firebasedatabase.app/")
                 .getReference();
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
 
 
-        RecyclerView catalogRView = findViewById(R.id.catalogRView);
-        catalogRView.setHasFixedSize(true);
-        catalogRView.setLayoutManager(new LinearLayoutManager(this));
+        RecyclerView pendingRView = findViewById(R.id.pendingRView);
+        pendingRView.setHasFixedSize(true);
+        pendingRView.setLayoutManager(new LinearLayoutManager(this));
 
         photosList = new ArrayList<>();
 
         catalogListAdapter = new CatalogAdapter(this, photosList, this);
-        catalogRView.setAdapter(catalogListAdapter);
+        pendingRView.setAdapter(catalogListAdapter);
 
         Query imagesQuery = mDataBase.child("images").orderByChild("classification").equalTo(ClassificationEnum.PENDING.toString());
 
@@ -80,13 +87,9 @@ public class PendingActivity extends AppCompatActivity implements CatalogAdapter
 
     @Override
     public void OnItemClick(int position) {
-
         Photo photo = photosList.get(position);
-        Toast.makeText(this, photo.getSpecieName(), Toast.LENGTH_LONG).show();
-
         Intent photoIntent = new Intent(this, PhotoActivity.class);
         photoIntent.putExtra("photoData", photo);
         startActivity(photoIntent);
-
     }
 }

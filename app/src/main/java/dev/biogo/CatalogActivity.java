@@ -94,10 +94,7 @@ public class CatalogActivity extends AppCompatActivity implements CatalogAdapter
 
     @Override
     public void OnItemClick(int position) {
-
         Photo photo = photosList.get(position);
-        Toast.makeText(this, photo.getSpecieName(), Toast.LENGTH_LONG).show();
-
         Intent photoIntent = new Intent(this, PhotoActivity.class);
         photoIntent.putExtra("photoData", photo);
         startActivity(photoIntent);

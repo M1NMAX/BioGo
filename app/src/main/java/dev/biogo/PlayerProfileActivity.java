@@ -13,10 +13,10 @@ import com.squareup.picasso.Picasso;
 
 import dev.biogo.Models.User;
 
-public class PlayerProfileActivity extends AppCompatActivity {
+public class PlayerProfileActivity extends AppCompatActivity{
 
 
-    private static final String TAG = "PlayerProfileActivity";
+    //private static final String TAG = "PlayerProfileActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,7 +24,7 @@ public class PlayerProfileActivity extends AppCompatActivity {
         setContentView(R.layout.activity_player_profile);
 
         Intent i = getIntent();
-        User otherUser = (User) i.getParcelableExtra("userData");
+        User otherUser =  i.getParcelableExtra("userData");
 
 
         //dynamically inflate other Player  profile
@@ -44,9 +44,19 @@ public class PlayerProfileActivity extends AppCompatActivity {
         TextView otherPlayerNSpecies = findViewById(R.id.otherPlayerNSpecies);
         otherPlayerNSpecies.setText(String.valueOf(otherUser.getSpecies()));
 
-        Button seeOtherCatalogBtn = findViewById(R.id.seeOtherPlayerCatalogBtn);
-        seeOtherCatalogBtn.setText("See " + otherUser.getUsername() + "'s catalog");
+        Button seeOtherPlayerCatalogBtn = findViewById(R.id.seeOtherPlayerCatalogBtn);
+        seeOtherPlayerCatalogBtn.setText("See " + otherUser.getUsername() + "'s catalog");
+
+        seeOtherPlayerCatalogBtn.setOnClickListener(view -> {
+            Intent otherPlayerCatalogIntent = new Intent(PlayerProfileActivity.this, CatalogActivity.class);
+            otherPlayerCatalogIntent.putExtra("otherUserData", otherUser);
+            startActivity(otherPlayerCatalogIntent);
+
+        });
+
 
 
     }
+
+
 }

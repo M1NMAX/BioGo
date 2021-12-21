@@ -8,9 +8,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.firebase.auth.FirebaseAuth;
@@ -26,16 +24,12 @@ import java.util.ArrayList;
 
 import dev.biogo.Adapters.CatalogAdapter;
 import dev.biogo.Models.Photo;
+import dev.biogo.Models.User;
 
 public class CatalogActivity extends AppCompatActivity implements CatalogAdapter.OnItemListener {
     private static final String TAG = "CatalogActivity";
-    private DatabaseReference mDataBase;
-    private RecyclerView catalogRView;
-    private TextView catalogOwner;
-    private FirebaseUser firebaseUser;
     private ArrayList<Photo> photosList;
     private CatalogAdapter catalogListAdapter;
-    private MaterialToolbar back;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,23 +37,32 @@ public class CatalogActivity extends AppCompatActivity implements CatalogAdapter
         setContentView(R.layout.activity_catalog);
 
         //back button
-        back = findViewById(R.id.appBarCatalog);
-        back.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                finish();
-            }
-        });
+        MaterialToolbar back = findViewById(R.id.appBarCatalog);
+        back.setOnClickListener((view)-> finish());
 
-        mDataBase = FirebaseDatabase.getInstance("https://biogo-54daa-default-rtdb.europe-west1.firebasedatabase.app/")
+        String username, userId;
+
+
+        Intent i = getIntent();
+        if (i.hasExtra("otherUserData")) {
+            User otherUser = i.getParcelableExtra("otherUserData");
+            username = otherUser.getUsername();
+            userId = otherUser.getUserId();
+        }else {
+            FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+            username = firebaseUser != null ? firebaseUser.getDisplayName() : null;
+            userId = firebaseUser != null ? firebaseUser.getUid() : null;
+
+        }
+        DatabaseReference mDataBase = FirebaseDatabase.getInstance("https://biogo-54daa-default-rtdb.europe-west1.firebasedatabase.app/")
                 .getReference();
-        firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
-
-        catalogOwner = findViewById(R.id.catalogOwner);
-        catalogOwner.setText(firebaseUser.getDisplayName() + "'s catalog");
 
 
-        catalogRView = findViewById(R.id.catalogRView);
+        TextView catalogOwner = findViewById(R.id.catalogOwner);
+        catalogOwner.setText(username + "'s catalog");
+
+
+        RecyclerView catalogRView = findViewById(R.id.catalogRView);
         catalogRView.setHasFixedSize(true);
         catalogRView.setLayoutManager(new LinearLayoutManager(this));
 
@@ -68,15 +71,17 @@ public class CatalogActivity extends AppCompatActivity implements CatalogAdapter
         catalogListAdapter = new CatalogAdapter(this, photosList, this);
         catalogRView.setAdapter(catalogListAdapter);
 
-        Query imagesQuery = mDataBase.child("images").orderByChild("ownerId").equalTo(firebaseUser.getUid());
+        Query imagesQuery = mDataBase.child("images").orderByChild("ownerId").equalTo(userId);
 
         imagesQuery.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                     Photo photo = snapshot.getValue(Photo.class);
-                    photo.setId(snapshot.getKey());
-                    photosList.add(photo);
+                    if(photo != null) {
+                        photo.setId(snapshot.getKey());
+                        photosList.add(photo);
+                    }
                 }
                 catalogListAdapter.notifyDataSetChanged();
             }

@@ -9,7 +9,6 @@ import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.firebase.auth.FirebaseAuth;
@@ -42,12 +41,7 @@ public class RankingActivity extends AppCompatActivity implements AdapterView.On
 
         //back button
         back = findViewById(R.id.appBarRanking);
-        back.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                finish();
-            }
-        });
+        back.setOnClickListener(view -> finish());
 
 
         mDatabase = FirebaseDatabase.getInstance("https://biogo-54daa-default-rtdb.europe-west1.firebasedatabase.app/")
@@ -70,12 +64,15 @@ public class RankingActivity extends AppCompatActivity implements AdapterView.On
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                     //You can remove the current auth user
                     User user = snapshot.getValue(User.class);
-                    user.setUserId(snapshot.getKey());
-                    userRef.child(user.getUserId()).child("ranking").setValue(counter);
-                    //Update UI
-                    user.setRanking(counter);
-                    rankingList.add(user);
-                    counter--;
+                    if(user != null) {
+                        user.setUserId(snapshot.getKey());
+                        userRef.child(user.getUserId()).child("ranking").setValue(counter);
+                        //Update UI
+                        user.setRanking(counter);
+                        rankingList.add(user);
+                        counter--;
+                    }
+
                 }
                 Collections.sort(rankingList, new Comparator<User>() {
                     @Override
@@ -98,12 +95,8 @@ public class RankingActivity extends AppCompatActivity implements AdapterView.On
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
         User user = (User) adapterView.getItemAtPosition(i);
-
-        Toast.makeText(this, user.getUsername() + " profile", Toast.LENGTH_LONG).show();
-
         Intent playerProfileIntent = new Intent(this, PlayerProfileActivity.class);
         playerProfileIntent.putExtra("userData", user);
-
         startActivity(playerProfileIntent);
     }
 }

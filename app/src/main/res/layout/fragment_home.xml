@@ -1,7 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-
-
     <androidx.constraintlayout.widget.ConstraintLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
@@ -10,32 +7,31 @@
         android:layout_height="wrap_content"
         tools:context=".HomePage">
 
-        <ImageView
-            android:id="@+id/userAvatar"
-            android:layout_width="46dp"
-            android:layout_height="46dp"
-            android:layout_marginTop="44dp"
+    <ImageView
+        android:id="@+id/userAvatar"
+        android:layout_width="46dp"
+        android:layout_height="46dp"
+        android:layout_marginTop="32dp"
 
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.098"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.085"
-            app:srcCompat="@drawable/avatar_user" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.098"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/avatar_user" />
 
-        <TextView
-            android:id="@+id/textView"
-            android:layout_width="270dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginBottom="16dp"
-            android:layout_weight="1"
-            android:text="Recently added"
-            android:textSize="26sp"
-            app:layout_constraintBottom_toTopOf="@+id/linearLayout"
-            app:layout_constraintStart_toStartOf="parent" />
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="270dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="32dp"
+        android:layout_weight="1"
+        android:text="Recently added"
+        android:textSize="26sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/username" />
 
-        <TextView
+    <TextView
             android:id="@+id/textView2"
             android:layout_width="216dp"
             android:layout_height="34dp"
@@ -47,79 +43,30 @@
             app:layout_constraintStart_toEndOf="@+id/userAvatar"
             tools:ignore="MissingConstraints" />
 
-        <LinearLayout
-            android:id="@+id/linearLayout"
-            android:layout_width="match_parent"
-            android:layout_height="215dp"
-            android:layout_marginTop="180dp"
-            android:gravity="center"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.402">
 
+    <TextView
+        android:id="@+id/username"
+        android:layout_width="216dp"
+        android:layout_height="34dp"
+        android:layout_marginTop="48dp"
+        android:text="Luis Silva"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.247"
+        app:layout_constraintStart_toEndOf="@+id/userAvatar"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="MissingConstraints" />
 
-            <androidx.cardview.widget.CardView
-                android:layout_width="150dp"
-                android:layout_height="200dp"
-                android:layout_margin="20dp"
-                android:layout_marginLeft="20dp"
-                android:gravity="center"
-                app:cardCornerRadius="10dp">
-
-                <ImageView
-                    android:id="@+id/playerProfileView1"
-                    android:layout_width="match_parent"
-                    android:layout_height="150dp"
-                    app:srcCompat="@drawable/img_cat" />
-
-
-            </androidx.cardview.widget.CardView>
-
-            <androidx.cardview.widget.CardView
-                android:layout_width="150dp"
-                android:layout_height="200dp"
-                android:layout_margin="20dp"
-                android:layout_marginLeft="20dp"
-                app:cardCornerRadius="10dp">
-
-                <ImageView
-                    android:id="@+id/imageView7"
-                    android:layout_width="match_parent"
-                    android:layout_height="150dp"
-                    app:srcCompat="@drawable/img_deer" />
-
-
-            </androidx.cardview.widget.CardView>
-
-
-        </LinearLayout>
-
-
-        <TextView
-            android:id="@+id/username"
-            android:layout_width="216dp"
-            android:layout_height="34dp"
-            android:layout_marginTop="68dp"
-            android:text="Luis Silva"
-            android:textSize="20sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.247"
-            app:layout_constraintStart_toEndOf="@+id/userAvatar"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:ignore="MissingConstraints" />
-
-        <TextView
-            android:id="@+id/textView4"
-            android:layout_width="263dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="24dp"
-            android:text="Top players this week"
-            android:textSize="26sp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
+    <TextView
+        android:id="@+id/textView4"
+        android:layout_width="263dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:text="Top players this week"
+        android:textSize="26sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/horizontalScrollView" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -208,36 +155,84 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:srcCompat="@drawable/ic_baseline_add_a_photo_24" />
 
-        <Button
-            android:id="@+id/seeCatalog"
-            style="?attr/materialButtonOutlinedStyle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
-            android:text="More"
-            android:textColor="@color/pokemon_yellow"
-            app:iconTint="@color/dark_black"
-            app:layout_constraintBottom_toTopOf="@+id/linearLayout"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/textView"
-            app:rippleColor="@color/pokemon_yellow"
-            app:strokeColor="@color/pokemon_yellow" />
+    <Button
+        android:id="@+id/seeCatalog"
+        style="?attr/materialButtonOutlinedStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:text="More"
+        android:textColor="@color/pokemon_yellow"
+        app:iconTint="@color/dark_black"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/textView"
+        app:layout_constraintTop_toBottomOf="@+id/username"
+        app:rippleColor="@color/pokemon_yellow"
+        app:strokeColor="@color/pokemon_yellow" />
 
-        <Button
-            android:id="@+id/seeRanking"
-            style="?attr/materialButtonOutlinedStyle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:text="More"
-            android:textColor="@color/pokemon_yellow"
-            app:iconTint="@color/black"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/textView4"
-            app:layout_constraintTop_toBottomOf="@+id/linearLayout"
-            app:rippleColor="@color/pokemon_yellow"
-            app:strokeColor="@color/pokemon_yellow" />
+    <Button
+        android:id="@+id/seeRanking"
+        style="?attr/materialButtonOutlinedStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="More"
+        android:textColor="@color/pokemon_yellow"
+        app:iconTint="@color/black"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/textView4"
+        app:layout_constraintTop_toBottomOf="@+id/horizontalScrollView"
+        app:rippleColor="@color/pokemon_yellow"
+        app:strokeColor="@color/pokemon_yellow" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    <HorizontalScrollView
+        android:id="@+id/horizontalScrollView"
+        android:layout_width="409dp"
+        android:layout_height="244dp"
+        android:layout_marginStart="1dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="1dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:orientation="horizontal" >
+            <ImageView
+                android:id="@+id/imageView3"
+                android:layout_width="100dp"
+                android:layout_height="165dp"
+                android:layout_weight="1"
+                app:srcCompat="@drawable/avatar_user" />
+            <ImageView
+                android:id="@+id/imageView4"
+                android:layout_width="100dp"
+                android:layout_height="165dp"
+                android:layout_weight="1"
+                app:srcCompat="@drawable/avatar_user" />
+            <ImageView
+                android:id="@+id/imageView5"
+                android:layout_width="100dp"
+                android:layout_height="165dp"
+                android:layout_weight="1"
+                app:srcCompat="@drawable/avatar_user" />
+            <ImageView
+                android:id="@+id/imageView6"
+                android:layout_width="100dp"
+                android:layout_height="165dp"
+                android:layout_weight="1"
+                app:srcCompat="@drawable/avatar_user" />
+            <ImageView
+                android:id="@+id/imageView7"
+                android:layout_width="100dp"
+                android:layout_height="165dp"
+                android:layout_weight="1"
+                app:srcCompat="@drawable/avatar_user" />
+
+        </LinearLayout>
+    </HorizontalScrollView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
 
 

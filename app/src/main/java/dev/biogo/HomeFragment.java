@@ -120,7 +120,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         username.setText(name);
         Picasso.get().load(photoUrl).into(userAvatar);
 
-        imageView = view.findViewById(R.id.playerProfileView1);
+        //imageView = view.findViewById(R.id.playerProfileView1);
 
         return view;
     }
@@ -187,7 +187,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                         Bitmap bitmap;
                         try {
                             bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), imageUri);
-                            imageView.setImageBitmap(bitmap);
+                           // imageView.setImageBitmap(bitmap);
                             getCurrentLocation();
                         } catch (IOException e) {
                             Log.w(TAG, "onActivityResult: ", e);

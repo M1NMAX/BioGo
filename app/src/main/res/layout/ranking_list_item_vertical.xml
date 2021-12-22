@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <ImageView
+        android:id="@+id/rankingListView_profilePic"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:padding="16dp"
+        android:src="@drawable/friend" />
+
+    <TextView
+        android:id="@+id/rankingListView_username"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_toEndOf="@id/rankingListView_profilePic"
+        android:maxLines="1"
+        android:paddingTop="16dp"
+        android:paddingEnd="16dp"
+        android:text="Hello"
+        android:textAppearance="?attr/textAppearanceSubtitle1" />
+
+    <TextView
+        android:id="@+id/rankingListView_ranking"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/rankingListView_username"
+        android:layout_gravity="center_vertical"
+        android:layout_toEndOf="@id/rankingListView_profilePic"
+        android:maxLines="2"
+        android:paddingEnd="16dp"
+        android:text="ranking"
+        android:textAppearance="?attr/textAppearanceBody2" />
+
+    <TextView
+        android:id="@+id/rankingListView_xp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/rankingListView_ranking"
+        android:layout_gravity="center_vertical"
+        android:layout_toEndOf="@id/rankingListView_profilePic"
+        android:maxLines="1"
+        android:paddingEnd="16dp"
+        android:text="xp"
+        android:textAppearance="?attr/textAppearanceBody2" />
+
+</LinearLayout>

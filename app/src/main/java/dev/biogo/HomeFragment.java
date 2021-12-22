@@ -136,7 +136,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
 
         ListView rankingListView =  view.findViewById(R.id.homeFragment_rankingListView);
         ArrayList<User> rankingList = new ArrayList<>();
-        RankingListAdapter rankingListAdapter = new RankingListAdapter(getContext(), R.layout.ranking_list_item, rankingList);
+        RankingListAdapter rankingListAdapter = new RankingListAdapter(getContext(), R.layout.ranking_list_item_vertical, rankingList);
         rankingListView.setAdapter(rankingListAdapter);
         Query usersQuery = mDataBase.child("users").orderByChild("ranking").limitToFirst(2);
         usersQuery.addValueEventListener(new ValueEventListener() {

@@ -20,8 +20,10 @@ import dev.biogo.R;
 import dev.biogo.Models.User;
 
 public class RankingListAdapter extends ArrayAdapter<User> {
+    private int resource;
     public RankingListAdapter(@NonNull Context context, int resource, @NonNull List<User> users) {
         super(context, resource, users);
+        this.resource = resource;
     }
 
 
@@ -33,7 +35,7 @@ public class RankingListAdapter extends ArrayAdapter<User> {
 
 
         if (convertView == null) {
-            convertView = LayoutInflater.from(getContext()).inflate(R.layout.ranking_list_item, parent, false);
+            convertView = LayoutInflater.from(getContext()).inflate(this.resource, parent, false);
         }
         ImageView profilePic = convertView.findViewById(R.id.rankingListView_profilePic);
         TextView username = convertView.findViewById(R.id.rankingListView_username);

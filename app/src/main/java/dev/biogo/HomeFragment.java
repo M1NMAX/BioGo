@@ -27,7 +27,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -57,13 +56,14 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.Locale;
 
+import dev.biogo.Adapters.CatalogAdapter;
 import dev.biogo.Adapters.RankingAdapter;
 import dev.biogo.Enums.ClassificationEnum;
 import dev.biogo.Models.Photo;
 import dev.biogo.Models.User;
 
 
-public class HomeFragment extends Fragment implements View.OnClickListener, RankingAdapter.OnItemListener {
+public class HomeFragment extends Fragment implements View.OnClickListener {
 
 
     public HomeFragment() {
@@ -72,6 +72,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener, Rank
 
 
     private static final String TAG = "HomeFragment";
+    ArrayList<User> usersList;
     private boolean isOpen = true;
     private FloatingActionButton fabTakePhoto;
     private FloatingActionButton fabUploadPhoto;
@@ -81,6 +82,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener, Rank
 
     private FusedLocationProviderClient fusedLocationClient;
     private Location currentLocation;
+
 
     ImageView imageView;
 
@@ -116,11 +118,6 @@ public class HomeFragment extends Fragment implements View.OnClickListener, Rank
         ImageView userAvatar = view.findViewById(R.id.userAvatar);
         TextView username = view.findViewById(R.id.username);
 
-        //Catalog button
-        //Button seeCatalogBtn = view.findViewById(R.id.seeCatalog);
-        //seeCatalogBtn.setOnClickListener(this);
-
-
 
         //User data from  firebaseAuth
         user = FirebaseAuth.getInstance().getCurrentUser();
@@ -135,44 +132,85 @@ public class HomeFragment extends Fragment implements View.OnClickListener, Rank
         Button seeRankingBtn = view.findViewById(R.id.seeRanking);
         seeRankingBtn.setOnClickListener(this);
 
-        RecyclerView rankingRecyclerView =  view.findViewById(R.id.homeFragment_rankingRecyclerView);
+        RecyclerView rankingRecyclerView = view.findViewById(R.id.homeFragment_rankingRecyclerView);
         rankingRecyclerView.setHasFixedSize(true);
         rankingRecyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
 
-        ArrayList<User> usersList = new ArrayList<>();
+        usersList = new ArrayList<>();
 
-        RankingAdapter rankingAdapter = new RankingAdapter(getContext(), usersList,R.layout.ranking_list_item_vertical, this);
+        RankingAdapter rankingAdapter = new RankingAdapter(getContext(), usersList, R.layout.ranking_list_item_vertical, position -> {
+            User otherUser = (User) usersList.get(position);
+            Intent playerProfileIntent = new Intent(getActivity(), PlayerProfileActivity.class);
+            playerProfileIntent.putExtra("userData", otherUser);
+            startActivity(playerProfileIntent);
+        });
         rankingRecyclerView.setAdapter(rankingAdapter);
         Query usersQuery = mDataBase.child("users").orderByChild("ranking").limitToFirst(3);
         usersQuery.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                for (DataSnapshot snapshot: dataSnapshot.getChildren()){
-                    User user = snapshot.getValue(User.class);
-                    if (user != null){
-                        user.setUserId(snapshot.getKey());
-                        usersList.add(user);
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                    User userFromRanking = snapshot.getValue(User.class);
+                    if (userFromRanking != null) {
+                        userFromRanking.setUserId(snapshot.getKey());
+                        usersList.add(userFromRanking);
                     }
                 }
                 rankingAdapter.notifyDataSetChanged();
 
             }
-
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-                Log.w(TAG, "onCancelled: ",error.toException() );
+                Log.w(TAG, "onCancelled: ", error.toException());
             }
         });
 
+        //End Ranking Section
+
+        //Recently added  Section
+        Button seeCatalogBtn = view.findViewById(R.id.seeCatalog);
+        seeCatalogBtn.setOnClickListener(this);
+
+        RecyclerView recentlyRecyclerView = view.findViewById(R.id.recentlyRecyclerView);
+        recentlyRecyclerView.setHasFixedSize(true);
+        recentlyRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+
+        ArrayList<Photo> photosList = new ArrayList<>();
+
+        CatalogAdapter catalogAdapter = new CatalogAdapter(getContext(), photosList, position -> {
+            Photo photo = photosList.get(position);
+            Intent photoIntent = new Intent(getActivity(), PhotoActivity.class);
+            photoIntent.putExtra("photoData", photo);
+            startActivity(photoIntent);
+        });
+        recentlyRecyclerView.setAdapter(catalogAdapter);
+
+        Query imagesQuery = mDataBase.child("images").orderByChild("ownerId").equalTo(user.getUid());
+
+        imagesQuery.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                    Photo photo = snapshot.getValue(Photo.class);
+                    if(photo != null) {
+                        photo.setId(snapshot.getKey());
+                        photosList.add(photo);
+                    }
+                }
+                catalogAdapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Log.w(TAG, "onCancelled: ", error.toException());
+            }
+        });
+        //End Recently added  Section
 
 
         return view;
     }
 
-    @Override
-    public void OnItemClick(int position) {
-        Toast.makeText(getContext(), "FIFA", Toast.LENGTH_LONG).show();
-    }
 
     @SuppressLint("NonConstantResourceId")
     @Override
@@ -236,7 +274,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener, Rank
                         Bitmap bitmap;
                         try {
                             bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), imageUri);
-                           // imageView.setImageBitmap(bitmap);
+                            // imageView.setImageBitmap(bitmap);
                             getCurrentLocation();
                         } catch (IOException e) {
                             Log.w(TAG, "onActivityResult: ", e);
@@ -247,7 +285,6 @@ public class HomeFragment extends Fragment implements View.OnClickListener, Rank
     );
 
 
-
     private void openImage() {
         Intent imageIntent = new Intent();
         imageIntent.setType("image/");
@@ -255,7 +292,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener, Rank
         imageActivityResultLauncher.launch(imageIntent);
     }
 
-    private String createImageName(){
+    private String createImageName() {
         return new SimpleDateFormat("yyyy_MM_dd_HH_mm_ss", Locale.UK).format(new Date());
     }
 
@@ -289,8 +326,6 @@ public class HomeFragment extends Fragment implements View.OnClickListener, Rank
     }
 
 
-
-
     private void takePhoto() {
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         if (takePictureIntent.resolveActivity(getActivity().getPackageManager()) != null) {
@@ -320,7 +355,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener, Rank
                     currentLocation = task.getResult();
                     if (currentLocation != null)
                         uploadImage();
-                        Log.d(TAG, "getLocation: " + currentLocation);
+                    Log.d(TAG, "getLocation: " + currentLocation);
 
                 } else {
                     Log.d(TAG, "Get location failed");

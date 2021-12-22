@@ -16,6 +16,7 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Environment;
@@ -56,13 +57,13 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.Locale;
 
-import dev.biogo.Adapters.RankingListAdapter;
+import dev.biogo.Adapters.RankingAdapter;
 import dev.biogo.Enums.ClassificationEnum;
 import dev.biogo.Models.Photo;
 import dev.biogo.Models.User;
 
 
-public class HomeFragment extends Fragment implements View.OnClickListener {
+public class HomeFragment extends Fragment implements View.OnClickListener, RankingAdapter.OnItemListener {
 
 
     public HomeFragment() {
@@ -134,10 +135,14 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         Button seeRankingBtn = view.findViewById(R.id.seeRanking);
         seeRankingBtn.setOnClickListener(this);
 
-        ListView rankingListView =  view.findViewById(R.id.homeFragment_rankingListView);
-        ArrayList<User> rankingList = new ArrayList<>();
-        RankingListAdapter rankingListAdapter = new RankingListAdapter(getContext(), R.layout.ranking_list_item_vertical, rankingList);
-        rankingListView.setAdapter(rankingListAdapter);
+        RecyclerView rankingRecyclerView =  view.findViewById(R.id.homeFragment_rankingRecyclerView);
+        rankingRecyclerView.setHasFixedSize(true);
+        rankingRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+
+        ArrayList<User> usersList = new ArrayList<>();
+
+        RankingAdapter rankingAdapter = new RankingAdapter(getContext(), usersList,R.layout.ranking_list_item_vertical, this);
+        rankingRecyclerView.setAdapter(rankingAdapter);
         Query usersQuery = mDataBase.child("users").orderByChild("ranking").limitToFirst(2);
         usersQuery.addValueEventListener(new ValueEventListener() {
             @Override
@@ -146,10 +151,10 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                     User user = snapshot.getValue(User.class);
                     if (user != null){
                         user.setUserId(snapshot.getKey());
-                        rankingList.add(user);
+                        usersList.add(user);
                     }
                 }
-                rankingListAdapter.notifyDataSetChanged();
+                rankingAdapter.notifyDataSetChanged();
 
             }
 
@@ -319,5 +324,10 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         } catch (SecurityException e) {
             Log.e("Exception %s", e.getMessage(), e);
         }
+    }
+
+    @Override
+    public void OnItemClick(int position) {
+
     }
 }

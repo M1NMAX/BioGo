@@ -259,21 +259,6 @@ public class MainActivity extends AppCompatActivity implements NavigationBarView
         }
 
     }
-    /*private void startLocationUpdates() {
-        checkLocationPermission();
-        if (locationPermissionGranted) {
-            fusedLocationClient.requestLocationUpdates(locationRequest, locationCallback, Looper.getMainLooper());
-
-        }
-
-    }
-
-    private void setLocationRequest(){
-        locationRequest = LocationRequest.create();
-        locationRequest.setInterval(1000);
-        locationRequest.setFastestInterval(500);
-        locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
-    }*/
 
     private void startLocationUpdateFused() {
         checkLocationPermission();

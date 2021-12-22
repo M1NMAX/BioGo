@@ -24,6 +24,14 @@ import com.google.firebase.database.ServerValue;
 import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MapStyleOptions;
+import com.google.android.gms.maps.model.MarkerOptions;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -32,7 +40,7 @@ import dev.biogo.Enums.RoleEnum;
 import dev.biogo.Models.Photo;
 import dev.biogo.Models.User;
 
-public class PhotoActivity extends AppCompatActivity implements View.OnClickListener {
+public class PhotoActivity extends AppCompatActivity implements View.OnClickListener, OnMapReadyCallback  {
     private static final String TAG = "PhotoActivity";
     private FirebaseUser firebaseUser;
     private Photo photo;
@@ -42,6 +50,9 @@ public class PhotoActivity extends AppCompatActivity implements View.OnClickList
     private DatabaseReference photoRef;
     private DatabaseReference ownerRef;
     private DatabaseReference currentUserRef;
+
+    private GoogleMap photoMap;
+    private SupportMapFragment supportMap;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -113,6 +124,11 @@ public class PhotoActivity extends AppCompatActivity implements View.OnClickList
             }
         });
 
+        //Map Instance
+        supportMap = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.google_map_photo);
+        if (supportMap != null && photo.getLat() != null) {
+            supportMap.getMapAsync(this);
+        }
 
     }
 
@@ -149,4 +165,18 @@ public class PhotoActivity extends AppCompatActivity implements View.OnClickList
         }
 
     }
+
+    @Override
+    public void onMapReady(@NonNull GoogleMap googleMap) {
+        this.photoMap = googleMap;
+        photoMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(this, R.raw.map_style_photo));
+        if (!(photo.getLat() == null)) {
+            Double locationLat = Double.parseDouble(photo.getLat());
+            Double locationLng = Double.parseDouble(photo.getLng());
+            LatLng location = new LatLng(locationLat, locationLng);
+            photoMap.addMarker(new MarkerOptions().position(location).title("Location"));
+            photoMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(locationLat, locationLng), 14));
+        }
+    }
+
 }

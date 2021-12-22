@@ -23,7 +23,7 @@
             android:layout_marginTop="100dp"
             android:layout_marginBottom="20dp"
             android:contentDescription="player avatar"
-            app:srcCompat="@drawable/avatar_user"></ImageView>
+            app:srcCompat="@drawable/avatar_user"/>
 
         <TextView
             android:id="@+id/currentUserName"

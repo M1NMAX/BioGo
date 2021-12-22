@@ -137,13 +137,13 @@ public class HomeFragment extends Fragment implements View.OnClickListener, Rank
 
         RecyclerView rankingRecyclerView =  view.findViewById(R.id.homeFragment_rankingRecyclerView);
         rankingRecyclerView.setHasFixedSize(true);
-        rankingRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        rankingRecyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
 
         ArrayList<User> usersList = new ArrayList<>();
 
         RankingAdapter rankingAdapter = new RankingAdapter(getContext(), usersList,R.layout.ranking_list_item_vertical, this);
         rankingRecyclerView.setAdapter(rankingAdapter);
-        Query usersQuery = mDataBase.child("users").orderByChild("ranking").limitToFirst(2);
+        Query usersQuery = mDataBase.child("users").orderByChild("ranking").limitToFirst(3);
         usersQuery.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -167,6 +167,11 @@ public class HomeFragment extends Fragment implements View.OnClickListener, Rank
 
 
         return view;
+    }
+
+    @Override
+    public void OnItemClick(int position) {
+        Toast.makeText(getContext(), "FIFA", Toast.LENGTH_LONG).show();
     }
 
     @SuppressLint("NonConstantResourceId")
@@ -326,8 +331,5 @@ public class HomeFragment extends Fragment implements View.OnClickListener, Rank
         }
     }
 
-    @Override
-    public void OnItemClick(int position) {
 
-    }
 }

@@ -13,8 +13,10 @@ import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.NonNull;
 import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Environment;
 import android.provider.MediaStore;
@@ -24,6 +26,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -36,8 +39,12 @@ import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.squareup.picasso.Picasso;
@@ -45,11 +52,14 @@ import com.squareup.picasso.Picasso;
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.Locale;
 
+import dev.biogo.Adapters.RankingListAdapter;
 import dev.biogo.Enums.ClassificationEnum;
 import dev.biogo.Models.Photo;
+import dev.biogo.Models.User;
 
 
 public class HomeFragment extends Fragment implements View.OnClickListener {
@@ -106,12 +116,10 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         TextView username = view.findViewById(R.id.username);
 
         //Catalog button
-        Button seeCatalogBtn = view.findViewById(R.id.seeCatalog);
-        seeCatalogBtn.setOnClickListener(this);
+        //Button seeCatalogBtn = view.findViewById(R.id.seeCatalog);
+        //seeCatalogBtn.setOnClickListener(this);
 
-        //Ranking button
-        Button seeRankingBtn = view.findViewById(R.id.seeRanking);
-        seeRankingBtn.setOnClickListener(this);
+
 
         //User data from  firebaseAuth
         user = FirebaseAuth.getInstance().getCurrentUser();
@@ -121,6 +129,37 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         Picasso.get().load(photoUrl).into(userAvatar);
 
         //imageView = view.findViewById(R.id.playerProfileView1);
+
+        //Ranking Section
+        Button seeRankingBtn = view.findViewById(R.id.seeRanking);
+        seeRankingBtn.setOnClickListener(this);
+
+        ListView rankingListView =  view.findViewById(R.id.homeFragment_rankingListView);
+        ArrayList<User> rankingList = new ArrayList<>();
+        RankingListAdapter rankingListAdapter = new RankingListAdapter(getContext(), R.layout.ranking_list_item, rankingList);
+        rankingListView.setAdapter(rankingListAdapter);
+        Query usersQuery = mDataBase.child("users").orderByChild("ranking").limitToFirst(2);
+        usersQuery.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for (DataSnapshot snapshot: dataSnapshot.getChildren()){
+                    User user = snapshot.getValue(User.class);
+                    if (user != null){
+                        user.setUserId(snapshot.getKey());
+                        rankingList.add(user);
+                    }
+                }
+                rankingListAdapter.notifyDataSetChanged();
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Log.w(TAG, "onCancelled: ",error.toException() );
+            }
+        });
+
+
 
         return view;
     }

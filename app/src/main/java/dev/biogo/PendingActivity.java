@@ -8,7 +8,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.firebase.auth.FirebaseAuth;
@@ -68,7 +67,7 @@ public class PendingActivity extends AppCompatActivity implements CatalogAdapter
                     if (photo != null) {
                         photo.setId(snapshot.getKey());
 
-                        if (photo.getOwnerId().equals(firebaseUser.getUid()))
+                        if (!photo.getOwnerId().equals(firebaseUser.getUid()))
                             photosList.add(photo);
                     }
                 }

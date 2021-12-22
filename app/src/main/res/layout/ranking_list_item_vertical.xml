@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:paddingRight="10dp">
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/rankingListView_ranking"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:maxLines="1"
+            android:text="#"
+            android:textAlignment="center"
+            android:textAppearance="?attr/textAppearanceBody2" />
+
+        <ImageView
+            android:id="@+id/rankingListView_profilePic"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:padding="16dp"
+            android:src="@drawable/friend" />
+
+        <TextView
+            android:id="@+id/rankingListView_username"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:maxLines="1"
+            android:text="Hello"
+            android:textAlignment="center"
+            android:textAppearance="?attr/textAppearanceSubtitle1" />
+
+
+        <TextView
+            android:id="@+id/rankingListView_xp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:maxLines="1"
+            android:paddingEnd="16dp"
+            android:text="xp"
+            android:textAlignment="center"
+            android:textAppearance="?attr/textAppearanceBody2" />
+    </LinearLayout>
+
+</com.google.android.material.card.MaterialCardView>

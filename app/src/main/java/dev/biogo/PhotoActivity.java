@@ -148,13 +148,17 @@ public class PhotoActivity extends AppCompatActivity implements View.OnClickList
                             dialogInterface.dismiss();
                             //Update photo data in the database
                             String newClassification = (String) singleItems[checkedItem];
-                            Map<String, Object> update = new HashMap<>();
-                            update.put("classification", newClassification);
-                            update.put("evaluateBy", firebaseUser.getDisplayName());
-                            photoRef.child(photo.getId()).updateChildren(update);
-                            //Update owner xp
-                            int incValue = ClassificationEnum.valueOf(newClassification).getValue();
-                            ownerRef.child(photo.getOwnerId()).child("xp").setValue(ServerValue.increment(incValue));
+                            Map<String, Object> photoUpdate = new HashMap<>();
+                            photoUpdate.put("classification", newClassification);
+                            photoUpdate.put("evaluateBy", firebaseUser.getDisplayName());
+                            photoRef.child(photo.getId()).updateChildren(photoUpdate);
+
+                            //Update owner xp and specie number
+                            Map<String, Object> ownerUpdate = new HashMap<>();
+                            int xpIncValue = ClassificationEnum.valueOf(newClassification).getValue();
+                            ownerUpdate.put("xp", ServerValue.increment(xpIncValue));
+                            ownerUpdate.put("species",ServerValue.increment(1));
+                            ownerRef.child(photo.getOwnerId()).updateChildren(ownerUpdate);
 
                         })
                         .setSingleChoiceItems(singleItems, checkedItem, (dialogInterface, i) -> checkedItem = i);

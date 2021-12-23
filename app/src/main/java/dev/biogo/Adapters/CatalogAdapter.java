@@ -20,13 +20,15 @@ import dev.biogo.R;
 
 public class CatalogAdapter extends RecyclerView.Adapter<CatalogAdapter.CatalogViewHolder> {
 
-    Context context;
-    ArrayList<Photo> photos;
+    private Context context;
+    private ArrayList<Photo> photos;
+    private int resource;
     private OnItemListener mOnItemListener;
 
-    public CatalogAdapter(Context context, ArrayList<Photo> photos, OnItemListener mOnItemListener) {
+    public CatalogAdapter(Context context, ArrayList<Photo> photos, int resource,OnItemListener mOnItemListener) {
         this.context = context;
         this.photos = photos;
+        this.resource = resource;
         this.mOnItemListener = mOnItemListener;
     }
 
@@ -35,7 +37,7 @@ public class CatalogAdapter extends RecyclerView.Adapter<CatalogAdapter.CatalogV
     @NonNull
     @Override
     public CatalogViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(context).inflate(R.layout.catalog_list_item, parent, false);
+        View view = LayoutInflater.from(context).inflate(resource, parent, false);
         return new CatalogViewHolder(view, mOnItemListener);
     }
 

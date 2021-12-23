@@ -139,7 +139,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         usersList = new ArrayList<>();
 
         RankingAdapter rankingAdapter = new RankingAdapter(getContext(), usersList, R.layout.ranking_list_item_vertical, position -> {
-            User otherUser = (User) usersList.get(position);
+            User otherUser =  usersList.get(position);
             Intent playerProfileIntent = new Intent(getActivity(), PlayerProfileActivity.class);
             playerProfileIntent.putExtra("userData", otherUser);
             startActivity(playerProfileIntent);
@@ -177,7 +177,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
 
         ArrayList<Photo> photosList = new ArrayList<>();
 
-        CatalogAdapter catalogAdapter = new CatalogAdapter(getContext(), photosList, position -> {
+        CatalogAdapter catalogAdapter = new CatalogAdapter(getContext(), photosList,R.layout.catalog_list_item, position -> {
             Photo photo = photosList.get(position);
             Intent photoIntent = new Intent(getActivity(), PhotoActivity.class);
             photoIntent.putExtra("photoData", photo);

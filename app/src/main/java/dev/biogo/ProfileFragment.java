@@ -14,7 +14,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -37,8 +36,6 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
 
 
     private static final String TAG = "ProfileFragment";
-    private DatabaseReference mDatabase;
-    private FirebaseUser firebaseUser;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -52,9 +49,9 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
         View view = inflater.inflate(R.layout.fragment_profile, container, false);
 
         //Firebase
-        mDatabase = FirebaseDatabase.getInstance("https://biogo-54daa-default-rtdb.europe-west1.firebasedatabase.app/")
+        DatabaseReference mDatabase = FirebaseDatabase.getInstance("https://biogo-54daa-default-rtdb.europe-west1.firebasedatabase.app/")
                 .getReference();
-        firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+        FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
 
 
         //Catalog button
@@ -115,7 +112,6 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
                 startActivity(rankingIntent);
                 break;
             case R.id.seePending:
-                Toast.makeText(getContext(), "Pending", Toast.LENGTH_LONG).show();
                 Intent pendingIntent = new Intent(getActivity(), PendingActivity.class);
                 startActivity(pendingIntent);
                 break;

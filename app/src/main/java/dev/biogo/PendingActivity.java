@@ -52,7 +52,7 @@ public class PendingActivity extends AppCompatActivity implements CatalogAdapter
 
         photosList = new ArrayList<>();
 
-        catalogListAdapter = new CatalogAdapter(this, photosList, this);
+        catalogListAdapter = new CatalogAdapter(this, photosList, R.layout.catalog_list_item,this);
         pendingRView.setAdapter(catalogListAdapter);
 
         Query imagesQuery = mDataBase.child("images").orderByChild("classification").equalTo(ClassificationEnum.PENDING.toString());

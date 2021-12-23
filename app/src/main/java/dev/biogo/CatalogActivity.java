@@ -68,7 +68,7 @@ public class CatalogActivity extends AppCompatActivity implements CatalogAdapter
 
         photosList = new ArrayList<>();
 
-        catalogListAdapter = new CatalogAdapter(this, photosList, this);
+        catalogListAdapter = new CatalogAdapter(this, photosList, R.layout.catalog_list_item,this);
         catalogRView.setAdapter(catalogListAdapter);
 
         Query imagesQuery = mDataBase.child("images").orderByChild("ownerId").equalTo(userId);

@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".HomePage">
+    tools:context=".HomeFragment">
 
     <LinearLayout
         android:id="@+id/linearLayout"
@@ -89,11 +89,11 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="20dp"
-                    android:text="Top players this week"
+                    android:text="Top players"
                     android:textSize="20sp" />
 
                 <Space
-                    android:layout_width="60dp"
+                    android:layout_width="132dp"
                     android:layout_height="match_parent" />
 
                 <Button
@@ -110,7 +110,7 @@
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/homeFragment_rankingRecyclerView"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"

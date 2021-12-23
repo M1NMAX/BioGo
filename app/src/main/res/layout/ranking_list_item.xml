@@ -31,7 +31,7 @@
         android:layout_toEndOf="@id/rankingListView_profilePic"
         android:maxLines="2"
         android:paddingEnd="16dp"
-        android:text="ranking"
+        android:text="Position: "
         android:textAppearance="?attr/textAppearanceBody2" />
 
     <TextView

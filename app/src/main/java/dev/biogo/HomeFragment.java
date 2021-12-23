@@ -53,6 +53,8 @@ import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.Locale;
 
@@ -198,6 +200,12 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                         photosList.add(photo);
                     }
                 }
+                Collections.sort(photosList, Collections.reverseOrder((photo, otherPhoto) -> {
+                    String pattern = "EE MMM dd HH:mm:ss z yyyy";
+                    Date dateOne = DateHelper.convertToDate(photo.getCreatedAt(), pattern);
+                    Date dateTwo = DateHelper.convertToDate(otherPhoto.getCreatedAt(), pattern);
+                    return dateOne.compareTo(dateTwo);
+                }));
                 catalogAdapter.notifyDataSetChanged();
             }
 

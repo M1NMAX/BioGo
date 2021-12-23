@@ -59,4 +59,15 @@ public class DateHelper {
         return startDate;
     }
 
+    public static Date convertToDate(String dateStr, String pattern){
+        SimpleDateFormat sdf = new SimpleDateFormat(pattern, Locale.UK);
+        Date date = null;
+        try {
+             date = sdf.parse(dateStr);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return date;
+    }
+
 }

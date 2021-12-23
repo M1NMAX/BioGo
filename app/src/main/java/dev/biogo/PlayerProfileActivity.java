@@ -9,6 +9,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.google.android.material.appbar.MaterialToolbar;
 import com.squareup.picasso.Picasso;
 
 import dev.biogo.Models.User;
@@ -23,8 +24,13 @@ public class PlayerProfileActivity extends AppCompatActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_player_profile);
 
+        //back button
+        MaterialToolbar back = findViewById(R.id.appBarOtherPlayer);
+        back.setOnClickListener(view -> finish());
+
         Intent i = getIntent();
         User otherUser =  i.getParcelableExtra("userData");
+
 
 
         //dynamically inflate other Player  profile

@@ -59,6 +59,7 @@ import java.util.Locale;
 import dev.biogo.Adapters.CatalogAdapter;
 import dev.biogo.Adapters.RankingAdapter;
 import dev.biogo.Enums.ClassificationEnum;
+import dev.biogo.Helpers.DateHelper;
 import dev.biogo.Models.Photo;
 import dev.biogo.Models.User;
 
@@ -177,7 +178,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
 
         ArrayList<Photo> photosList = new ArrayList<>();
 
-        CatalogAdapter catalogAdapter = new CatalogAdapter(getContext(), photosList,R.layout.catalog_list_item, position -> {
+        CatalogAdapter catalogAdapter = new CatalogAdapter(getContext(), photosList,R.layout.catalog_list_item_horizontal, position -> {
             Photo photo = photosList.get(position);
             Intent photoIntent = new Intent(getActivity(), PhotoActivity.class);
             photoIntent.putExtra("photoData", photo);

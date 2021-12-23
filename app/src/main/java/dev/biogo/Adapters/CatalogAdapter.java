@@ -15,6 +15,7 @@ import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
+import dev.biogo.Helpers.DateHelper;
 import dev.biogo.Models.Photo;
 import dev.biogo.R;
 
@@ -46,6 +47,7 @@ public class CatalogAdapter extends RecyclerView.Adapter<CatalogAdapter.CatalogV
         Photo photo = photos.get(position);
         holder.specieName.append(photo.getSpecieName());
         holder.classification.append(photo.getClassification());
+        holder.date.setText(DateHelper.getTimeAgo(DateHelper.convertToLong(photo.getCreatedAt(), "EE MMM dd HH:mm:ss z yyyy")));
         Picasso.get().load(Uri.parse(photo.getImgUrl())).into(holder.image);
     }
 
@@ -57,7 +59,7 @@ public class CatalogAdapter extends RecyclerView.Adapter<CatalogAdapter.CatalogV
 
     public class CatalogViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener  {
         OnItemListener onItemListener;
-        TextView specieName, classification;
+        TextView specieName, classification, date;
         ImageView image;
 
 
@@ -66,6 +68,7 @@ public class CatalogAdapter extends RecyclerView.Adapter<CatalogAdapter.CatalogV
 
             specieName = itemView.findViewById(R.id.catalogListView_specieName);
             classification = itemView.findViewById(R.id.catalogListView_classification);
+            date = itemView.findViewById(R.id.catalogListView_date);
             image = itemView.findViewById(R.id.catalogListView_image);
             this.onItemListener = onItemListener;
 

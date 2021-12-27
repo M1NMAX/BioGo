@@ -16,4 +16,25 @@
     <string name="evaluation_dialog_title">Evaluate capture</string>
     <string name="evaluation_dialog_save">Save </string>
     <string name="evaluation_dialog_cancel">Cancel</string>
+
+
+<!--    Settings Activity-->
+    <string name="notification">Notifications</string>
+    <string name="camera_feature">Auto camera mode</string>
+    <string name="about">About BioGo</string>
+    <string name="about_text">Lorem Ipsum is simply dummy text of the printing and typesetting industry.
+        Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.
+        It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of
+        Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</string>
+    <string name="app_version">Version: </string>
+    <string name="app_version_status">Beta</string>
+
+
+    <string-array name="Settings_Activity">
+        <item>
+            <string name="x"> hello</string>
+
+        </item>
+    </string-array>
+
 </resources>

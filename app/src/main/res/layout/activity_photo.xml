@@ -104,18 +104,7 @@
                         app:layout_constraintTop_toBottomOf="@+id/photo_ownerName" />
 
 
-                    <TextView
-                        android:id="@+id/photo_location"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="8dp"
-                        android:layout_marginTop="16dp"
-                        android:layout_marginEnd="8dp"
-                        android:text="location: "
-                        android:textSize="20sp"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/photo_classification" />
+
 
                     <TextView
                         android:id="@+id/photo_createdAt"
@@ -155,7 +144,7 @@
                 <fragment
                     android:id="@+id/google_map_photo"
                     android:name="com.google.android.gms.maps.SupportMapFragment"
-                    android:layout_width="380dp"
+                    android:layout_width="match_parent"
                     android:layout_height="200dp" />
             </com.google.android.material.card.MaterialCardView>
 

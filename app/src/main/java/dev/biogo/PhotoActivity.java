@@ -95,8 +95,7 @@ public class PhotoActivity extends AppCompatActivity implements View.OnClickList
         TextView photo_classification = findViewById(R.id.photo_classification);
         photo_classification.append(photo.getClassification());
 
-        TextView photo_location = findViewById(R.id.photo_location);
-        photo_location.append(photo.getLat() + " Lat, " + photo.getLng() + " Lng");
+
 
         TextView photo_createdAt = findViewById(R.id.photo_createdAt);
         photo_createdAt.append(photo.getCreatedAt());

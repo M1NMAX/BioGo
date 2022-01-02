@@ -32,11 +32,15 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
 import dev.biogo.Enums.ClassificationEnum;
 import dev.biogo.Enums.RoleEnum;
+import dev.biogo.Helpers.DateHelper;
 import dev.biogo.Models.Photo;
 import dev.biogo.Models.User;
 
@@ -97,8 +101,12 @@ public class PhotoActivity extends AppCompatActivity implements View.OnClickList
 
 
 
+
+
+        Date date = DateHelper.convertToDate(photo.getCreatedAt(), "EE MMM dd HH:mm:ss z yyyy");
+        String dateFormat= new SimpleDateFormat("dd LLL yyyy HH:mm aaa", Locale.UK).format(date);
         TextView photo_createdAt = findViewById(R.id.photo_createdAt);
-        photo_createdAt.append(photo.getCreatedAt());
+        photo_createdAt.append(dateFormat);
 
 
         Button evaluateBtn = findViewById(R.id.evaluateBtn);

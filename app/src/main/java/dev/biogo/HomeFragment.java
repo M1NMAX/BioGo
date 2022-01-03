@@ -152,11 +152,12 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         usersQuery.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                usersList.clear();
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                    User userFromRanking = snapshot.getValue(User.class);
-                    if (userFromRanking != null) {
-                        userFromRanking.setUserId(snapshot.getKey());
-                        usersList.add(userFromRanking);
+                    User userForRanking = snapshot.getValue(User.class);
+                    if (userForRanking != null) {
+                        userForRanking.setUserId(snapshot.getKey());
+                        usersList.add(userForRanking);
                     }
                 }
                 rankingAdapter.notifyDataSetChanged();

@@ -44,7 +44,7 @@ import dev.biogo.Helpers.DateHelper;
 import dev.biogo.Models.Photo;
 import dev.biogo.Models.User;
 
-public class PhotoActivity extends AppCompatActivity implements View.OnClickListener, OnMapReadyCallback  {
+public class PhotoActivity extends AppCompatActivity implements View.OnClickListener, OnMapReadyCallback {
     private static final String TAG = "PhotoActivity";
     private FirebaseUser firebaseUser;
     private Photo photo;
@@ -94,19 +94,16 @@ public class PhotoActivity extends AppCompatActivity implements View.OnClickList
         photo_specieName.append(photo.getSpecieName());
 
         TextView photo_ownerName = findViewById(R.id.photo_ownerName);
-        photo_ownerName.append(photo.getOwnerName());
+        photo_ownerName.setText(photo.getOwnerName());
 
         TextView photo_classification = findViewById(R.id.photo_classification);
         photo_classification.append(photo.getClassification());
 
 
-
-
-
         Date date = DateHelper.convertToDate(photo.getCreatedAt(), "EE MMM dd HH:mm:ss z yyyy");
-        String dateFormat= new SimpleDateFormat("dd LLL yyyy HH:mm aaa", Locale.UK).format(date);
+        String dateFormat = new SimpleDateFormat("dd LLL yy HH:mm aaa", Locale.UK).format(date);
         TextView photo_createdAt = findViewById(R.id.photo_createdAt);
-        photo_createdAt.append(dateFormat);
+        photo_createdAt.setText(dateFormat);
 
 
         Button evaluateBtn = findViewById(R.id.evaluateBtn);
@@ -164,7 +161,7 @@ public class PhotoActivity extends AppCompatActivity implements View.OnClickList
                             Map<String, Object> ownerUpdate = new HashMap<>();
                             int xpIncValue = ClassificationEnum.valueOf(newClassification).getValue();
                             ownerUpdate.put("xp", ServerValue.increment(xpIncValue));
-                            ownerUpdate.put("species",ServerValue.increment(1));
+                            ownerUpdate.put("species", ServerValue.increment(1));
                             ownerRef.child(photo.getOwnerId()).updateChildren(ownerUpdate);
 
                         })

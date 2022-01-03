@@ -193,6 +193,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         imagesQuery.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                photosList.clear();
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                     Photo photo = snapshot.getValue(Photo.class);
                     if(photo != null) {

@@ -325,6 +325,26 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
 
     }
 
+    private void goToSubmitPhoto() {
+        Intent submitPhotoIntent = new Intent(getActivity(), SubmitPhotoActivity.class);
+        //Convert current Latitude and Longitude to String
+        String lat = String.valueOf(currentLocation.getLatitude());
+        String lng = String.valueOf(currentLocation.getLongitude());
+
+        //Save image data in the database
+        /**Photo photo = new Photo(lat, lng, "URI", "N/A", "N/A",
+         user.getUid(), user.getDisplayName(), ClassificationEnum.PENDING.toString(),
+         new Date().toString());**/
+        submitPhotoIntent.putExtra("lat",lat);
+        submitPhotoIntent.putExtra("lng",lng);
+        submitPhotoIntent.putExtra("userId",user.getUid());
+        submitPhotoIntent.putExtra("userName",user.getDisplayName());
+        submitPhotoIntent.putExtra("classification",ClassificationEnum.PENDING.toString());
+        submitPhotoIntent.putExtra("date",user.getDisplayName());
+
+        startActivity(submitPhotoIntent);
+    }
+
 
     private void takePhoto() {
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
@@ -354,7 +374,8 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                 if (task.isSuccessful()) {
                     currentLocation = task.getResult();
                     if (currentLocation != null)
-                        uploadImage();
+                        //uploadImage();
+                        goToSubmitPhoto();
                     Log.d(TAG, "getLocation: " + currentLocation);
 
                 } else {

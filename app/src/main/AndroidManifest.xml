@@ -23,6 +23,9 @@
         android:theme="@style/Theme.BioGo"
         android:usesCleartextTraffic="true">
         <activity
+            android:name=".SubmitPhotoActivity"
+            android:exported="true" />
+        <activity
             android:name=".PendingActivity"
             android:exported="false" />
 

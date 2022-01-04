@@ -47,7 +47,7 @@ public class DateHelper {
 
     public static long convertToLong(String dateStr, String pattern) {
         long startDate = 0;
-        //pattern = "EE MMM dd HH:mm:ss z yyyy"
+        //pattern = "yyyy-MM-dd|HH:mm"
         try {
             SimpleDateFormat sdf = new SimpleDateFormat(pattern, Locale.UK);
             Date date = sdf.parse(dateStr);

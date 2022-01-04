@@ -59,7 +59,6 @@ public class SubmitPhotoActivity extends AppCompatActivity implements OnMapReady
         photoImage.setImageURI(null);
         photoImage.setImageURI(imageUri);
         //String photoString = intent.getExtras().getString("Photo");
-        Log.d("submitiing", "ON: " + date);
 
         EditText editTextDate = (EditText) findViewById(R.id.photoDate);
         editTextDate.setText(date);
@@ -68,7 +67,8 @@ public class SubmitPhotoActivity extends AppCompatActivity implements OnMapReady
         submitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Log.d("submitiing", "onClick: SUBMITING");
+                EditText specieInput = (EditText) findViewById(R.id.specieInput);
+                EditText dateInput = (EditText) findViewById(R.id.photoDate);
 
                 ProgressDialog pd = new ProgressDialog(SubmitPhotoActivity.this);
                 pd.setMessage("Uploading");
@@ -78,14 +78,11 @@ public class SubmitPhotoActivity extends AppCompatActivity implements OnMapReady
                             .child("image/").child(createImageName());
                     fileRef.putFile(imageUri).addOnCompleteListener(task ->
                             fileRef.getDownloadUrl().addOnSuccessListener(uri -> {
-
-
-
                                 //Save image data in the database
                                 //Not with the info in inputs yet
-                                Photo photo = new Photo(lat, lng, uri.toString(), "N/A", "N/A",
+                                Photo photo = new Photo(lat, lng, uri.toString(), specieInput.getText().toString(), "N/A",
                                         userId, userName, classification,
-                                        date);
+                                        dateInput.getText().toString());
                                 mDataBase.child("images").push().setValue(photo);
 
                                 pd.dismiss();

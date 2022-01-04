@@ -53,6 +53,7 @@ import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
@@ -340,8 +341,13 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         submitPhotoIntent.putExtra("userId",user.getUid());
         submitPhotoIntent.putExtra("userName",user.getDisplayName());
         submitPhotoIntent.putExtra("classification",ClassificationEnum.PENDING.toString());
-        submitPhotoIntent.putExtra("date",user.getDisplayName());
         submitPhotoIntent.putExtra("photo",imageUri);
+
+        Calendar calendar = Calendar.getInstance();
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd|HH:mm");
+        String current = formatter.format(calendar.getTime());
+
+        submitPhotoIntent.putExtra("date",current);
 
         startActivity(submitPhotoIntent);
     }

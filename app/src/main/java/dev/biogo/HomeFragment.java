@@ -341,6 +341,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         submitPhotoIntent.putExtra("userName",user.getDisplayName());
         submitPhotoIntent.putExtra("classification",ClassificationEnum.PENDING.toString());
         submitPhotoIntent.putExtra("date",user.getDisplayName());
+        submitPhotoIntent.putExtra("photo",imageUri);
 
         startActivity(submitPhotoIntent);
     }

@@ -83,7 +83,7 @@ public class SubmitPhotoActivity extends AppCompatActivity implements OnMapReady
 
                                 //Save image data in the database
                                 //Not with the info in inputs yet
-                                Photo photo = new Photo(lat, lng, imageUri.toString(), "N/A", "N/A",
+                                Photo photo = new Photo(lat, lng, uri.toString(), "N/A", "N/A",
                                         userId, userName, classification,
                                         date);
                                 mDataBase.child("images").push().setValue(photo);

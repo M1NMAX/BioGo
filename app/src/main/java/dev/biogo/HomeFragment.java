@@ -348,7 +348,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         String current = formatter.format(calendar.getTime());
 
         submitPhotoIntent.putExtra("date",current);
-
+        Log.d("photoo", "goToSubmitPhoto: yaa");
         startActivity(submitPhotoIntent);
     }
 

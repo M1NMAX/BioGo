@@ -356,7 +356,8 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         submitPhotoIntent.putExtra("photo",imageUri);
 
         Calendar calendar = Calendar.getInstance();
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd|HH:mm");
+        //SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd|HH:mm");
+        SimpleDateFormat formatter = new SimpleDateFormat("EE MMM dd HH:mm:ss z yyyy");
         String current = formatter.format(calendar.getTime());
 
         submitPhotoIntent.putExtra("date",current);

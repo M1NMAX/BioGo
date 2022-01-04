@@ -55,6 +55,8 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
@@ -336,6 +338,32 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
 
     }
 
+    private void goToSubmitPhoto() {
+        Intent submitPhotoIntent = new Intent(getActivity(), SubmitPhotoActivity.class);
+        //Convert current Latitude and Longitude to String
+        String lat = String.valueOf(currentLocation.getLatitude());
+        String lng = String.valueOf(currentLocation.getLongitude());
+
+        //Save image data in the database
+        /**Photo photo = new Photo(lat, lng, "URI", "N/A", "N/A",
+         user.getUid(), user.getDisplayName(), ClassificationEnum.PENDING.toString(),
+         new Date().toString());**/
+        submitPhotoIntent.putExtra("lat",lat);
+        submitPhotoIntent.putExtra("lng",lng);
+        submitPhotoIntent.putExtra("userId",user.getUid());
+        submitPhotoIntent.putExtra("userName",user.getDisplayName());
+        submitPhotoIntent.putExtra("classification",ClassificationEnum.PENDING.toString());
+        submitPhotoIntent.putExtra("photo",imageUri);
+
+        Calendar calendar = Calendar.getInstance();
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd|HH:mm");
+        String current = formatter.format(calendar.getTime());
+
+        submitPhotoIntent.putExtra("date",current);
+        Log.d("photoo", "goToSubmitPhoto: yaa");
+        startActivity(submitPhotoIntent);
+    }
+
 
     private void takePhoto() {
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
@@ -365,7 +393,8 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                 if (task.isSuccessful()) {
                     currentLocation = task.getResult();
                     if (currentLocation != null)
-                        uploadImage();
+                        //uploadImage();
+                        goToSubmitPhoto();
                     Log.d(TAG, "getLocation: " + currentLocation);
 
                 } else {

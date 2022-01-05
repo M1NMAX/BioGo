@@ -47,7 +47,7 @@ public class CatalogAdapter extends RecyclerView.Adapter<CatalogAdapter.CatalogV
         Photo photo = photos.get(position);
         holder.specieName.setText(photo.getSpecieName());
         holder.classification.setText(photo.getClassification());
-        holder.date.setText(DateHelper.getTimeAgo(DateHelper.convertToLong(photo.getCreatedAt(), "EE MMM dd HH:mm:ss z yyyy")));
+        holder.date.setText(DateHelper.getTimeAgo(DateHelper.convertToLong(photo.getCreatedAt(), "yyyy-MM-dd|HH:mm")));
         Picasso.get().load(Uri.parse(photo.getImgUrl())).into(holder.image);
     }
 

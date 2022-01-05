@@ -100,8 +100,8 @@ public class PhotoActivity extends AppCompatActivity implements View.OnClickList
         photo_classification.append(photo.getClassification());
 
 
-        Date date = DateHelper.convertToDate(photo.getCreatedAt(), "EE MMM dd HH:mm:ss z yyyy");
-        String dateFormat = new SimpleDateFormat("dd LLL yy HH:mm aaa", Locale.UK).format(date);
+        Date date = DateHelper.convertToDate(photo.getCreatedAt(), "yyyy-MM-dd|HH:mm");
+        String dateFormat = new SimpleDateFormat("yyyy-MM-dd|HH:mm", Locale.UK).format(date);
         TextView photo_createdAt = findViewById(R.id.photo_createdAt);
         photo_createdAt.setText(dateFormat);
 

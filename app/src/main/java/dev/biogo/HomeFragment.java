@@ -205,7 +205,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                     }
                 }
                 Collections.sort(photosList, Collections.reverseOrder((photo, otherPhoto) -> {
-                    String pattern = "EE MMM dd HH:mm:ss z yyyy";
+                    String pattern = "yyyy-MM-dd|HH:mm";
                     Date dateOne = DateHelper.convertToDate(photo.getCreatedAt(), pattern);
                     Date dateTwo = DateHelper.convertToDate(otherPhoto.getCreatedAt(), pattern);
                     return dateOne.compareTo(dateTwo);
@@ -356,11 +356,11 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         submitPhotoIntent.putExtra("photo",imageUri);
 
         Calendar calendar = Calendar.getInstance();
+        //SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd|HH:mm");
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd|HH:mm");
         String current = formatter.format(calendar.getTime());
 
         submitPhotoIntent.putExtra("date",current);
-        Log.d("photoo", "goToSubmitPhoto: yaa");
         startActivity(submitPhotoIntent);
     }
 
@@ -395,7 +395,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                     if (currentLocation != null)
                         //uploadImage();
                         goToSubmitPhoto();
-                    Log.d(TAG, "getLocation: " + currentLocation);
+                        Log.d(TAG, "getLocation: " + currentLocation);
 
                 } else {
                     Log.d(TAG, "Get location failed");

@@ -150,7 +150,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
             startActivity(playerProfileIntent);
         });
         rankingRecyclerView.setAdapter(rankingAdapter);
-        Query usersQuery = mDataBase.child("users").orderByChild("ranking").limitToFirst(3);
+        Query usersQuery = mDataBase.child("users").orderByChild("ranking").limitToFirst(4);
         usersQuery.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {

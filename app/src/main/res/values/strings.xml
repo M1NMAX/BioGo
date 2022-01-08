@@ -22,10 +22,14 @@
     <string name="notification">Notifications</string>
     <string name="camera_feature">Auto camera mode</string>
     <string name="about">About BioGo</string>
-    <string name="about_text">Lorem Ipsum is simply dummy text of the printing and typesetting industry.
-        Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.
-        It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of
-        Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</string>
+    <string name="about_text">BioGo is a “photo-to-catch” based mobile game, where the objective is to catch as much as
+        animals and plants species as possible. For every photo of a specie submitted, the player itself receives its
+        associated points. Points are important for a player’s ranking. BioGo is being developed for a master’s degree
+        class on Mobile Computing. <br></br>Group 2:<br></br>Frederico Teixeira fc58795 <br></br> João Mendes fc53300
+        <br></br> José Ferreira fc53311
+
+
+</string>
     <string name="app_version">Version: </string>
     <string name="app_version_status">Beta</string>
 

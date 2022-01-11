@@ -93,6 +93,9 @@ public class PhotoActivity extends AppCompatActivity implements View.OnClickList
         TextView photo_specieName = findViewById(R.id.photo_specieName);
         photo_specieName.append(photo.getSpecieName());
 
+        ImageView userAvatar = findViewById(R.id.photo_ownerAvatar);
+        Picasso.get().load(Uri.parse(photo.getUserProfilePic())).into(userAvatar);
+
         TextView photo_ownerName = findViewById(R.id.photo_ownerName);
         photo_ownerName.setText(photo.getOwnerName());
 

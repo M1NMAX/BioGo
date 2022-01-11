@@ -88,7 +88,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
     private FusedLocationProviderClient fusedLocationClient;
     private Location currentLocation;
 
-
+    private Uri profilePic;
     ImageView imageView;
 
 
@@ -126,10 +126,10 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
 
         //User data from  firebaseAuth
         user = FirebaseAuth.getInstance().getCurrentUser();
-        Uri photoUrl = user.getPhotoUrl();
+        profilePic = user.getPhotoUrl();
         String name = user.getDisplayName();
         username.setText(name);
-        Picasso.get().load(photoUrl).into(userAvatar);
+        Picasso.get().load(profilePic).into(userAvatar);
 
         //imageView = view.findViewById(R.id.playerProfileView1);
 
@@ -326,7 +326,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                         //Save image data in the database
                         Photo photo = new Photo(lat, lng, uri.toString(), "N/A", "N/A",
                                 user.getUid(), user.getDisplayName(), ClassificationEnum.PENDING.toString(),
-                                new Date().toString());
+                                new Date().toString(), profilePic.toString());
                         mDataBase.child("images").push().setValue(photo);
 
                         pd.dismiss();
@@ -344,23 +344,27 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         String lat = String.valueOf(currentLocation.getLatitude());
         String lng = String.valueOf(currentLocation.getLongitude());
 
-        //Save image data in the database
-        /**Photo photo = new Photo(lat, lng, "URI", "N/A", "N/A",
-         user.getUid(), user.getDisplayName(), ClassificationEnum.PENDING.toString(),
-         new Date().toString());**/
+
         submitPhotoIntent.putExtra("lat",lat);
         submitPhotoIntent.putExtra("lng",lng);
         submitPhotoIntent.putExtra("userId",user.getUid());
         submitPhotoIntent.putExtra("userName",user.getDisplayName());
         submitPhotoIntent.putExtra("classification",ClassificationEnum.PENDING.toString());
-        submitPhotoIntent.putExtra("photo",imageUri);
+        submitPhotoIntent.putExtra("photoUri",imageUri);
 
+        //Get current time
         Calendar calendar = Calendar.getInstance();
         //SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd|HH:mm");
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd|HH:mm");
         String current = formatter.format(calendar.getTime());
 
         submitPhotoIntent.putExtra("date",current);
+
+        Photo photo = new Photo(lat, lng, imageUri.toString(), "N/A", "N/A",
+                user.getUid(), user.getDisplayName(), ClassificationEnum.PENDING.toString(),
+                current, profilePic.toString());
+        submitPhotoIntent.putExtra("photo", photo);
+
         startActivity(submitPhotoIntent);
     }
 

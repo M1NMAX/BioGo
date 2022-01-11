@@ -37,13 +37,8 @@ import dev.biogo.Models.Photo;
 public class SubmitPhotoActivity extends AppCompatActivity implements OnMapReadyCallback {
     private DatabaseReference mDataBase;
 
-    private String lat;
-    private String lng;
-    private String userId;
-    private String userName;
-    private String classification;
-    private String date;
-    private Uri imageUri;
+
+    private Photo photo;
 
     private GoogleMap photoMap;
     private SupportMapFragment supportMap;
@@ -55,13 +50,16 @@ public class SubmitPhotoActivity extends AppCompatActivity implements OnMapReady
         Intent intent = getIntent();
         setPhotoAttrs(intent);
 
+        //get photo uri
+        Uri imageUri = Uri.parse(photo.getImgUrl());
+
         ImageView photoImage = (ImageView) findViewById(R.id.submitImage);
         photoImage.setImageURI(null);
         photoImage.setImageURI(imageUri);
         //String photoString = intent.getExtras().getString("Photo");
 
         EditText editTextDate = (EditText) findViewById(R.id.photoDate);
-        editTextDate.setText(date);
+        editTextDate.setText(photo.getCreatedAt());
 
         Button submitButton = (Button) findViewById(R.id.submit);
         submitButton.setOnClickListener(new View.OnClickListener() {
@@ -78,11 +76,9 @@ public class SubmitPhotoActivity extends AppCompatActivity implements OnMapReady
                             .child("image/").child(createImageName());
                     fileRef.putFile(imageUri).addOnCompleteListener(task ->
                             fileRef.getDownloadUrl().addOnSuccessListener(uri -> {
-                                //Save image data in the database
-                                //Not with the info in inputs yet
-                                Photo photo = new Photo(lat, lng, uri.toString(), specieInput.getText().toString(), "N/A",
-                                        userId, userName, classification,
-                                        dateInput.getText().toString());
+                                photo.setCreatedAt(dateInput.getText().toString());
+                                photo.setSpecieName(specieInput.getText().toString());
+                                photo.setImgUrl(uri.toString());
                                 mDataBase.child("images").push().setValue(photo);
 
                                 pd.dismiss();
@@ -103,7 +99,7 @@ public class SubmitPhotoActivity extends AppCompatActivity implements OnMapReady
 
         //Map Instance
         supportMap = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.google_map_submit_photo);
-        if (supportMap != null && lat != null) {
+        if (supportMap != null && photo.getLat() != null) {
             supportMap.getMapAsync(this);
         }
 
@@ -112,24 +108,16 @@ public class SubmitPhotoActivity extends AppCompatActivity implements OnMapReady
 
     public void setPhotoAttrs(Intent intent){
         Bundle extras = intent.getExtras();
-        lat = extras.getString("lat");
-        lng = extras.getString("lng");
-        userId = extras.getString("userId");
-        userName = extras.getString("userName");
-        classification = extras.getString("classification");
-        imageUri = extras.getParcelable("photo");
-        date = extras.getString("date");
-        Log.d("photoCenas", "setPhotoAttrs: " + lat + " | " + lng);
-
+        photo = extras.getParcelable("photo");
     }
 
     @Override
     public void onMapReady(@NonNull GoogleMap googleMap) {
         this.photoMap = googleMap;
         photoMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(this, R.raw.map_style_photo));
-        if (!(lat == null)) {
-            Double locationLat = Double.parseDouble(lat);
-            Double locationLng = Double.parseDouble(lng);
+        if (!(photo.getLat() == null)) {
+            Double locationLat = Double.parseDouble(photo.getLat());
+            Double locationLng = Double.parseDouble(photo.getLng());
             LatLng location = new LatLng(locationLat, locationLng);
             photoMap.addMarker(new MarkerOptions().position(location).title("Location"));
             photoMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(locationLat, locationLng), 14));

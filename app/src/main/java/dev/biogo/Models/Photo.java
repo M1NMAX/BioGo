@@ -2,8 +2,11 @@ package dev.biogo.Models;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.util.Log;
 
 import com.google.firebase.database.Exclude;
+
+import java.text.Normalizer;
 
 public class Photo implements Parcelable {
     @Exclude
@@ -12,6 +15,7 @@ public class Photo implements Parcelable {
     private String lng;
     private String imgUrl;
     private String specieName;
+    private String specieNameLower;
     private String evaluatedBy;
     private String ownerId;
     private String ownerName;
@@ -21,11 +25,12 @@ public class Photo implements Parcelable {
 
     public Photo(){}
 
-    public Photo(String lat, String lng, String imgUrl, String specieName, String evaluatedBy, String ownerId, String ownerName, String classification, String createdAt, String userProfilePic) {
+    public Photo(String lat, String lng, String imgUrl, String specieName, String specieNameLower, String evaluatedBy, String ownerId, String ownerName, String classification, String createdAt, String userProfilePic) {
         this.lat = lat;
         this.lng = lng;
         this.imgUrl = imgUrl;
         this.specieName = specieName;
+        this.specieNameLower = specieNameLower;
         this.evaluatedBy = evaluatedBy;
         this.ownerId = ownerId;
         this.ownerName = ownerName;
@@ -40,32 +45,13 @@ public class Photo implements Parcelable {
         lng = in.readString();
         imgUrl = in.readString();
         specieName = in.readString();
+        specieNameLower = in.readString();
         evaluatedBy = in.readString();
         ownerId = in.readString();
         ownerName = in.readString();
         classification = in.readString();
         createdAt = in.readString();
         userProfilePic = in.readString();
-    }
-
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(id);
-        dest.writeString(lat);
-        dest.writeString(lng);
-        dest.writeString(imgUrl);
-        dest.writeString(specieName);
-        dest.writeString(evaluatedBy);
-        dest.writeString(ownerId);
-        dest.writeString(ownerName);
-        dest.writeString(classification);
-        dest.writeString(createdAt);
-        dest.writeString(userProfilePic);
-    }
-
-    @Override
-    public int describeContents() {
-        return 0;
     }
 
     public static final Creator<Photo> CREATOR = new Creator<Photo>() {
@@ -79,6 +65,27 @@ public class Photo implements Parcelable {
             return new Photo[size];
         }
     };
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeString(id);
+        parcel.writeString(lat);
+        parcel.writeString(lng);
+        parcel.writeString(imgUrl);
+        parcel.writeString(specieName);
+        parcel.writeString(specieNameLower);
+        parcel.writeString(evaluatedBy);
+        parcel.writeString(ownerId);
+        parcel.writeString(ownerName);
+        parcel.writeString(classification);
+        parcel.writeString(createdAt);
+        parcel.writeString(userProfilePic);
+    }
 
     public String getId() {
         return id;
@@ -98,6 +105,10 @@ public class Photo implements Parcelable {
 
     public String getSpecieName() {
         return specieName;
+    }
+
+    public String getSpecieNameLower() {
+        return specieNameLower;
     }
 
     public String getEvaluatedBy() {
@@ -124,10 +135,6 @@ public class Photo implements Parcelable {
         return userProfilePic;
     }
 
-    public static Creator<Photo> getCREATOR() {
-        return CREATOR;
-    }
-
     public void setId(String id) {
         this.id = id;
     }
@@ -146,6 +153,10 @@ public class Photo implements Parcelable {
 
     public void setSpecieName(String specieName) {
         this.specieName = specieName;
+    }
+
+    public void setSpecieNameLower(String specieNameLower) {
+        this.specieNameLower = specieNameLower;
     }
 
     public void setEvaluatedBy(String evaluatedBy) {

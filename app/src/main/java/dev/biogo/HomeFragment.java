@@ -51,6 +51,7 @@ import com.squareup.picasso.Picasso;
 
 import java.io.File;
 import java.io.IOException;
+import java.text.Normalizer;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -324,7 +325,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                         String lng = String.valueOf(currentLocation.getLongitude());
 
                         //Save image data in the database
-                        Photo photo = new Photo(lat, lng, uri.toString(), "N/A", "N/A",
+                        Photo photo = new Photo(lat, lng, uri.toString(), "N/A","n/a", "N/A",
                                 user.getUid(), user.getDisplayName(), ClassificationEnum.PENDING.toString(),
                                 new Date().toString(), profilePic.toString());
                         mDataBase.child("images").push().setValue(photo);
@@ -360,7 +361,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
 
         submitPhotoIntent.putExtra("date",current);
 
-        Photo photo = new Photo(lat, lng, imageUri.toString(), "N/A", "N/A",
+        Photo photo = new Photo(lat, lng, imageUri.toString(), "N/A","n/a", "N/A",
                 user.getUid(), user.getDisplayName(), ClassificationEnum.PENDING.toString(),
                 current, profilePic.toString());
         submitPhotoIntent.putExtra("photo", photo);
@@ -409,6 +410,4 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
             Log.e("Exception %s", e.getMessage(), e);
         }
     }
-
-
 }

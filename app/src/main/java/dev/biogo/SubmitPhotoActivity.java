@@ -27,6 +27,7 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
 import java.io.Serializable;
+import java.text.Normalizer;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
@@ -77,7 +78,9 @@ public class SubmitPhotoActivity extends AppCompatActivity implements OnMapReady
                     fileRef.putFile(imageUri).addOnCompleteListener(task ->
                             fileRef.getDownloadUrl().addOnSuccessListener(uri -> {
                                 photo.setCreatedAt(dateInput.getText().toString());
-                                photo.setSpecieName(specieInput.getText().toString());
+                                String specie = specieInput.getText().toString();
+                                photo.setSpecieName(specie);
+                                photo.setSpecieNameLower(removerAcentos(specie).toLowerCase());
                                 photo.setImgUrl(uri.toString());
                                 mDataBase.child("images").push().setValue(photo);
 
@@ -126,5 +129,9 @@ public class SubmitPhotoActivity extends AppCompatActivity implements OnMapReady
 
     private String createImageName() {
         return new SimpleDateFormat("yyyy_MM_dd_HH_mm_ss", Locale.UK).format(new Date());
+    }
+
+    public static String removerAcentos(String str) {
+        return Normalizer.normalize(str, Normalizer.Form.NFD).replaceAll("[^\\p{ASCII}]", "");
     }
 }

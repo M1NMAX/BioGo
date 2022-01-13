@@ -3,47 +3,54 @@ package dev.biogo;
 import android.content.Intent;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link SearchFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Date;
+
+import dev.biogo.Adapters.CatalogAdapter;
+import dev.biogo.Helpers.DateHelper;
+import dev.biogo.Models.Photo;
+
 public class SearchFragment extends Fragment implements View.OnClickListener {
+    private DatabaseReference mDataBase;
+    private FirebaseUser user;
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+    private ArrayList<Photo> photosList;
+    private RecyclerView recentlyRecyclerView;
+    private CatalogAdapter catalogAdapter;
+    private EditText searchInput;
 
     public SearchFragment() {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment SearchFragment.
-     */
-    // TODO: Rename and change types and number of parameters
+
     public static SearchFragment newInstance(String param1, String param2) {
         SearchFragment fragment = new SearchFragment();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
         fragment.setArguments(args);
         return fragment;
     }
@@ -51,10 +58,6 @@ public class SearchFragment extends Fragment implements View.OnClickListener {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
     }
 
     @Override
@@ -62,15 +65,114 @@ public class SearchFragment extends Fragment implements View.OnClickListener {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
 
-        View myView = inflater.inflate(R.layout.fragment_search, container, false);
-        ImageView search = (ImageView) myView.findViewById(R.id.search1);
-        search.setOnClickListener(this);
-        return myView;
+        View view = inflater.inflate(R.layout.fragment_search, container, false);
+
+        searchInput = (EditText) view.findViewById(R.id.search_string);
+
+
+        //Firebase Database
+        mDataBase = FirebaseDatabase.getInstance("https://biogo-54daa-default-rtdb.europe-west1.firebasedatabase.app/")
+                .getReference();
+
+        user = FirebaseAuth.getInstance().getCurrentUser();
+
+
+
+        Button searchButton = (Button) view.findViewById(R.id.search_button);
+        searchButton.setOnClickListener(this);
+
+        //RecyclerView Search
+        recentlyRecyclerView = view.findViewById(R.id.searchRecyclerView);
+        recentlyRecyclerView.setHasFixedSize(true);
+        recentlyRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+
+        photosList = new ArrayList<>();
+
+        catalogAdapter = new CatalogAdapter(getContext(), photosList,R.layout.catalog_list_item_horizontal, position -> {
+            Photo photo = photosList.get(position);
+            Intent photoIntent = new Intent(getActivity(), PhotoActivity.class);
+            photoIntent.putExtra("photoData", photo);
+            startActivity(photoIntent);
+        });
+        recentlyRecyclerView.setAdapter(catalogAdapter);
+
+        //MINI TESTE
+        //Query imagesQuery = mDataBase.child("images").orderByChild("ownerId").equalTo(user.getUid());
+
+        Query imagesQuery = mDataBase.child("images").limitToFirst(10);
+
+
+        imagesQuery.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                photosList.clear();
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                    Photo photo = snapshot.getValue(Photo.class);
+                    if(photo != null) {
+                        photo.setId(snapshot.getKey());
+                        photosList.add(photo);
+                    }
+                }
+                Collections.sort(photosList, Collections.reverseOrder((photo, otherPhoto) -> {
+                    String pattern = "yyyy-MM-dd|HH:mm";
+                    Date dateOne = DateHelper.convertToDate(photo.getCreatedAt(), pattern);
+                    Date dateTwo = DateHelper.convertToDate(otherPhoto.getCreatedAt(), pattern);
+                    return dateOne.compareTo(dateTwo);
+                }));
+                catalogAdapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Log.w("onCancelled", "onCancelled: ", error.toException());
+            }
+        });
+
+
+
+        return view;
     }
 
     @Override
-    public void onClick(View view) {
-        Intent intent = new Intent(getActivity(), PhotoActivity.class);
-        startActivity(intent);
+    public void onClick(View v) {
+        if(v.getId() == R.id.search_button) {
+            String searchInputStr = searchInput.getText().toString();
+            Query imagesQuery = mDataBase.child("images").orderByChild("specieNameLower").startAt(searchInputStr.toLowerCase())
+                    .endAt(searchInputStr.toLowerCase() + "\uf8ff");
+
+
+
+            imagesQuery.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    photosList.clear();
+                    for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                        Photo photo = snapshot.getValue(Photo.class);
+                        if(photo != null) {
+                            photo.setId(snapshot.getKey());
+                            photosList.add(photo);
+                        }
+                    }
+                    Collections.sort(photosList, Collections.reverseOrder((photo, otherPhoto) -> {
+                        String pattern = "yyyy-MM-dd|HH:mm";
+                        Date dateOne = DateHelper.convertToDate(photo.getCreatedAt(), pattern);
+                        Date dateTwo = DateHelper.convertToDate(otherPhoto.getCreatedAt(), pattern);
+                        return dateOne.compareTo(dateTwo);
+                    }));
+                    catalogAdapter.notifyDataSetChanged();
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+                    Log.w("onCancelled", "onCancelled: ", error.toException());
+                }
+            });
+
+        }else{
+            Intent intent = new Intent(getActivity(), PhotoActivity.class);
+            startActivity(intent);
+        }
     }
+
+
 }

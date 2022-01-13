@@ -25,9 +25,11 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
+import java.text.Normalizer;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
+import java.util.Locale;
 
 import dev.biogo.Adapters.CatalogAdapter;
 import dev.biogo.Helpers.DateHelper;
@@ -136,9 +138,9 @@ public class SearchFragment extends Fragment implements View.OnClickListener {
     @Override
     public void onClick(View v) {
         if(v.getId() == R.id.search_button) {
-            String searchInputStr = searchInput.getText().toString();
-            Query imagesQuery = mDataBase.child("images").orderByChild("specieNameLower").startAt(searchInputStr.toLowerCase())
-                    .endAt(searchInputStr.toLowerCase() + "\uf8ff");
+            String searchInputStr = removerAcentos(searchInput.getText().toString()).toLowerCase();
+            Query imagesQuery = mDataBase.child("images").orderByChild("specieNameLower").startAt(searchInputStr)
+                    .endAt(searchInputStr + "\uf8ff");
 
 
 
@@ -174,5 +176,8 @@ public class SearchFragment extends Fragment implements View.OnClickListener {
         }
     }
 
+    public static String removerAcentos(String str) {
+        return Normalizer.normalize(str, Normalizer.Form.NFD).replaceAll("[^\\p{ASCII}]", "");
+    }
 
 }

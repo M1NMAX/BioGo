@@ -45,7 +45,7 @@ public class RankingAdapter extends RecyclerView.Adapter<RankingAdapter.RankingV
     public void onBindViewHolder(@NonNull RankingViewHolder holder, int position) {
         User user = users.get(position);
         holder.username.setText(user.getUsername());
-        holder.ranking.append(String.valueOf(user.getRanking()));
+        holder.ranking.setText("#"+ user.getRanking());
         holder.xp.setText(user.getXp() + " XP");
         Picasso.get().load(Uri.parse(user.getProfileImgUri())).into(holder.profilePic);
     }

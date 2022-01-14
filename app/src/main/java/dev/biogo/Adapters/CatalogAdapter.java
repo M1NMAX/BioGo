@@ -59,7 +59,7 @@ public class CatalogAdapter extends RecyclerView.Adapter<CatalogAdapter.CatalogV
         int iconId;
         if (photo.getClassification().equals(ClassificationEnum.PENDING.toString())) {
             iconId = R.drawable.ic_baseline_hourglass_empty_24;
-        } else if (photo.getClassification().equals(ClassificationEnum.NOT_VALID.toString())) {
+        } else if (photo.getClassification().equals(ClassificationEnum.INVALID.toString())) {
             iconId = R.drawable.ic_baseline_do_not_disturb_alt_24;
         } else {
             iconId = R.drawable.ic_baseline_check_circle_24;

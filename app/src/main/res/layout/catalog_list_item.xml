@@ -45,9 +45,20 @@
                 android:text="Date"
                 android:textSize="12sp"
                 android:textStyle="italic" />
+            <ImageView
+                android:id="@+id/catalogListView_icon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_baseline_hourglass_empty_24"/>
 
 
         </LinearLayout>
+        <TextView
+            android:id="@+id/catalogListView_address"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingTop="4dp"
+            android:text="Address: " />
 
     </LinearLayout>
 </com.google.android.material.card.MaterialCardView>

@@ -30,18 +30,15 @@
         associated points. Points are important for a player’s ranking. BioGo is being developed for a master’s degree
         class on Mobile Computing. <br></br>Group 2:<br></br>Frederico Teixeira fc58795 <br></br> João Mendes fc53300
         <br></br> José Ferreira fc53311
+    </string>
 
-
-</string>
     <string name="app_version">Version: </string>
     <string name="app_version_status">Beta</string>
 
+    <!--    Photo Activity-->
+    <string name="photo_status_valid">Valid</string>
+    <string name="photo_status_invalid">Invalid</string>
+    <string name="photo_status_pending">Pending</string>
 
-    <string-array name="Settings_Activity">
-        <item>
-            <string name="x"> hello</string>
-
-        </item>
-    </string-array>
 
 </resources>

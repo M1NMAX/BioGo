@@ -22,6 +22,7 @@ import java.util.List;
 
 import dev.biogo.Enums.ClassificationEnum;
 import dev.biogo.Helpers.DateHelper;
+import dev.biogo.Helpers.LocationHelper;
 import dev.biogo.Models.Photo;
 import dev.biogo.R;
 
@@ -65,21 +66,10 @@ public class CatalogAdapter extends RecyclerView.Adapter<CatalogAdapter.CatalogV
             iconId = R.drawable.ic_baseline_check_circle_24;
         }
         holder.icon.setImageResource(iconId);
-
-
-        //Show address
-        Geocoder geocoder = new Geocoder(context);
-        String addressFormat;
-        try {
-            Address address = geocoder
-                    .getFromLocation(Double.parseDouble(photo.getLat()), Double.parseDouble(photo.getLng()), 1)
-                    .get(0);
-            addressFormat = address.getThoroughfare() + ", " + address.getLocality() + ", " + address.getCountryName();
-            holder.address.setText(addressFormat);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
+        //show address
+        holder.address.setText(LocationHelper.getAddressFromLatLng(context,
+                Double.parseDouble(photo.getLat()),
+                Double.parseDouble(photo.getLng())));
 
     }
 

@@ -41,6 +41,7 @@ import java.util.Map;
 import dev.biogo.Enums.ClassificationEnum;
 import dev.biogo.Enums.RoleEnum;
 import dev.biogo.Helpers.DateHelper;
+import dev.biogo.Helpers.LocationHelper;
 import dev.biogo.Models.Photo;
 import dev.biogo.Models.User;
 
@@ -57,6 +58,10 @@ public class PhotoActivity extends AppCompatActivity implements View.OnClickList
 
     private GoogleMap photoMap;
     private SupportMapFragment supportMap;
+
+    //TODO: hide classification if pending or invalid
+    //TODO: add path to specie activity
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -91,13 +96,37 @@ public class PhotoActivity extends AppCompatActivity implements View.OnClickList
         Picasso.get().load(Uri.parse(photo.getImgUrl())).into(photo_imgView);
 
         TextView photo_specieName = findViewById(R.id.photo_specieName);
-        photo_specieName.append(photo.getSpecieName());
+        photo_specieName.setText(photo.getSpecieName());
 
         ImageView userAvatar = findViewById(R.id.photo_ownerAvatar);
         Picasso.get().load(Uri.parse(photo.getUserProfilePic())).into(userAvatar);
 
         TextView photo_ownerName = findViewById(R.id.photo_ownerName);
         photo_ownerName.setText(photo.getOwnerName());
+
+
+        //photo_status
+        ImageView photo_statusIcon = findViewById(R.id.photo_statusIcon);
+        TextView photo_statusText = findViewById(R.id.photo_statusText);
+
+        String tmp_statusText;
+        int tmp_statusIconId;
+        if (photo.getClassification().equals(ClassificationEnum.PENDING.toString())) {
+            tmp_statusIconId = R.drawable.ic_baseline_hourglass_empty_24;
+            tmp_statusText = getString(R.string.photo_status_pending);
+        } else if (photo.getClassification().equals(ClassificationEnum.INVALID.toString())) {
+            tmp_statusIconId = R.drawable.ic_baseline_do_not_disturb_alt_24;
+            tmp_statusText = getString(R.string.photo_status_invalid);
+        } else {
+            tmp_statusIconId = R.drawable.ic_baseline_check_circle_24;
+            tmp_statusText = getString(R.string.photo_status_valid);
+        }
+        photo_statusIcon.setImageResource(tmp_statusIconId);
+        photo_statusText.setText(tmp_statusText);
+
+
+
+
 
         TextView photo_classification = findViewById(R.id.photo_classification);
         photo_classification.append(photo.getClassification());
@@ -107,6 +136,11 @@ public class PhotoActivity extends AppCompatActivity implements View.OnClickList
         String dateFormat = new SimpleDateFormat("yyyy-MM-dd|HH:mm", Locale.UK).format(date);
         TextView photo_createdAt = findViewById(R.id.photo_createdAt);
         photo_createdAt.setText(dateFormat);
+
+
+        //Address
+        TextView photo_address = findViewById(R.id.photo_address);
+        photo_address.setText(LocationHelper.getAddressFromLatLng(this, Double.parseDouble(photo.getLat()), Double.parseDouble(photo.getLng())));
 
 
         Button evaluateBtn = findViewById(R.id.evaluateBtn);
@@ -151,6 +185,7 @@ public class PhotoActivity extends AppCompatActivity implements View.OnClickList
                             //TODO: hide EvaluationBtn
                             //TODO: Update photoActivity UI
 
+
                             //Hide dialog
                             dialogInterface.dismiss();
                             //Update photo data in the database
@@ -189,5 +224,6 @@ public class PhotoActivity extends AppCompatActivity implements View.OnClickList
             photoMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(locationLat, locationLng), 14));
         }
     }
+
 
 }

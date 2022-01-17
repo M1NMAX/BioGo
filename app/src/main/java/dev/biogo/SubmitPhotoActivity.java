@@ -12,6 +12,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -66,7 +67,7 @@ public class SubmitPhotoActivity extends AppCompatActivity implements OnMapReady
         submitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                EditText specieInput = (EditText) findViewById(R.id.specieInput);
+                TextView specieInput = (TextView) findViewById(R.id.specieInput);
                 EditText dateInput = (EditText) findViewById(R.id.photoDate);
 
                 ProgressDialog pd = new ProgressDialog(SubmitPhotoActivity.this);

@@ -51,11 +51,9 @@ import com.squareup.picasso.Picasso;
 
 import java.io.File;
 import java.io.IOException;
-import java.text.Normalizer;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -236,7 +234,8 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                 break;
 
             case R.id.seeRanking:
-                Intent rankingIntent = new Intent(getActivity(), RankingActivity.class);
+                //Intent rankingIntent = new Intent(getActivity(), RankingActivity.class);
+                Intent rankingIntent = new Intent(getActivity(), ApiSpecieSearchActivity.class);
                 startActivity(rankingIntent);
                 break;
 

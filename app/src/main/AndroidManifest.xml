@@ -23,6 +23,9 @@
         android:theme="@style/Theme.BioGo"
         android:usesCleartextTraffic="true">
         <activity
+            android:name=".ApiSpecieSearchActivity"
+            android:exported="true" />
+        <activity
             android:name=".SubmitPhotoActivity"
             android:exported="true" />
         <activity
@@ -46,9 +49,6 @@
             android:name=".CatalogActivity"
             android:exported="false" />
         <activity
-            android:name=".SpecieActivity"
-            android:exported="true" />
-        <activity
             android:name=".SettingsActivity"
             android:exported="true" />
         <activity
@@ -60,9 +60,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".HomePage"
-            android:exported="true" />
         <activity
             android:name=".MainActivity"
             android:exported="true" />

@@ -42,7 +42,7 @@
         android:layout_marginTop="80dp"
         android:gravity="center"
         app:layout_constraintStart_toEndOf="@+id/textView2"
-        app:layout_constraintTop_toBottomOf="@+id/specieInput" />
+        app:layout_constraintTop_toBottomOf="@+id/specieName" />
 
 
 
@@ -77,17 +77,17 @@
         tools:srcCompat="@tools:sample/backgrounds/scenic" />
 
     <Button
-        android:id="@+id/button"
+        android:id="@+id/go_to_api_search"
         android:layout_width="264dp"
         android:layout_height="45dp"
         android:text="Specie Search"
         app:layout_constraintBottom_toTopOf="@+id/photoDate"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/specieInput" />
+        app:layout_constraintTop_toBottomOf="@+id/specieName" />
 
     <TextView
-        android:id="@+id/specieInput"
+        android:id="@+id/specieName"
         android:layout_width="250dp"
         android:layout_height="50dp"
         android:layout_marginStart="24dp"

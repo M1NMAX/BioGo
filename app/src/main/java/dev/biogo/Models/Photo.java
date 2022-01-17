@@ -22,6 +22,7 @@ public class Photo implements Parcelable {
     private String classification;
     private String createdAt;
     private String userProfilePic;
+    private ApiSpecie apiSpecie;
 
     public Photo(){}
 
@@ -52,6 +53,7 @@ public class Photo implements Parcelable {
         classification = in.readString();
         createdAt = in.readString();
         userProfilePic = in.readString();
+        apiSpecie = in.readParcelable(ApiSpecie.class.getClassLoader());
     }
 
     public static final Creator<Photo> CREATOR = new Creator<Photo>() {
@@ -65,27 +67,6 @@ public class Photo implements Parcelable {
             return new Photo[size];
         }
     };
-
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    @Override
-    public void writeToParcel(Parcel parcel, int i) {
-        parcel.writeString(id);
-        parcel.writeString(lat);
-        parcel.writeString(lng);
-        parcel.writeString(imgUrl);
-        parcel.writeString(specieName);
-        parcel.writeString(specieNameLower);
-        parcel.writeString(evaluatedBy);
-        parcel.writeString(ownerId);
-        parcel.writeString(ownerName);
-        parcel.writeString(classification);
-        parcel.writeString(createdAt);
-        parcel.writeString(userProfilePic);
-    }
 
     public String getId() {
         return id;
@@ -135,6 +116,10 @@ public class Photo implements Parcelable {
         return userProfilePic;
     }
 
+    public ApiSpecie getApiSpecie() {
+        return apiSpecie;
+    }
+
     public void setId(String id) {
         this.id = id;
     }
@@ -181,5 +166,31 @@ public class Photo implements Parcelable {
 
     public void setUserProfilePic(String userProfilePic) {
         this.userProfilePic = userProfilePic;
+    }
+
+    public void setApiSpecie(ApiSpecie apiSpecie) {
+        this.apiSpecie = apiSpecie;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeString(id);
+        parcel.writeString(lat);
+        parcel.writeString(lng);
+        parcel.writeString(imgUrl);
+        parcel.writeString(specieName);
+        parcel.writeString(specieNameLower);
+        parcel.writeString(evaluatedBy);
+        parcel.writeString(ownerId);
+        parcel.writeString(ownerName);
+        parcel.writeString(classification);
+        parcel.writeString(createdAt);
+        parcel.writeString(userProfilePic);
+        parcel.writeParcelable(apiSpecie, i);
     }
 }

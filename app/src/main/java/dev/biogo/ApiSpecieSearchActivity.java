@@ -42,6 +42,7 @@ public class ApiSpecieSearchActivity extends AppCompatActivity implements ApiSpe
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_api_specie_search);
+        intent = getIntent();
 
         EditText specieInput = findViewById(R.id.apiSearch_string);
 
@@ -137,9 +138,10 @@ public class ApiSpecieSearchActivity extends AppCompatActivity implements ApiSpe
     @Override
     public void OnItemClick(int position) {
         ApiSpecie specie = apiSpeciesList.get(position);
-        Intent apiSpecieIntent = new Intent(this, SpecieActivity.class);
-        apiSpecieIntent.putExtra("apiSpecie", specie);
-        startActivity(apiSpecieIntent);
+        Intent newIntent = new Intent();
+        newIntent.putExtra("apiSpecie", specie);
+        setResult(RESULT_OK, newIntent);
+        finish();
     }
 
     public boolean listCheck(String specieName, ArrayList<ApiSpecie> specieList){

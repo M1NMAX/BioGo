@@ -1,8 +1,13 @@
 package dev.biogo;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.net.Uri;
@@ -34,6 +39,7 @@ import java.util.Date;
 import java.util.Locale;
 
 import dev.biogo.Enums.ClassificationEnum;
+import dev.biogo.Models.ApiSpecie;
 import dev.biogo.Models.Photo;
 
 public class SubmitPhotoActivity extends AppCompatActivity implements OnMapReadyCallback {
@@ -41,6 +47,7 @@ public class SubmitPhotoActivity extends AppCompatActivity implements OnMapReady
 
 
     private Photo photo;
+    private ApiSpecie apiSpecie;
 
     private GoogleMap photoMap;
     private SupportMapFragment supportMap;
@@ -52,6 +59,9 @@ public class SubmitPhotoActivity extends AppCompatActivity implements OnMapReady
         Intent intent = getIntent();
         setPhotoAttrs(intent);
 
+        if(intent.getExtras().getParcelable("apiSpecie") != null){
+            Log.d("apiSpeciee", "onCreate: ADICIONADAA");
+        }
         //get photo uri
         Uri imageUri = Uri.parse(photo.getImgUrl());
 
@@ -63,13 +73,40 @@ public class SubmitPhotoActivity extends AppCompatActivity implements OnMapReady
         EditText editTextDate = (EditText) findViewById(R.id.photoDate);
         editTextDate.setText(photo.getCreatedAt());
 
+        TextView specieName = (TextView) findViewById(R.id.specieName);
+        EditText dateInput = (EditText) findViewById(R.id.photoDate);
+
+        //onActivityResult
+        ActivityResultLauncher<Intent> someActivityResultLauncher = registerForActivityResult(
+                new ActivityResultContracts.StartActivityForResult(),
+                new ActivityResultCallback<ActivityResult>() {
+                    @Override
+                    public void onActivityResult(ActivityResult result) {
+                        if (result.getResultCode() == Activity.RESULT_OK) {
+                            Intent data = result.getData();
+                            ApiSpecie apiSpecie = data.getParcelableExtra("apiSpecie");
+                            photo.setApiSpecie(apiSpecie);
+                            specieName.setText(apiSpecie.getSpecieName());
+                        }
+                    }
+                });
+
+        Button goToApiSearch = (Button) findViewById(R.id.go_to_api_search);
+        goToApiSearch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(), ApiSpecieSearchActivity.class);
+                someActivityResultLauncher.launch(intent);
+
+            }
+        });
+
+
+
         Button submitButton = (Button) findViewById(R.id.submit);
         submitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                TextView specieInput = (TextView) findViewById(R.id.specieInput);
-                EditText dateInput = (EditText) findViewById(R.id.photoDate);
-
                 ProgressDialog pd = new ProgressDialog(SubmitPhotoActivity.this);
                 pd.setMessage("Uploading");
                 pd.show();
@@ -79,7 +116,7 @@ public class SubmitPhotoActivity extends AppCompatActivity implements OnMapReady
                     fileRef.putFile(imageUri).addOnCompleteListener(task ->
                             fileRef.getDownloadUrl().addOnSuccessListener(uri -> {
                                 photo.setCreatedAt(dateInput.getText().toString());
-                                String specie = specieInput.getText().toString();
+                                String specie = specieName.getText().toString();
                                 photo.setSpecieName(specie);
                                 photo.setSpecieNameLower(removerAcentos(specie).toLowerCase());
                                 photo.setImgUrl(uri.toString());

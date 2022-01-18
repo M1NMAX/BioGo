@@ -17,6 +17,7 @@
         android:layout_marginBottom="@dimen/button_margin_bottom"
         android:layout_marginHorizontal="@dimen/button_margin_horizontal"
         app:cornerRadius="@dimen/button_corner_radius"
+        android:visibility="gone"
         android:text="@string/main_button_play"
         android:padding="@dimen/button_padding"
         android:textStyle="bold"
@@ -37,11 +38,13 @@
 
     <com.google.android.gms.common.SignInButton
         android:id="@+id/signInGoogleBtn"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="128dp"
+        android:layout_marginHorizontal="@dimen/button_margin_horizontal"
+        android:layout_marginBottom="180dp"
+        android:padding="@dimen/button_padding"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView5" />
+        app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

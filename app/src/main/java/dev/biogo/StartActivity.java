@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.Button;
 
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
@@ -61,9 +62,7 @@ public class StartActivity extends AppCompatActivity {
 
         signInButton = findViewById(R.id.signInGoogleBtn);
         signInButton.setSize(SignInButton.SIZE_STANDARD);
-        signInButton.setOnClickListener(view -> {
-            signIn();
-        });
+        signInButton.setOnClickListener(view -> signIn());
 
 
     }
@@ -124,6 +123,7 @@ public class StartActivity extends AppCompatActivity {
         Log.d(TAG, "updateUI: "+user);
         if(user != null){
             signInButton.setVisibility(SignInButton.GONE);
+            startButton.setVisibility(View.VISIBLE);
         }
 
     }

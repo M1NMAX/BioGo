@@ -26,6 +26,9 @@
             android:name=".ApiSpecieSearchActivity"
             android:exported="true" />
         <activity
+            android:name=".SpecieActivity"
+            android:exported="true" />
+        <activity
             android:name=".SubmitPhotoActivity"
             android:exported="true" />
         <activity

@@ -169,11 +169,12 @@
                         </LinearLayout>
 
                         <Button
+                            android:id="@+id/specieGoButton"
                             style="?attr/materialButtonOutlinedStyle"
-                            android:layout_width="0px"
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="Go"
+                            android:text="Specie"
                             android:textColor="@color/pokemon_yellow"
                             app:strokeColor="@color/pokemon_yellow" />
 

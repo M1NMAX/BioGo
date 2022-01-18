@@ -68,17 +68,7 @@ public class ApiSpeciesAdapter extends RecyclerView.Adapter<ApiSpeciesAdapter.Ap
         ApiSpecie apiSpecie = apiSpeciesList.get(position);
         holder.specieName.setText(apiSpecie.getSpecieName());
         holder.points.setText(apiSpecie.getPoints());
-        //Picasso.get().load(Uri.parse(apiSpecie.getSpecieImage())).into(holder.image);
         Picasso.get().load(apiSpecie.getSpecieImage()).into(holder.image);
-        /**try{
-            URL url = new URL(apiSpecie.getSpecieImage());
-            Bitmap bmp = BitmapFactory.decodeStream(url.openConnection().getInputStream());
-            holder.image.setImageBitmap(bmp);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }**/
-
-
     }
 
     public int getItemCount() {

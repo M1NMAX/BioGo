@@ -165,6 +165,17 @@ public class PhotoActivity extends AppCompatActivity implements View.OnClickList
             }
         });
 
+        Button goSpecie = findViewById(R.id.specieGoButton);
+        goSpecie.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent specieProfileIntent = new Intent(getApplicationContext(), SpecieActivity.class);
+                specieProfileIntent.putExtra("apiSpecie", photo.getApiSpecie());
+                //Log.d("taaamos", "onClick: "+ photo.getApiSpecie().getSpecieName());
+                startActivity(specieProfileIntent);
+            }
+        });
+
         //Map Instance
         supportMap = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.google_map_photo);
         if (supportMap != null && photo.getLat() != null) {

@@ -51,7 +51,7 @@ public class PlayerProfileActivity extends AppCompatActivity{
         otherPlayerNSpecies.setText(String.valueOf(otherUser.getSpecies()));
 
         Button seeOtherPlayerCatalogBtn = findViewById(R.id.seeOtherPlayerCatalogBtn);
-        seeOtherPlayerCatalogBtn.setText("See " + otherUser.getUsername() + "'s catalog");
+        seeOtherPlayerCatalogBtn.setText(otherUser.getUsername() + "'s catalog");
 
         seeOtherPlayerCatalogBtn.setOnClickListener(view -> {
             Intent otherPlayerCatalogIntent = new Intent(PlayerProfileActivity.this, CatalogActivity.class);

@@ -17,8 +17,8 @@
             android:id="@+id/appBarOtherPlayer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:title="@string/player_profile_Activity"
-            app:navigationIcon="@drawable/ic_baseline_arrow_back_24" />
+            app:navigationIcon="@drawable/ic_baseline_arrow_back_24"
+            app:title="@string/player_profile_Activity" />
 
     </com.google.android.material.appbar.AppBarLayout>
 
@@ -27,28 +27,30 @@
 
         android:id="@+id/linearLayoutCompat2"
         android:layout_width="match_parent"
-
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="16dp"
         android:layout_marginEnd="8dp"
         android:orientation="vertical"
+        android:gravity="center"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/appBarLayout"
         tools:context=".ProfileFragment">
 
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
 
-        <ImageView
-            android:id="@+id/userAvatar"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:layout_gravity="center"
-            android:layout_marginTop="80dp"
-            android:layout_marginBottom="20dp"
-            android:contentDescription="player avatar"
-            app:srcCompat="@drawable/avatar_user" />
+            <ImageView
+                android:id="@+id/userAvatar"
+                android:layout_width="90dp"
+                android:layout_height="90dp"
+                android:layout_gravity="center"
+                android:contentDescription="player avatar"
+                app:srcCompat="@drawable/avatar_user" />
+        </com.google.android.material.card.MaterialCardView>
 
         <TextView
             android:id="@+id/username"
@@ -82,7 +84,6 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="8dp"
-        app:cardCornerRadius="20dp"
         app:cardElevation="10dp"
         app:cardUseCompatPadding="true"
         app:layout_constraintEnd_toEndOf="parent"
@@ -176,9 +177,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
-        app:cardCornerRadius="20dp"
         app:cardElevation="10dp"
         app:cardUseCompatPadding="true"
         app:layout_constraintEnd_toEndOf="parent"
@@ -194,7 +194,7 @@
             <com.google.android.material.textview.MaterialTextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="More"
+                android:text="See"
                 android:textColor="@color/dark_black"
                 android:textSize="24dp"
                 android:textStyle="bold" />

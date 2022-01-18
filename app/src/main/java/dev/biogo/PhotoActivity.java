@@ -88,7 +88,6 @@ public class PhotoActivity extends AppCompatActivity implements View.OnClickList
         Intent i = getIntent();
         photo = (Photo) i.getParcelableExtra("photoData");
 
-
         //dynamically inflate photo activity
         ImageView photo_imgView = findViewById(R.id.photo_imgView);
         Picasso.get().load(Uri.parse(photo.getImgUrl())).into(photo_imgView);

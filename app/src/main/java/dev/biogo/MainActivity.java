@@ -33,6 +33,7 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.Marker;
@@ -40,6 +41,8 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -49,8 +52,11 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Date;
 
 import dev.biogo.Adapters.CustomInfoWindowAdapter;
+import dev.biogo.Helpers.DateHelper;
 import dev.biogo.Models.Photo;
 
 public class MainActivity extends AppCompatActivity implements NavigationBarView.OnItemSelectedListener, SensorEventListener, OnMapReadyCallback {
@@ -64,6 +70,7 @@ public class MainActivity extends AppCompatActivity implements NavigationBarView
 
     BottomNavigationView bottomNavigationView;
 
+    private FirebaseUser user;
 
     //Map related vars
     private GoogleMap map;
@@ -92,6 +99,9 @@ public class MainActivity extends AppCompatActivity implements NavigationBarView
         //Firebase Database
         mDataBase = FirebaseDatabase.getInstance("https://biogo-54daa-default-rtdb.europe-west1.firebasedatabase.app/")
                 .getReference();
+
+        //User from firebase
+        user = FirebaseAuth.getInstance().getCurrentUser();
 
 
         //Sensors
@@ -241,6 +251,29 @@ public class MainActivity extends AppCompatActivity implements NavigationBarView
             @Override
             public void onInfoWindowClick(Marker marker) {
                 Log.d("markeeer", "onInfoWindowClick: " + marker.getTitle());
+
+                //Intent goToPhotoIntent = new Intent(getApplicationContext(), PhotoActivity.class);
+                //startActivity(goToPhotoIntent);
+
+                Query imagesQuery = mDataBase.child("images").child(marker.getTitle());
+
+
+                imagesQuery.addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        Photo photo = dataSnapshot.getValue(Photo.class);
+                        Log.d("markeeer", "onDataChange: " + photo.getCreatedAt() );
+
+                        Intent goToPhotoIntent = new Intent(getApplicationContext(),PhotoActivity.class);
+                        goToPhotoIntent.putExtra("photoData", photo);
+                        startActivity(goToPhotoIntent);
+
+                    }
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+                        Log.w("onCancelled", "onCancelled: ", error.toException());
+                    }
+                });
             }
         });
 
@@ -343,12 +376,17 @@ public class MainActivity extends AppCompatActivity implements NavigationBarView
             double locationLng = Double.parseDouble(photosList.get(i).getLng());
             LatLng location = new LatLng(locationLat, locationLng);
 
+            float color = BitmapDescriptorFactory.HUE_RED;
+            if(photosList.get(i).getOwnerId().equals(user.getUid())){
+                color = BitmapDescriptorFactory.HUE_AZURE;
+            }
             Marker marker = map.addMarker(new MarkerOptions()
                     .position(location)
                     .title(photosList.get(i).getId())
-                    .snippet(photosList.get(i).getSpecieName())
-                    //.snippet(photosList.get(i).getCreatedAt())
-                    //.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE))
+                    .snippet(photosList.get(i).getSpecieName()+ "\n" +
+                            photosList.get(i).getOwnerName() + "\n" +
+                            photosList.get(i).getCreatedAt())
+                    .icon(BitmapDescriptorFactory.defaultMarker(color))
             );
             marker.showInfoWindow();
         }

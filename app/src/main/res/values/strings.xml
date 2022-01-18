@@ -16,6 +16,9 @@
     <!--    Home Fragment-->
     <string name="view_more">More</string>
     <string name="empty_recently_added"> there are not recent activity</string>
+    
+    <!-- Search Fragment -->
+    <string name="search_helper_text">Type at least 4 characters </string>
 
 
     <!--    Settings Activity-->

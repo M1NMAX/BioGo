@@ -193,7 +193,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         });
         recentlyRecyclerView.setAdapter(catalogAdapter);
 
-        Query imagesQuery = mDataBase.child("images").orderByChild("ownerId").equalTo(user.getUid()).limitToFirst(3);
+        Query imagesQuery = mDataBase.child("images").orderByChild("ownerId").equalTo(user.getUid()).limitToFirst(5);
 
         imagesQuery.addValueEventListener(new ValueEventListener() {
             @Override

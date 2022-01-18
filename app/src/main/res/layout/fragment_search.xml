@@ -7,6 +7,8 @@
     tools:context=".SearchFragment">
 
 
+
+
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/textField"
         android:layout_width="match_parent"
@@ -19,9 +21,13 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:startIconDrawable="@drawable/ic_baseline_search_24"
+        app:endIconMode="clear_text"
+        app:helperTextEnabled="true"
+        app:helperText="@string/search_helper_text"
         tools:ignore="MissingConstraints">
 
         <com.google.android.material.textfield.TextInputEditText
+            android:imeOptions="actionSearch"
             android:id="@+id/search_string"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
@@ -55,6 +61,7 @@
         app:layout_constraintBottom_toTopOf="@+id/scrollView2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textField" />
+        app:layout_constraintTop_toBottomOf="@+id/textField"
+        android:drawableEnd="@drawable/ic_baseline_arrow_forward_24"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

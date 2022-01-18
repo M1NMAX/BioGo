@@ -145,7 +145,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         usersList = new ArrayList<>();
 
         RankingAdapter rankingAdapter = new RankingAdapter(getContext(), usersList, R.layout.ranking_list_item_vertical, position -> {
-            User otherUser =  usersList.get(position);
+            User otherUser = usersList.get(position);
             Intent playerProfileIntent = new Intent(getActivity(), PlayerProfileActivity.class);
             playerProfileIntent.putExtra("userData", otherUser);
             startActivity(playerProfileIntent);
@@ -166,6 +166,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                 rankingAdapter.notifyDataSetChanged();
 
             }
+
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
                 Log.w(TAG, "onCancelled: ", error.toException());
@@ -187,7 +188,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
 
         ArrayList<Photo> photosList = new ArrayList<>();
 
-        CatalogAdapter catalogAdapter = new CatalogAdapter(getContext(), photosList,R.layout.catalog_list_item_horizontal, position -> {
+        CatalogAdapter catalogAdapter = new CatalogAdapter(getContext(), photosList, R.layout.catalog_list_item_horizontal, position -> {
             Photo photo = photosList.get(position);
             Intent photoIntent = new Intent(getActivity(), PhotoActivity.class);
             photoIntent.putExtra("photoData", photo);
@@ -195,7 +196,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         });
         recentlyRecyclerView.setAdapter(catalogAdapter);
 
-        Query imagesQuery = mDataBase.child("images").orderByChild("ownerId").equalTo(user.getUid()).limitToFirst(5);
+        Query imagesQuery = mDataBase.child("images").orderByChild("ownerId").equalTo(user.getUid()).limitToFirst(4);
 
         imagesQuery.addValueEventListener(new ValueEventListener() {
             @Override
@@ -203,7 +204,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                 photosList.clear();
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                     Photo photo = snapshot.getValue(Photo.class);
-                    if(photo != null) {
+                    if (photo != null) {
                         photo.setId(snapshot.getKey());
                         photosList.add(photo);
                     }
@@ -216,7 +217,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                 }));
                 catalogAdapter.notifyDataSetChanged();
 
-                if (photosList.size() == 0){
+                if (photosList.size() == 0) {
                     recentlyRecyclerView.setVisibility(View.GONE);
                     emptyRecentlyAdded.setVisibility(View.VISIBLE);
 
@@ -251,14 +252,9 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
 
             case R.id.fabMain:
                 if (isOpen) {
-                    fabTakePhoto.show();
-                    fabUploadPhoto.show();
-                    isOpen = false;
-
+                    showFABs();
                 } else {
-                    fabTakePhoto.hide();
-                    fabUploadPhoto.hide();
-                    isOpen = true;
+                    hideFABs();
                 }
                 break;
             case R.id.fabUploadPhoto:
@@ -270,6 +266,18 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         }
 
 
+    }
+
+    private void showFABs() {
+        fabTakePhoto.show();
+        fabUploadPhoto.show();
+        isOpen = false;
+    }
+
+    private void hideFABs() {
+        fabTakePhoto.hide();
+        fabUploadPhoto.hide();
+        isOpen = true;
     }
 
     ActivityResultLauncher<Intent> imageActivityResultLauncher = registerForActivityResult(
@@ -334,7 +342,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                         String lng = String.valueOf(currentLocation.getLongitude());
 
                         //Save image data in the database
-                        Photo photo = new Photo(lat, lng, uri.toString(), "N/A","n/a", "N/A",
+                        Photo photo = new Photo(lat, lng, uri.toString(), "N/A", "n/a", "N/A",
                                 user.getUid(), user.getDisplayName(), ClassificationEnum.PENDING.toString(),
                                 new Date().toString(), profilePic.toString());
                         mDataBase.child("images").push().setValue(photo);
@@ -349,18 +357,20 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
     }
 
     private void goToSubmitPhoto() {
+        hideFABs();
+
         Intent submitPhotoIntent = new Intent(getActivity(), SubmitPhotoActivity.class);
         //Convert current Latitude and Longitude to String
         String lat = String.valueOf(currentLocation.getLatitude());
         String lng = String.valueOf(currentLocation.getLongitude());
 
 
-        submitPhotoIntent.putExtra("lat",lat);
-        submitPhotoIntent.putExtra("lng",lng);
-        submitPhotoIntent.putExtra("userId",user.getUid());
-        submitPhotoIntent.putExtra("userName",user.getDisplayName());
-        submitPhotoIntent.putExtra("classification",ClassificationEnum.PENDING.toString());
-        submitPhotoIntent.putExtra("photoUri",imageUri);
+        submitPhotoIntent.putExtra("lat", lat);
+        submitPhotoIntent.putExtra("lng", lng);
+        submitPhotoIntent.putExtra("userId", user.getUid());
+        submitPhotoIntent.putExtra("userName", user.getDisplayName());
+        submitPhotoIntent.putExtra("classification", ClassificationEnum.PENDING.toString());
+        submitPhotoIntent.putExtra("photoUri", imageUri);
 
         //Get current time
         Calendar calendar = Calendar.getInstance();
@@ -368,9 +378,9 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd|HH:mm");
         String current = formatter.format(calendar.getTime());
 
-        submitPhotoIntent.putExtra("date",current);
+        submitPhotoIntent.putExtra("date", current);
 
-        Photo photo = new Photo(lat, lng, imageUri.toString(), "N/A","n/a", "N/A",
+        Photo photo = new Photo(lat, lng, imageUri.toString(), "N/A", "n/a", "N/A",
                 user.getUid(), user.getDisplayName(), ClassificationEnum.PENDING.toString(),
                 current, profilePic.toString());
         submitPhotoIntent.putExtra("photo", photo);
@@ -409,7 +419,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                     if (currentLocation != null)
                         //uploadImage();
                         goToSubmitPhoto();
-                        Log.d(TAG, "getLocation: " + currentLocation);
+                    Log.d(TAG, "getLocation: " + currentLocation);
 
                 } else {
                     Log.d(TAG, "Get location failed");

@@ -191,35 +191,40 @@
 
     </LinearLayout>
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
+    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
         android:id="@+id/fabUploadPhoto"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
         android:layout_margin="16dp"
-        android:contentDescription="add"
+        android:contentDescription="@string/upload_picture"
+        android:text="@string/upload_picture"
         android:visibility="invisible"
         app:fabSize="normal"
+        app:icon="@drawable/ic_baseline_add_photo_alternate_24"
+        app:iconGravity="textEnd"
         app:layout_constraintBottom_toTopOf="@+id/fabTakePhoto"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:srcCompat="@drawable/ic_baseline_add_photo_alternate_24" />
+        app:layout_constraintEnd_toEndOf="parent" />
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
+    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
         android:id="@+id/fabTakePhoto"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
         android:layout_margin="16dp"
-        android:contentDescription="add"
+        android:contentDescription="@string/take_picture"
+        android:text="@string/take_picture"
         android:visibility="invisible"
         app:fabSize="normal"
+        app:icon="@drawable/ic_baseline_photo_camera_24"
+        app:iconGravity="textEnd"
         app:layout_constraintBottom_toTopOf="@+id/fabMain"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:srcCompat="@drawable/ic_baseline_photo_camera_24" />
+        app:layout_constraintEnd_toEndOf="parent" />
 
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fabMain"
+        style="Widget.MaterialComponents.ExtendedFloatingActionButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
@@ -228,9 +233,10 @@
         android:backgroundTint="@color/dark_secondary"
         android:contentDescription="@string/add_btn"
         app:fabSize="normal"
+        app:srcCompat="@drawable/ic_baseline_add_a_photo_24"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:srcCompat="@drawable/ic_baseline_add_a_photo_24" />
+        app:layout_constraintEnd_toEndOf="parent" />
+
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

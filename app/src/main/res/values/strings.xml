@@ -3,14 +3,17 @@
     <string name="main_button_play">Play</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="search_input">Search</string>
-    <string name="add_btn">Add specie button</string>
+
     <string name="player_profile_Activity">Profile</string>
     <string name="specie_Activity">Specie</string>
     <string name="ranking_Activity">Ranking</string>
 
     <!--    Home Fragment-->
     <string name="view_more">More</string>
+    <string name="add_btn">Add to catalog</string>
     <string name="empty_recently_added"> there are not recent activity</string>
+    <string name="take_picture">Take picture</string>
+    <string name="upload_picture">Upload picture</string>
 
     <!-- Submit photo Activity -->
     <string name="submit_photo_activity">Submit photo </string>

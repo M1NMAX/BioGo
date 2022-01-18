@@ -36,6 +36,7 @@ import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.CancellationTokenSource;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -78,8 +79,8 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
     private static final String TAG = "HomeFragment";
     ArrayList<User> usersList;
     private boolean isOpen = true;
-    private FloatingActionButton fabTakePhoto;
-    private FloatingActionButton fabUploadPhoto;
+    private ExtendedFloatingActionButton fabTakePhoto;
+    private ExtendedFloatingActionButton fabUploadPhoto;
     private Uri imageUri;
     private DatabaseReference mDataBase;
     private FirebaseUser user;
@@ -111,6 +112,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
 
         //FAB
         FloatingActionButton fabMain = view.findViewById(R.id.fabMain);
+
         fabTakePhoto = view.findViewById(R.id.fabTakePhoto);
         fabUploadPhoto = view.findViewById(R.id.fabUploadPhoto);
         fabMain.setOnClickListener(this);

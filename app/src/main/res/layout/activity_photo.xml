@@ -175,8 +175,8 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:text="Specie"
-                            android:textColor="@color/pokemon_yellow"
-                            app:strokeColor="@color/pokemon_yellow" />
+                            android:textColor="@color/dark_primary"
+                            app:strokeColor="@color/dark_primary" />
 
                     </LinearLayout>
 

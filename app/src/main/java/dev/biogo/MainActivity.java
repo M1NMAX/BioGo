@@ -7,9 +7,12 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
@@ -34,17 +37,39 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptor;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MapStyleOptions;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationMenuView;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
+
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Date;
+
+import dev.biogo.Adapters.CustomInfoWindowAdapter;
+import dev.biogo.Helpers.DateHelper;
+import dev.biogo.Models.Photo;
 
 public class MainActivity extends AppCompatActivity implements NavigationBarView.OnItemSelectedListener, SensorEventListener, OnMapReadyCallback {
     private static final String TAG = "MainActivity";
 
+    private DatabaseReference mDataBase;
+    private ArrayList<Photo> photosList;
 
     private SensorManager sensorManager;
     private Sensor accelerometer;
@@ -59,7 +84,7 @@ public class MainActivity extends AppCompatActivity implements NavigationBarView
     private final int PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 1;
     private FusedLocationProviderClient fusedLocationClient;
     private boolean locationPermissionGranted;
-
+    private boolean mapFlag = true;
 
 
     private Location lastLocationloc;
@@ -75,6 +100,11 @@ public class MainActivity extends AppCompatActivity implements NavigationBarView
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        //Firebase Database
+        mDataBase = FirebaseDatabase.getInstance("https://biogo-54daa-default-rtdb.europe-west1.firebasedatabase.app/")
+                .getReference();
+
 
         //Sensors
         sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
@@ -136,7 +166,7 @@ public class MainActivity extends AppCompatActivity implements NavigationBarView
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-        Log.i(TAG, "onNavigationItemSelected: ");
+        Log.i("Click", "onNavigationItemSelected: ");
 
         switch (item.getItemId()){
             case R.id.home:
@@ -152,6 +182,13 @@ public class MainActivity extends AppCompatActivity implements NavigationBarView
                 getSupportFragmentManager().beginTransaction().replace(R.id.container, profileFragment).commit();
                 return true;
             case R.id.googleMap:
+                if(mapFlag) {
+                    try {
+                        createMapMarkers();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
                 //getSupportFragmentManager().beginTransaction().replace(R.id.container, mapFragment).commit();
                 supportMap.getView().setVisibility(View.VISIBLE);
                 return true;
@@ -209,9 +246,39 @@ public class MainActivity extends AppCompatActivity implements NavigationBarView
     public void onMapReady(@NonNull GoogleMap googleMap) {
         this.map = googleMap;
         map.setMapStyle(MapStyleOptions.loadRawResourceStyle(this, R.raw.map_style));
+
         updateLocation();
         getLocation();
-    }
+
+        photosList = new ArrayList<>();
+
+        if(mDataBase != null) {
+            //Get photos latlng
+            Query imagesQuery = mDataBase.child("images");
+
+            imagesQuery.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    photosList.clear();
+                    for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                        Photo photo = snapshot.getValue(Photo.class);
+                        if (photo != null) {
+                            Log.d("yooooo", "onMapReady: " + " Photo Added");
+                            photo.setId(snapshot.getKey());
+                            photosList.add(photo);
+                        }
+                    }
+                }
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+                    Log.d("yooooo", "onMapReady: " + "Database error");
+                }
+
+            });
+
+
+        }
+        }
 
     private void checkLocationPermission() {
         if (ContextCompat.checkSelfPermission(this.getApplicationContext(),
@@ -266,4 +333,29 @@ public class MainActivity extends AppCompatActivity implements NavigationBarView
             fusedLocationClient.requestLocationUpdates(locationRequest, locationCallback, Looper.getMainLooper());
         }
     }
+
+    @SuppressLint("PotentialBehaviorOverride")
+    private void createMapMarkers() throws IOException {
+        mapFlag = false;
+
+        map.setInfoWindowAdapter(new CustomInfoWindowAdapter(MainActivity.this));
+
+        for(int i=0; i<photosList.size();i++){
+            double locationLat = Double.parseDouble(photosList.get(i).getLat());
+            double locationLng = Double.parseDouble(photosList.get(i).getLng());
+            LatLng location = new LatLng(locationLat, locationLng);
+
+            Marker marker = map.addMarker(new MarkerOptions()
+                    .position(location)
+                    .title(photosList.get(i).getSpecieName())
+                    .snippet(photosList.get(i).getCreatedAt())
+                    //.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE))
+            );
+            marker.showInfoWindow();
+        }
+    }
+
+     public void onMarkerClick(Marker marker){
+         Log.d("markeeer", "onMarkerClick: YAAA");
+     }
 }

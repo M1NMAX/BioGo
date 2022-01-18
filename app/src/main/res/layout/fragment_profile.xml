@@ -206,9 +206,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/pending_list"
-                android:textColor="@color/pokemon_yellow"
+                android:textColor="@color/dark_primary"
                 android:visibility="gone"
-                app:strokeColor="@color/pokemon_yellow" />
+                app:strokeColor="@color/dark_primary" />
 
 
         </androidx.appcompat.widget.LinearLayoutCompat>

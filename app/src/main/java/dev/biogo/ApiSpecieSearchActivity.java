@@ -86,12 +86,15 @@ public class ApiSpecieSearchActivity extends AppCompatActivity implements ApiSpe
                                                         .getJSONObject(i);
 
                                                 Object obj = specie.getJSONObject("taxon").getJSONObject("common_name").get("name");
-                                                Object objPhotos = specie.get("photos");
                                                 JSONArray array= specie.getJSONArray("photos");
+                                                Object sciNameObj = specie.getJSONObject("taxon").get("name");
 
                                                 //Get api specieName and id
                                                 String specieName = obj.toString();
+                                                String sciName = sciNameObj.toString();
                                                 String id = specie.getJSONObject("taxon").get("id").toString();
+
+                                                //Log.d("apierror", "onResponse: " + sciName);
 
                                                 //Get api photo
                                                 JSONObject secondArray = (JSONObject) array.get(0);
@@ -99,11 +102,10 @@ public class ApiSpecieSearchActivity extends AppCompatActivity implements ApiSpe
                                                 String imageUri = medium_photo.toString();
 
                                                 //Create ApiSpecie
-                                                ApiSpecie apiSpecie = new ApiSpecie(id, specieName, imageUri, "1");
+                                                ApiSpecie apiSpecie = new ApiSpecie(id, specieName, imageUri,sciName, "1");
 
                                                 if (listCheck(apiSpecie.getSpecieName(), apiSpeciesList))
                                                     apiSpeciesList.add(apiSpecie);
-                                                //Log.d("apierror", "List_Added" + input);
                                                 i++;
 
                                             } catch (JSONException e) {

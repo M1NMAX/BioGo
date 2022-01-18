@@ -8,14 +8,17 @@ public class ApiSpecie implements Parcelable {
     private String id;
     private String specieName;
     private String specieImage;
+    private String specieScientificName;
     private String points;
 
-    public ApiSpecie(){}
+    public ApiSpecie() {
+    }
 
-    public ApiSpecie(String id, String specieName, String specieImage, String points) {
+    public ApiSpecie(String id, String specieName, String specieImage, String specieScientificName, String points) {
         this.id = id;
         this.specieName = specieName;
         this.specieImage = specieImage;
+        this.specieScientificName = specieScientificName;
         this.points = points;
     }
 
@@ -23,7 +26,22 @@ public class ApiSpecie implements Parcelable {
         id = in.readString();
         specieName = in.readString();
         specieImage = in.readString();
+        specieScientificName = in.readString();
         points = in.readString();
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(id);
+        dest.writeString(specieName);
+        dest.writeString(specieImage);
+        dest.writeString(specieScientificName);
+        dest.writeString(points);
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
     }
 
     public static final Creator<ApiSpecie> CREATOR = new Creator<ApiSpecie>() {
@@ -38,19 +56,6 @@ public class ApiSpecie implements Parcelable {
         }
     };
 
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    @Override
-    public void writeToParcel(Parcel parcel, int i) {
-        parcel.writeString(id);
-        parcel.writeString(specieName);
-        parcel.writeString(specieImage);
-        parcel.writeString(points);
-    }
-
     public String getId() {
         return id;
     }
@@ -61,6 +66,10 @@ public class ApiSpecie implements Parcelable {
 
     public String getSpecieImage() {
         return specieImage;
+    }
+
+    public String getSpecieScientificName() {
+        return specieScientificName;
     }
 
     public String getPoints() {
@@ -81,6 +90,10 @@ public class ApiSpecie implements Parcelable {
 
     public void setSpecieImage(String specieImage) {
         this.specieImage = specieImage;
+    }
+
+    public void setSpecieScientificName(String specieScientificName) {
+        this.specieScientificName = specieScientificName;
     }
 
     public void setPoints(String points) {

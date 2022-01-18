@@ -110,9 +110,8 @@ public class PhotoActivity extends AppCompatActivity implements View.OnClickList
         updateClassificationUI(photo.getClassification());
 
 
-        TextView photo_classification = findViewById(R.id.photo_specieScientificName);
-        //TODO: SHOW SN
-        photo_classification.append(photo.getApiSpecie().getPoints());
+        TextView photo_specieScientificName = findViewById(R.id.photo_specieScientificName);
+        photo_specieScientificName.append(photo.getApiSpecie().getSpecieScientificName());
 
 
         Date date = DateHelper.convertToDate(photo.getCreatedAt(), "yyyy-MM-dd|HH:mm");

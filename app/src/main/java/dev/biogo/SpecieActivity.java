@@ -37,6 +37,9 @@ public class SpecieActivity extends AppCompatActivity {
         TextView specie_name_tvView = findViewById(R.id.specie_name);
         specie_name_tvView.setText(specie.getSpecieName());
 
+        TextView specie_scientific_name_tvView = findViewById(R.id.specie_ScientificName);
+        specie_scientific_name_tvView.setText(specie.getSpecieScientificName());
+
         TextView specie_points_tvView = findViewById(R.id.specie_points);
         specie_points_tvView.setText(specie.getPoints());
 

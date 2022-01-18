@@ -12,7 +12,7 @@
     <string name="photo_Activity">Photo</string>
     <string name="pending_list">Pending List</string>
     <string name="pending_Activity"> Pending</string>
-    <string name="photo_evaluate">Evaluate </string>
+
     <string name="evaluation_dialog_title">Evaluate capture</string>
     <string name="evaluation_dialog_save">Save </string>
     <string name="evaluation_dialog_cancel">Cancel</string>
@@ -38,6 +38,7 @@
     <string name="photo_status_valid">Valid</string>
     <string name="photo_status_invalid">Invalid</string>
     <string name="photo_status_pending">Pending</string>
+    <string name="photo_evaluate">Evaluate </string>
 
 
 </resources>

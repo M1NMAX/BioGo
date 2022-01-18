@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
@@ -59,9 +60,12 @@ public class PhotoActivity extends AppCompatActivity implements View.OnClickList
     private GoogleMap photoMap;
     private SupportMapFragment supportMap;
 
-    //TODO: hide classification if pending or invalid
-    //TODO: add path to specie activity
+    private Button evaluateBtn;
 
+    private ImageView photo_statusIcon;
+    private TextView photo_statusText;
+
+    //TODO: hide classification if pending or invalid??
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -106,30 +110,15 @@ public class PhotoActivity extends AppCompatActivity implements View.OnClickList
 
 
         //photo_status
-        ImageView photo_statusIcon = findViewById(R.id.photo_statusIcon);
-        TextView photo_statusText = findViewById(R.id.photo_statusText);
-
-        String tmp_statusText;
-        int tmp_statusIconId;
-        if (photo.getClassification().equals(ClassificationEnum.PENDING.toString())) {
-            tmp_statusIconId = R.drawable.ic_baseline_hourglass_empty_24;
-            tmp_statusText = getString(R.string.photo_status_pending);
-        } else if (photo.getClassification().equals(ClassificationEnum.INVALID.toString())) {
-            tmp_statusIconId = R.drawable.ic_baseline_do_not_disturb_alt_24;
-            tmp_statusText = getString(R.string.photo_status_invalid);
-        } else {
-            tmp_statusIconId = R.drawable.ic_baseline_check_circle_24;
-            tmp_statusText = getString(R.string.photo_status_valid);
-        }
-        photo_statusIcon.setImageResource(tmp_statusIconId);
-        photo_statusText.setText(tmp_statusText);
+        photo_statusIcon = findViewById(R.id.photo_statusIcon);
+        photo_statusText = findViewById(R.id.photo_statusText);
+        //first update
+        updateClassificationUI(photo.getClassification());
 
 
-
-
-
-        TextView photo_classification = findViewById(R.id.photo_classification);
-        photo_classification.append(photo.getClassification());
+        TextView photo_classification = findViewById(R.id.photo_specieScientificName);
+        //TODO: SHOW SN
+        photo_classification.append(photo.getApiSpecie().getPoints());
 
 
         Date date = DateHelper.convertToDate(photo.getCreatedAt(), "yyyy-MM-dd|HH:mm");
@@ -143,7 +132,7 @@ public class PhotoActivity extends AppCompatActivity implements View.OnClickList
         photo_address.setText(LocationHelper.getAddressFromLatLng(this, Double.parseDouble(photo.getLat()), Double.parseDouble(photo.getLng())));
 
 
-        Button evaluateBtn = findViewById(R.id.evaluateBtn);
+        evaluateBtn = findViewById(R.id.evaluateBtn);
         evaluateBtn.setOnClickListener(this);
         currentUserRef.addValueEventListener(new ValueEventListener() {
             @Override
@@ -151,9 +140,10 @@ public class PhotoActivity extends AppCompatActivity implements View.OnClickList
                 User currentUser = snapshot.getValue(User.class);
                 if (currentUser != null) {
                     currentUser.setUserId(snapshot.getKey());
-                    //hide btn if current user is the owner or is not a moderator
+                    //hide btn if current user is the owner or is not a moderator or photo already has classification
                     if (!currentUser.getRole().equals(RoleEnum.MODERATOR.toString())
-                            || photo.getOwnerId().equals(currentUser.getUserId())) {
+                            || photo.getOwnerId().equals(currentUser.getUserId())
+                            || !photo.getClassification().equals(ClassificationEnum.PENDING.toString())) {
                         evaluateBtn.setVisibility(View.GONE);
                     }
                 }
@@ -193,9 +183,6 @@ public class PhotoActivity extends AppCompatActivity implements View.OnClickList
                         .setTitle(getResources().getText(R.string.evaluation_dialog_title))
                         .setNeutralButton(getResources().getText(R.string.evaluation_dialog_cancel), (dialogInterface, i) -> dialogInterface.dismiss())
                         .setPositiveButton(getResources().getText(R.string.evaluation_dialog_save), (dialogInterface, i) -> {
-                            //TODO: hide EvaluationBtn
-                            //TODO: Update photoActivity UI
-
 
                             //Hide dialog
                             dialogInterface.dismiss();
@@ -203,7 +190,7 @@ public class PhotoActivity extends AppCompatActivity implements View.OnClickList
                             String newClassification = (String) singleItems[checkedItem];
                             Map<String, Object> photoUpdate = new HashMap<>();
                             photoUpdate.put("classification", newClassification);
-                            photoUpdate.put("evaluateBy", firebaseUser.getDisplayName());
+                            photoUpdate.put("evaluatedBy", firebaseUser.getDisplayName());
                             photoRef.child(photo.getId()).updateChildren(photoUpdate);
 
                             //Update owner xp and specie number
@@ -212,6 +199,15 @@ public class PhotoActivity extends AppCompatActivity implements View.OnClickList
                             ownerUpdate.put("xp", ServerValue.increment(xpIncValue));
                             ownerUpdate.put("species", ServerValue.increment(1));
                             ownerRef.child(photo.getOwnerId()).updateChildren(ownerUpdate);
+
+
+                            //Update UI
+                            //hide EvaluationBtn and give user feedback
+                            evaluateBtn.setVisibility(View.GONE);
+                            Toast.makeText(this, "Success", Toast.LENGTH_LONG).show();
+                            photo.setClassification(newClassification);
+                            updateClassificationUI(photo.getClassification());
+
 
                         })
                         .setSingleChoiceItems(singleItems, checkedItem, (dialogInterface, i) -> checkedItem = i);
@@ -236,5 +232,24 @@ public class PhotoActivity extends AppCompatActivity implements View.OnClickList
         }
     }
 
+
+    private void updateClassificationUI (String classification){
+
+        String tmp_statusText;
+        int tmp_statusIconId;
+        if (classification.equals(ClassificationEnum.PENDING.toString())) {
+            tmp_statusIconId = R.drawable.ic_baseline_hourglass_empty_24;
+            tmp_statusText = getString(R.string.photo_status_pending);
+        } else if (classification.equals(ClassificationEnum.INVALID.toString())) {
+            tmp_statusIconId = R.drawable.ic_baseline_do_not_disturb_alt_24;
+            tmp_statusText = getString(R.string.photo_status_invalid);
+        } else {
+            tmp_statusIconId = R.drawable.ic_baseline_check_circle_24;
+            tmp_statusText = getString(R.string.photo_status_valid);
+        }
+        photo_statusIcon.setImageResource(tmp_statusIconId);
+        photo_statusText.setText(tmp_statusText);
+
+    }
 
 }

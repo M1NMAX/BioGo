@@ -2,7 +2,6 @@ package dev.biogo;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.location.Location;
@@ -28,7 +27,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -46,8 +44,6 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
 import com.squareup.picasso.Picasso;
 
 import java.io.File;
@@ -82,14 +78,12 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
     private ExtendedFloatingActionButton fabTakePhoto;
     private ExtendedFloatingActionButton fabUploadPhoto;
     private Uri imageUri;
-    private DatabaseReference mDataBase;
     private FirebaseUser user;
 
     private FusedLocationProviderClient fusedLocationClient;
     private Location currentLocation;
 
     private Uri profilePic;
-    ImageView imageView;
 
 
     @Override
@@ -107,7 +101,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(getActivity());
 
         //Firebase Database
-        mDataBase = FirebaseDatabase.getInstance("https://biogo-54daa-default-rtdb.europe-west1.firebasedatabase.app/")
+        DatabaseReference mDataBase = FirebaseDatabase.getInstance("https://biogo-54daa-default-rtdb.europe-west1.firebasedatabase.app/")
                 .getReference();
 
         //FAB
@@ -241,11 +235,13 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.seeCatalog:
+                hideFABs();
                 Intent catalogIntent = new Intent(getActivity(), CatalogActivity.class);
                 startActivity(catalogIntent);
                 break;
 
             case R.id.seeRanking:
+                hideFABs();
                 Intent rankingIntent = new Intent(getActivity(), RankingActivity.class);
                 startActivity(rankingIntent);
                 break;
@@ -259,9 +255,11 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                 break;
             case R.id.fabUploadPhoto:
                 openImage();
+                hideFABs();
                 break;
             case R.id.fabTakePhoto:
                 takePhoto();
+                hideFABs();
                 break;
         }
 
@@ -325,35 +323,6 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
 
     private String createImageName() {
         return new SimpleDateFormat("yyyy_MM_dd_HH_mm_ss", Locale.UK).format(new Date());
-    }
-
-    private void uploadImage() {
-        ProgressDialog pd = new ProgressDialog(getContext());
-        pd.setMessage("Uploading");
-        pd.show();
-        if (imageUri != null) {
-            StorageReference fileRef = FirebaseStorage.getInstance().getReference()
-                    .child("image/").child(createImageName());
-            fileRef.putFile(imageUri).addOnCompleteListener(task ->
-                    fileRef.getDownloadUrl().addOnSuccessListener(uri -> {
-
-                        //Convert current Latitude and Longitude to String
-                        String lat = String.valueOf(currentLocation.getLatitude());
-                        String lng = String.valueOf(currentLocation.getLongitude());
-
-                        //Save image data in the database
-                        Photo photo = new Photo(lat, lng, uri.toString(), "N/A", "n/a", "N/A",
-                                user.getUid(), user.getDisplayName(), ClassificationEnum.PENDING.toString(),
-                                new Date().toString(), profilePic.toString());
-                        mDataBase.child("images").push().setValue(photo);
-
-                        pd.dismiss();
-                        Toast.makeText(getContext(), "Image uploaded Successfully", Toast.LENGTH_LONG).show();
-
-
-                    }));
-        }
-
     }
 
     private void goToSubmitPhoto() {

@@ -68,9 +68,6 @@ public class SubmitPhotoActivity extends AppCompatActivity implements OnMapReady
         cancelBtn.setOnClickListener((view)->finish());
 
 
-
-
-
         Intent intent = getIntent();
         setPhotoAttrs(intent);
 

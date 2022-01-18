@@ -376,10 +376,22 @@ public class MainActivity extends AppCompatActivity implements NavigationBarView
             double locationLng = Double.parseDouble(photosList.get(i).getLng());
             LatLng location = new LatLng(locationLat, locationLng);
 
+            //Color for marker
             float color = BitmapDescriptorFactory.HUE_RED;
             if(photosList.get(i).getOwnerId().equals(user.getUid())){
                 color = BitmapDescriptorFactory.HUE_AZURE;
+                if(photosList.get(i).getClassification().equals("PENDING")){
+                    color = BitmapDescriptorFactory.HUE_CYAN;
+
+                }
+            }else if(photosList.get(i).getClassification().equals("PENDING")){
+                color = BitmapDescriptorFactory.HUE_MAGENTA;
             }
+
+            if(photosList.get(i).getClassification().equals("INVALID")){
+                color = BitmapDescriptorFactory.HUE_YELLOW;
+            }
+
             Marker marker = map.addMarker(new MarkerOptions()
                     .position(location)
                     .title(photosList.get(i).getId())

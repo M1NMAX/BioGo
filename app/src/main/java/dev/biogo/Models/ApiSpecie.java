@@ -10,6 +10,7 @@ public class ApiSpecie implements Parcelable {
     private String specieImage;
     private String specieScientificName;
     private String points;
+    private String description;
 
     public ApiSpecie() {
     }
@@ -28,20 +29,7 @@ public class ApiSpecie implements Parcelable {
         specieImage = in.readString();
         specieScientificName = in.readString();
         points = in.readString();
-    }
-
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(id);
-        dest.writeString(specieName);
-        dest.writeString(specieImage);
-        dest.writeString(specieScientificName);
-        dest.writeString(points);
-    }
-
-    @Override
-    public int describeContents() {
-        return 0;
+        description = in.readString();
     }
 
     public static final Creator<ApiSpecie> CREATOR = new Creator<ApiSpecie>() {
@@ -55,6 +43,21 @@ public class ApiSpecie implements Parcelable {
             return new ApiSpecie[size];
         }
     };
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeString(id);
+        parcel.writeString(specieName);
+        parcel.writeString(specieImage);
+        parcel.writeString(specieScientificName);
+        parcel.writeString(points);
+        parcel.writeString(description);
+    }
 
     public String getId() {
         return id;
@@ -74,6 +77,10 @@ public class ApiSpecie implements Parcelable {
 
     public String getPoints() {
         return points;
+    }
+
+    public String getDescription() {
+        return description;
     }
 
     public static Creator<ApiSpecie> getCREATOR() {
@@ -98,5 +105,9 @@ public class ApiSpecie implements Parcelable {
 
     public void setPoints(String points) {
         this.points = points;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 }

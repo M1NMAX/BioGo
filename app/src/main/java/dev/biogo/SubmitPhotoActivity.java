@@ -20,6 +20,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -33,6 +39,10 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.Serializable;
 import java.text.Normalizer;
@@ -97,6 +107,41 @@ public class SubmitPhotoActivity extends AppCompatActivity implements OnMapReady
                         if (result.getResultCode() == Activity.RESULT_OK) {
                             Intent data = result.getData();
                             ApiSpecie apiSpecie = data.getParcelableExtra("apiSpecie");
+
+                            //Get specie Description from wikipedia
+                            RequestQueue queue = Volley.newRequestQueue(getApplicationContext());
+                            String url ="https://en.wikipedia.org/w/rest.php/v1/search/page?q=" +apiSpecie.getSpecieName() + "&limit=1";
+
+                            StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
+                                    new Response.Listener<String>() {
+                                        @Override
+                                        public void onResponse(String response) {
+                                            try {
+                                                JSONObject jsonResponseObj = new JSONObject (response);
+                                                JSONArray firstPage = jsonResponseObj.getJSONArray("pages");
+                                                JSONObject descriptionJson = (JSONObject) firstPage.get(0);
+                                                Object descriptionObj = descriptionJson.get("excerpt");
+                                                String description = descriptionObj.toString().replaceAll("<[^>]*>", "");
+
+                                                apiSpecie.setDescription(description);
+                                            } catch (JSONException e) {
+                                                Log.d("apierror", "onResponse: JSON ERROR");
+                                            }
+                                        }
+                                    }, new Response.ErrorListener() {
+                                @Override
+                                public void onErrorResponse(VolleyError error) {
+                                    Log.d("apierror", "onErrorResponse: API Error");
+                                }
+                            });
+
+                            // Add the request to the RequestQueue.
+                            queue.add(stringRequest);
+
+
+
+
+
                             photo.setApiSpecie(apiSpecie);
                             specieName.setText(apiSpecie.getSpecieName());
                         }
@@ -133,7 +178,6 @@ public class SubmitPhotoActivity extends AppCompatActivity implements OnMapReady
                                 photo.setSpecieNameLower(removerAcentos(specie).toLowerCase());
                                 photo.setImgUrl(uri.toString());
                                 mDataBase.child("images").push().setValue(photo);
-
                                 pd.dismiss();
                                 Toast.makeText(SubmitPhotoActivity.this, "Image uploaded Successfully", Toast.LENGTH_LONG).show();
 

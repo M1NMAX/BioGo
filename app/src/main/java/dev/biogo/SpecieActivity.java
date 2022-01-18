@@ -43,6 +43,10 @@ public class SpecieActivity extends AppCompatActivity {
         TextView specie_points_tvView = findViewById(R.id.specie_points);
         specie_points_tvView.setText(specie.getPoints());
 
+        TextView specie_description_tvView = findViewById(R.id.specie_description);
+        if(!(specie.getDescription() == null))
+            specie_description_tvView.setText(specie.getDescription());
+
 
     }
 }

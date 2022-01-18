@@ -23,8 +23,7 @@
         <LinearLayout
             android:id="@+id/linearLayout"
             android:layout_width="match_parent"
-            android:layout_height="0px"
-            android:layout_weight="0.8"
+            android:layout_height="wrap_content"
             android:gravity="start"
             android:orientation="horizontal">
 
@@ -71,9 +70,8 @@
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/firstCard"
             android:layout_width="match_parent"
-            android:layout_height="0px"
-            android:layout_marginTop="8dp"
-            android:layout_weight="2.5">
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -125,9 +123,8 @@
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/secondCard"
             android:layout_width="match_parent"
-            android:layout_height="0px"
-            android:layout_marginTop="8dp"
-            android:layout_weight="5">
+            android:layout_height="match_parent"
+            android:layout_marginTop="8dp">
 
             <LinearLayout
                 android:layout_width="match_parent"

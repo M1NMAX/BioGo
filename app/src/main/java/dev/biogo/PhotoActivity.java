@@ -110,7 +110,7 @@ public class PhotoActivity extends AppCompatActivity implements View.OnClickList
 
 
         TextView photo_specieScientificName = findViewById(R.id.photo_specieScientificName);
-        photo_specieScientificName.append(photo.getApiSpecie().getSpecieScientificName());
+        photo_specieScientificName.setText(photo.getApiSpecie().getSpecieScientificName());
 
 
         Date date = DateHelper.convertToDate(photo.getCreatedAt(), "yyyy-MM-dd|HH:mm");
@@ -153,7 +153,6 @@ public class PhotoActivity extends AppCompatActivity implements View.OnClickList
             public void onClick(View view) {
                 Intent specieProfileIntent = new Intent(getApplicationContext(), SpecieActivity.class);
                 specieProfileIntent.putExtra("apiSpecie", photo.getApiSpecie());
-                //Log.d("taaamos", "onClick: "+ photo.getApiSpecie().getSpecieName());
                 startActivity(specieProfileIntent);
             }
         });

@@ -167,7 +167,8 @@
                                 android:id="@+id/photo_specieScientificName"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:text="scientific name: " />
+                                android:text="scientific name: "
+                                android:textStyle="italic" />
                         </LinearLayout>
 
                         <Button

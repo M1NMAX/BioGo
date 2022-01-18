@@ -26,6 +26,7 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MapStyleOptions;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -160,9 +161,27 @@ public class SubmitPhotoActivity extends AppCompatActivity implements OnMapReady
             Double locationLat = Double.parseDouble(photo.getLat());
             Double locationLng = Double.parseDouble(photo.getLng());
             LatLng location = new LatLng(locationLat, locationLng);
-            photoMap.addMarker(new MarkerOptions().position(location).title("Location"));
+            photoMap.addMarker(new MarkerOptions().position(location).title("Photo taken here"));
             photoMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(locationLat, locationLng), 14));
         }
+
+        googleMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
+            @Override
+            public void onMapClick(@NonNull LatLng latLng) {
+                MarkerOptions markerOptions = new MarkerOptions();
+                markerOptions.position(latLng);
+                markerOptions.title("Photo taken here");
+
+                //Assing to photo
+                photo.setLat(String.valueOf(latLng.latitude));
+                photo.setLng(String.valueOf(latLng.longitude));
+
+                googleMap.clear();
+                googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng,14));
+
+                googleMap.addMarker(markerOptions);
+            }
+        });
     }
 
     private String createImageName() {

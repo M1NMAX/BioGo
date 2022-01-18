@@ -69,8 +69,8 @@ public class ApiSpecieSearchActivity extends AppCompatActivity implements ApiSpe
 
                 // Instantiate the RequestQueue.
                 RequestQueue queue = Volley.newRequestQueue(getApplicationContext());
-                String url ="https://www.inaturalist.org/observations.json?view=species&per_page=5&per_page=3&taxon_name=" + input;
-
+                //String url ="https://www.inaturalist.org/observations.json?view=species&per_page=5&per_page=3&taxon_name=" + input;
+                String url ="https://www.inaturalist.org/observations.json?view=species&per_page=5&quality_grade=research&per_page=3&taxon_name=" + input;
                 StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
                         new Response.Listener<String>() {
                             @Override

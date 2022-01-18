@@ -28,8 +28,7 @@
     <string name="about_text">BioGo is a “photo-to-catch” based mobile game, where the objective is to catch as much as
         animals and plants species as possible. For every photo of a specie submitted, the player itself receives its
         associated points. Points are important for a player’s ranking. BioGo is being developed for a master’s degree
-        class on Mobile Computing. <br></br>Group 2:<br></br>Frederico Teixeira fc58795 <br></br> João Mendes fc53300
-        <br></br> José Ferreira fc53311
+        class on Mobile Computing. <br></br>Group 2: <br></br> João Mendes fc53300 <br></br> José Ferreira fc53311
     </string>
 
     <string name="app_version">Version: </string>

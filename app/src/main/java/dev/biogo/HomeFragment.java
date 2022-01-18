@@ -234,8 +234,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                 break;
 
             case R.id.seeRanking:
-                //Intent rankingIntent = new Intent(getActivity(), RankingActivity.class);
-                Intent rankingIntent = new Intent(getActivity(), ApiSpecieSearchActivity.class);
+                Intent rankingIntent = new Intent(getActivity(), RankingActivity.class);
                 startActivity(rankingIntent);
                 break;
 

@@ -8,6 +8,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.TextView;
 
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.firebase.auth.FirebaseAuth;
@@ -45,6 +47,9 @@ public class PendingActivity extends AppCompatActivity implements CatalogAdapter
                 .getReference();
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
 
+        //Empty pending list
+        TextView emptyPendingList = findViewById(R.id.emptyPendingList);
+
 
         RecyclerView pendingRView = findViewById(R.id.pendingRView);
         pendingRView.setHasFixedSize(true);
@@ -72,6 +77,11 @@ public class PendingActivity extends AppCompatActivity implements CatalogAdapter
                     }
                 }
                 catalogListAdapter.notifyDataSetChanged();
+
+                if (photosList.size() == 0){
+                    emptyPendingList.setVisibility(View.VISIBLE);
+                    pendingRView.setVisibility(View.GONE);
+                }
             }
 
             @Override

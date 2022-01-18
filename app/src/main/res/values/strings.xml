@@ -5,13 +5,9 @@
     <string name="search_input">Search</string>
     <string name="add_btn">Add specie button</string>
     <string name="player_profile_Activity">Profile</string>
-    <string name="catalog_Activity">Catalog</string>
     <string name="specie_Activity">Specie</string>
     <string name="ranking_Activity">Ranking</string>
     <string name="settings_Activity">Settings</string>
-    <string name="photo_Activity">Photo</string>
-    <string name="pending_list">Pending List</string>
-    <string name="pending_Activity"> Pending</string>
 
     <string name="evaluation_dialog_title">Evaluate capture</string>
     <string name="evaluation_dialog_save">Save </string>
@@ -19,6 +15,7 @@
 
     <!--    Home Fragment-->
     <string name="view_more">More</string>
+    <string name="empty_recently_added"> there are not recent activity</string>
 
 
     <!--    Settings Activity-->
@@ -34,7 +31,17 @@
     <string name="app_version">Version: </string>
     <string name="app_version_status">Beta</string>
 
+    <!--    Catalog Activity-->
+    <string name="catalog_Activity">Catalog</string>
+    <string name="empty_catalog">This catalog is empty :\'(</string>
+
+    <!--    Pending Activity-->
+    <string name="pending_Activity"> Pending</string>
+    <string name="pending_list">Pending List</string>
+    <string name="empty_pending_list">There are no evaluation pending :)</string>
+
     <!--    Photo Activity-->
+    <string name="photo_Activity">Photo</string>
     <string name="photo_status_valid">Valid</string>
     <string name="photo_status_invalid">Invalid</string>
     <string name="photo_status_pending">Pending</string>

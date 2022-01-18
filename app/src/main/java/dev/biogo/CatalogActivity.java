@@ -8,7 +8,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.firebase.auth.FirebaseAuth;
@@ -61,6 +63,10 @@ public class CatalogActivity extends AppCompatActivity implements CatalogAdapter
         TextView catalogOwner = findViewById(R.id.catalogOwner);
         catalogOwner.setText(username + "'s catalog");
 
+        //EmptyCatalog
+        TextView emptyCatalog = findViewById(R.id.emptyCatalog);
+
+
 
         RecyclerView catalogRView = findViewById(R.id.catalogRView);
         catalogRView.setHasFixedSize(true);
@@ -76,6 +82,7 @@ public class CatalogActivity extends AppCompatActivity implements CatalogAdapter
         imagesQuery.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                photosList.clear();
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                     Photo photo = snapshot.getValue(Photo.class);
                     if(photo != null) {
@@ -84,6 +91,10 @@ public class CatalogActivity extends AppCompatActivity implements CatalogAdapter
                     }
                 }
                 catalogListAdapter.notifyDataSetChanged();
+                if (photosList.size() == 0){
+                    emptyCatalog.setVisibility(View.VISIBLE);
+                    catalogRView.setVisibility(View.GONE);
+                }
             }
 
             @Override

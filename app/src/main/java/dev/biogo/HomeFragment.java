@@ -176,6 +176,9 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         Button seeCatalogBtn = view.findViewById(R.id.seeCatalog);
         seeCatalogBtn.setOnClickListener(this);
 
+        //emptyRecentlyAdded
+        TextView emptyRecentlyAdded = view.findViewById(R.id.emptyRecentlyAdded);
+
         RecyclerView recentlyRecyclerView = view.findViewById(R.id.recentlyRecyclerView);
         recentlyRecyclerView.setHasFixedSize(true);
         recentlyRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -210,6 +213,12 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                     return dateOne.compareTo(dateTwo);
                 }));
                 catalogAdapter.notifyDataSetChanged();
+
+                if (photosList.size() == 0){
+                    recentlyRecyclerView.setVisibility(View.GONE);
+                    emptyRecentlyAdded.setVisibility(View.VISIBLE);
+
+                }
             }
 
             @Override

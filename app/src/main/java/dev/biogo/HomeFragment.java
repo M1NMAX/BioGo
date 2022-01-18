@@ -27,6 +27,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -139,6 +140,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         usersList = new ArrayList<>();
 
         RankingAdapter rankingAdapter = new RankingAdapter(getContext(), usersList, R.layout.ranking_list_item_vertical, position -> {
+            hideFABs();
             User otherUser = usersList.get(position);
             Intent playerProfileIntent = new Intent(getActivity(), PlayerProfileActivity.class);
             playerProfileIntent.putExtra("userData", otherUser);
@@ -183,6 +185,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         ArrayList<Photo> photosList = new ArrayList<>();
 
         CatalogAdapter catalogAdapter = new CatalogAdapter(getContext(), photosList, R.layout.catalog_list_item_horizontal, position -> {
+            hideFABs();
             Photo photo = photosList.get(position);
             Intent photoIntent = new Intent(getActivity(), PhotoActivity.class);
             photoIntent.putExtra("photoData", photo);
@@ -378,12 +381,16 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
             locationRes.addOnCompleteListener(getActivity(), task -> {
                 if (task.isSuccessful()) {
                     currentLocation = task.getResult();
-                    if (currentLocation != null)
-                        //uploadImage();
+                    if (currentLocation != null) {
                         goToSubmitPhoto();
+                    } else {
+                        Toast.makeText(getContext(), getResources().getString(R.string.fail_msg), Toast.LENGTH_LONG).show();
+                    }
+
                     Log.d(TAG, "getLocation: " + currentLocation);
 
                 } else {
+                    Toast.makeText(getContext(), getResources().getString(R.string.fail_msg), Toast.LENGTH_LONG).show();
                     Log.d(TAG, "Get location failed");
                 }
             });

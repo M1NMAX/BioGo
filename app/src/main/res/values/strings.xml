@@ -1,11 +1,17 @@
 <resources>
     <string name="app_name">BioGo</string>
-    <string name="main_button_play">Play</string>
+
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="search_input">Search</string>
     <string name="player_profile_Activity">Profile</string>
     <string name="specie_Activity">Specie</string>
     <string name="ranking_Activity">Ranking</string>
+
+    <!--    Start Activity-->
+    <string name="main_button_play">Play</string>
+    <string name="connection_alert_title"> No connection</string>
+    <string name="connection_alert_ok"> OK</string>
+    <string name="connection_alert_text"> Please turn on your wifi and location </string>
 
     <!--    Home Fragment-->
     <string name="view_more">More</string>
@@ -13,6 +19,7 @@
     <string name="empty_recently_added"> there are not recent activity</string>
     <string name="take_picture">Take picture</string>
     <string name="upload_picture">Upload picture</string>
+    <string name="fail_msg">Something went wrong :\'(,  try later </string>
 
     <!-- Submit photo Activity -->
     <string name="submit_photo_activity">Submit photo </string>

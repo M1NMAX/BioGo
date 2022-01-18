@@ -7,21 +7,23 @@
     <string name="player_profile_Activity">Profile</string>
     <string name="specie_Activity">Specie</string>
     <string name="ranking_Activity">Ranking</string>
-    <string name="settings_Activity">Settings</string>
-
-    <string name="evaluation_dialog_title">Evaluate capture</string>
-    <string name="evaluation_dialog_save">Save </string>
-    <string name="evaluation_dialog_cancel">Cancel</string>
 
     <!--    Home Fragment-->
     <string name="view_more">More</string>
     <string name="empty_recently_added"> there are not recent activity</string>
+
+    <!-- Submit photo Activity -->
+    <string name="submit_photo_activity">Submit photo </string>
+    <string name="submit_btn">Submit</string>
+    <string name="cancel_btn">Cancel</string>
+    <string name="suggest_specie"> Suggest specie</string>
     
     <!-- Search Fragment -->
     <string name="search_helper_text">Type at least 4 characters </string>
 
 
     <!--    Settings Activity-->
+    <string name="settings_Activity">Settings</string>
     <string name="notification">Notifications</string>
     <string name="camera_feature">Auto camera mode</string>
     <string name="about">About BioGo</string>
@@ -30,7 +32,6 @@
         associated points. Points are important for a player’s ranking. BioGo is being developed for a master’s degree
         class on Mobile Computing. <br></br>Group 2: <br></br> João Mendes fc53300 <br></br> José Ferreira fc53311
     </string>
-
     <string name="app_version">Version: </string>
     <string name="app_version_status">Beta</string>
 
@@ -49,6 +50,10 @@
     <string name="photo_status_invalid">Invalid</string>
     <string name="photo_status_pending">Pending</string>
     <string name="photo_evaluate">Evaluate </string>
+
+    <string name="evaluation_dialog_title">Evaluate capture</string>
+    <string name="evaluation_dialog_save">Save </string>
+    <string name="evaluation_dialog_cancel">Cancel</string>
 
 
 </resources>

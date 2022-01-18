@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context=".SettingsActivity">
 
     <com.google.android.material.appbar.AppBarLayout
@@ -24,14 +25,7 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="64dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="8dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/appBarLayout">
+        android:layout_marginTop="8dp">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -40,8 +34,7 @@
 
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp">
+                android:layout_height="wrap_content">
 
 
                 <LinearLayout
@@ -51,19 +44,18 @@
                     android:padding="8dp">
 
                     <TextView
-                        android:layout_width="wrap_content"
+                        android:layout_width="0px"
+                        android:layout_weight="5"
                         android:layout_height="wrap_content"
                         android:text="@string/notification"
                         android:textSize="25sp" />
 
-                    <Space
-                        android:layout_width="175dp"
-                        android:layout_height="match_parent" />
 
                     <Switch
                         android:id="@+id/switch1"
-                        android:layout_width="wrap_content"
+                        android:layout_width="0px"
                         android:layout_height="wrap_content"
+                        android:layout_weight="1"
                         android:checked="false"
                         android:clickable="false"
                         android:minWidth="48dp"
@@ -86,19 +78,19 @@
 
 
                     <TextView
-                        android:layout_width="wrap_content"
+                        android:layout_width="0px"
                         android:layout_height="wrap_content"
+                        android:layout_weight="5"
                         android:text="@string/camera_feature"
                         android:textSize="25sp" />
 
-                    <Space
-                        android:layout_width="98dp"
-                        android:layout_height="match_parent" />
+
 
                     <Switch
                         android:id="@+id/switch2"
-                        android:layout_width="wrap_content"
+                        android:layout_width="0px"
                         android:layout_height="wrap_content"
+                        android:layout_weight="1"
                         android:minWidth="48dp"
                         android:minHeight="48dp"
                         tools:ignore="UseSwitchCompatOrMaterialXml" />
@@ -169,4 +161,4 @@
     </ScrollView>
 
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+</LinearLayout>

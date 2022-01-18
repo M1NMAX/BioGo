@@ -1,106 +1,139 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
-<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".SubmitPhotoActivity">
+    android:orientation="vertical">
 
-
-
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="80dp"
-        android:layout_height="50dp"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="32dp"
-        android:text="Specie"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/submitImage"
-        android:gravity="center"/>
-
-    <TextView
-        android:id="@+id/textView2"
-        android:layout_width="80dp"
-        android:layout_height="50dp"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="80dp"
-        android:gravity="center"
-        android:text="Date"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView" />
-
-    <EditText
-        android:id="@+id/photoDate"
-        android:layout_width="250dp"
-        android:layout_height="50dp"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="80dp"
-        android:gravity="center"
-        app:layout_constraintStart_toEndOf="@+id/textView2"
-        app:layout_constraintTop_toBottomOf="@+id/specieName" />
-
-
-
-
-    <fragment
-        android:id="@+id/google_map_submit_photo"
-        android:name="com.google.android.gms.maps.SupportMapFragment"
-        android:layout_width="382dp"
-        android:layout_height="195dp"
-        android:layout_marginTop="32dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView2" />
-
-    <Button
-        android:id="@+id/submit"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
-        android:text="Submit"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/google_map_submit_photo" />
-
-    <ImageView
-        android:id="@+id/submitImage"
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appBarLayout"
         android:layout_width="match_parent"
-        android:layout_height="314dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:srcCompat="@tools:sample/backgrounds/scenic" />
+        android:layout_height="wrap_content"
+        tools:ignore="MissingConstraints">
 
-    <Button
-        android:id="@+id/go_to_api_search"
-        android:layout_width="264dp"
-        android:layout_height="45dp"
-        android:text="Specie Search"
-        app:layout_constraintBottom_toTopOf="@+id/photoDate"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/specieName" />
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/appBarSubmitPhoto"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:navigationIcon="@drawable/ic_baseline_arrow_back_24"
+            app:title="@string/submit_photo_activity" />
 
-    <TextView
-        android:id="@+id/specieName"
-        android:layout_width="250dp"
-        android:layout_height="50dp"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="32dp"
-        android:inputType="text"
-        android:text="Click on Specie Search"
-        app:layout_constraintStart_toEndOf="@+id/textView"
-        app:layout_constraintTop_toBottomOf="@+id/submitImage"
-        android:gravity="center"
-        android:textAlignment="center"
-        tools:ignore="TextViewEdits" />
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingTop="8dp"
+            android:paddingStart="8dp"
+            android:paddingEnd="8dp">
+
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:id="@+id/submitImage"
+                    android:layout_width="match_parent"
+                    android:layout_height="300dp"
+                    tools:srcCompat="@tools:sample/backgrounds/scenic" />
+
+            </com.google.android.material.card.MaterialCardView>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/textView"
+                    android:layout_width="80dp"
+                    android:layout_height="50dp"
+                    android:gravity="center"
+                    android:text="Specie" />
 
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+                <TextView
+                    android:id="@+id/specieName"
+                    android:layout_width="250dp"
+                    android:layout_height="50dp"
+                    android:gravity="center"
+                    android:inputType="text"
+                    android:text="Click on Specie Search"
+                    android:textAlignment="center"
+                    tools:ignore="TextViewEdits" />
+            </LinearLayout>
 
-</ScrollView>
+            <Button
+                android:id="@+id/go_to_api_search"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Specie Search" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/textView2"
+                    android:layout_width="80dp"
+                    android:layout_height="50dp"
+                    android:gravity="center"
+                    android:text="Date" />
+
+                <EditText
+                    android:id="@+id/photoDate"
+                    android:layout_width="250dp"
+                    android:layout_height="50dp"
+                    android:gravity="center" />
+
+            </LinearLayout>
+
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <fragment
+                    android:id="@+id/google_map_submit_photo"
+                    android:name="com.google.android.gms.maps.SupportMapFragment"
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp" />
+
+            </com.google.android.material.card.MaterialCardView>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/cancelBtn"
+                    android:layout_width="0px"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.5"
+                    android:layout_margin="4dp"
+                    android:text="@string/cancel_btn" />
+
+                <Button
+                    android:id="@+id/submit"
+                    android:layout_width="0px"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.5"
+                    android:layout_margin="4dp"
+                    android:text="@string/submit_btn" />
+            </LinearLayout>
+
+
+        </LinearLayout>
+    </ScrollView>
+
+
+</LinearLayout>

@@ -28,6 +28,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.material.appbar.MaterialToolbar;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
@@ -57,6 +58,19 @@ public class SubmitPhotoActivity extends AppCompatActivity implements OnMapReady
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_submit_photo);
+
+        //Back btn
+         MaterialToolbar back = findViewById(R.id.appBarSubmitPhoto);
+         back.setOnClickListener((view)-> finish());
+
+         //Cancel btn
+        Button cancelBtn = findViewById(R.id.cancelBtn);
+        cancelBtn.setOnClickListener((view)->finish());
+
+
+
+
+
         Intent intent = getIntent();
         setPhotoAttrs(intent);
 

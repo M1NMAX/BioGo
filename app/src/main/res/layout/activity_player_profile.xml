@@ -48,7 +48,7 @@
                 android:layout_width="90dp"
                 android:layout_height="90dp"
                 android:layout_gravity="center"
-                android:contentDescription="player avatar"
+                android:contentDescription="@string/user_avatar"
                 app:srcCompat="@drawable/avatar_user" />
         </com.google.android.material.card.MaterialCardView>
 
@@ -58,20 +58,21 @@
             android:layout_height="wrap_content"
 
             android:layout_gravity="center"
-            android:text="Luis Silva"
+            android:text="@string/username"
             android:textAlignment="center"
-            android:textSize="20dp">
+            android:textSize="20sp">
 
         </TextView>
 
+        <!-- xp-->
         <TextView
             android:id="@+id/otherPlayerXp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:text="Points: 3000 xp"
+            android:text="@string/counter"
             android:textAlignment="center"
-            android:textSize="20dp">
+            android:textSize="20sp">
 
         </TextView>
     </androidx.appcompat.widget.LinearLayoutCompat>
@@ -99,9 +100,9 @@
             <com.google.android.material.textview.MaterialTextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Status"
+                android:text="@string/status"
                 android:textColor="@color/dark_black"
-                android:textSize="24dp"
+                android:textSize="24sp"
                 android:textStyle="bold" />
 
 
@@ -119,20 +120,20 @@
                 <com.google.android.material.textview.MaterialTextView
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:layout_marginLeft="10dp"
+                    android:layout_marginStart="10dp"
                     android:gravity="center_vertical"
-                    android:text="Ranking"
-                    android:textSize="18dp"
+                    android:text="@string/ranking"
+                    android:textSize="18sp"
                     android:textStyle="bold" />
 
                 <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/otherPlayerRanking"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_marginLeft="10dp"
+                    android:layout_marginStart="10dp"
                     android:gravity="center_vertical|end"
-                    android:text="999"
-                    android:textSize="18dp"
+                    android:text="@string/counter"
+                    android:textSize="18sp"
                     android:textStyle="bold" />
 
             </androidx.appcompat.widget.LinearLayoutCompat>
@@ -146,25 +147,25 @@
                 <ImageView
                     android:layout_width="32dp"
                     android:layout_height="32dp"
-                    android:src="@drawable/podium" />
+                    android:src="@drawable/camera" />
 
                 <com.google.android.material.textview.MaterialTextView
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:layout_marginLeft="10dp"
+                    android:layout_marginStart="10dp"
                     android:gravity="center_vertical"
-                    android:text="Nº of species observed"
-                    android:textSize="18dp"
+                    android:text="@string/n_catch"
+                    android:textSize="18sp"
                     android:textStyle="bold" />
 
                 <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/otherPlayerNSpecies"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_marginLeft="10dp"
+                    android:layout_marginStart="10dp"
                     android:gravity="center_vertical|end"
-                    android:text="999"
-                    android:textSize="18dp"
+                    android:text="@string/counter"
+                    android:textSize="18sp"
                     android:textStyle="bold" />
 
             </androidx.appcompat.widget.LinearLayoutCompat>
@@ -194,9 +195,9 @@
             <com.google.android.material.textview.MaterialTextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="See"
+                android:text="@string/actions"
                 android:textColor="@color/dark_black"
-                android:textSize="24dp"
+                android:textSize="24sp"
                 android:textStyle="bold" />
 
 

@@ -50,9 +50,8 @@ public class PhotoActivity extends AppCompatActivity implements View.OnClickList
     private static final String TAG = "PhotoActivity";
     private FirebaseUser firebaseUser;
     private Photo photo;
-    private static final ClassificationEnum[] classificationEnumArray = ClassificationEnum.values();
-    private static final CharSequence[] singleItems = new CharSequence[ClassificationEnum.values().length];
-    private int checkedItem = singleItems.length - 2;
+    private static final CharSequence[] singleItems = {ClassificationEnum.VALID.toString(), ClassificationEnum.INVALID.toString()};
+    private int checkedItem = 0;
     private DatabaseReference photoRef;
     private DatabaseReference ownerRef;
     private DatabaseReference currentUserRef;
@@ -88,11 +87,6 @@ public class PhotoActivity extends AppCompatActivity implements View.OnClickList
 
         Intent i = getIntent();
         photo = (Photo) i.getParcelableExtra("photoData");
-
-        //Fill singleItems with ClassificationEnums
-        for (int e = 0; e < classificationEnumArray.length; e++) {
-            singleItems[e] = classificationEnumArray[e].toString();
-        }
 
 
         //dynamically inflate photo activity
@@ -195,7 +189,7 @@ public class PhotoActivity extends AppCompatActivity implements View.OnClickList
 
                             //Update owner xp and specie number
                             Map<String, Object> ownerUpdate = new HashMap<>();
-                            int xpIncValue = ClassificationEnum.valueOf(newClassification).getValue();
+                            int xpIncValue = Integer.parseInt(photo.getApiSpecie().getPoints());
                             ownerUpdate.put("xp", ServerValue.increment(xpIncValue));
                             ownerUpdate.put("species", ServerValue.increment(1));
                             ownerRef.child(photo.getOwnerId()).updateChildren(ownerUpdate);

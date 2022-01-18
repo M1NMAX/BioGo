@@ -1,11 +1,7 @@
 package dev.biogo.Enums;
 
 public enum ClassificationEnum {
-        S(50),
-        A(30),
-        B(20),
-        C(10),
-        D(5),
+        VALID(0),
         PENDING(0),
         INVALID(-1);
 

@@ -6,13 +6,10 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
-import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
@@ -27,7 +24,6 @@ import android.provider.MediaStore;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
@@ -37,14 +33,11 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.model.BitmapDescriptor;
-import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.Task;
-import com.google.android.material.bottomnavigation.BottomNavigationMenuView;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
 import com.google.firebase.database.DataSnapshot;
@@ -55,14 +48,9 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Date;
 
 import dev.biogo.Adapters.CustomInfoWindowAdapter;
-import dev.biogo.Helpers.DateHelper;
 import dev.biogo.Models.Photo;
 
 public class MainActivity extends AppCompatActivity implements NavigationBarView.OnItemSelectedListener, SensorEventListener, OnMapReadyCallback {
@@ -128,7 +116,6 @@ public class MainActivity extends AppCompatActivity implements NavigationBarView
 
 
         //MAP INSTANCE
-
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
 
         locationCallback = new LocationCallback() {
@@ -160,6 +147,7 @@ public class MainActivity extends AppCompatActivity implements NavigationBarView
         startLocationUpdateFused();
     }
 
+
     HomeFragment homeFragment = new HomeFragment();
     SearchFragment searchFragment = new SearchFragment();
     ProfileFragment profileFragment = new ProfileFragment();
@@ -170,16 +158,16 @@ public class MainActivity extends AppCompatActivity implements NavigationBarView
 
         switch (item.getItemId()){
             case R.id.home:
-                supportMap.getView().setVisibility(View.GONE);
                 getSupportFragmentManager().beginTransaction().replace(R.id.container, homeFragment).commit();
+                supportMap.getView().setVisibility(View.GONE);
                 return true;
             case R.id.explore:
-                supportMap.getView().setVisibility(View.GONE);
                 getSupportFragmentManager().beginTransaction().replace(R.id.container, searchFragment).commit();
+                supportMap.getView().setVisibility(View.GONE);
                 return true;
             case R.id.profile:
-                supportMap.getView().setVisibility(View.GONE);
                 getSupportFragmentManager().beginTransaction().replace(R.id.container, profileFragment).commit();
+                supportMap.getView().setVisibility(View.GONE);
                 return true;
             case R.id.googleMap:
                 if(mapFlag) {
@@ -242,10 +230,20 @@ public class MainActivity extends AppCompatActivity implements NavigationBarView
         sensorManager.unregisterListener(this);
     }
 
+    @SuppressLint("PotentialBehaviorOverride")
     @Override
     public void onMapReady(@NonNull GoogleMap googleMap) {
         this.map = googleMap;
         map.setMapStyle(MapStyleOptions.loadRawResourceStyle(this, R.raw.map_style));
+
+        //Markers InfoWindow OnClick
+        googleMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
+            @Override
+            public void onInfoWindowClick(Marker marker) {
+                Log.d("markeeer", "onInfoWindowClick: " + marker.getTitle());
+            }
+        });
+
 
         updateLocation();
         getLocation();
@@ -336,7 +334,7 @@ public class MainActivity extends AppCompatActivity implements NavigationBarView
 
     @SuppressLint("PotentialBehaviorOverride")
     private void createMapMarkers() throws IOException {
-        mapFlag = false;
+        //mapFlag = false;
 
         map.setInfoWindowAdapter(new CustomInfoWindowAdapter(MainActivity.this));
 
@@ -347,15 +345,12 @@ public class MainActivity extends AppCompatActivity implements NavigationBarView
 
             Marker marker = map.addMarker(new MarkerOptions()
                     .position(location)
-                    .title(photosList.get(i).getSpecieName())
-                    .snippet(photosList.get(i).getCreatedAt())
+                    .title(photosList.get(i).getId())
+                    .snippet(photosList.get(i).getSpecieName())
+                    //.snippet(photosList.get(i).getCreatedAt())
                     //.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE))
             );
             marker.showInfoWindow();
         }
     }
-
-     public void onMarkerClick(Marker marker){
-         Log.d("markeeer", "onMarkerClick: YAAA");
-     }
 }

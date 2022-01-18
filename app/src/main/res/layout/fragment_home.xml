@@ -100,10 +100,10 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="@string/view_more"
-                    android:textColor="@color/pokemon_yellow"
+                    android:textColor="@color/primary"
                     app:iconTint="@color/black"
-                    app:rippleColor="@color/pokemon_yellow"
-                    app:strokeColor="@color/pokemon_yellow" />
+                    app:rippleColor="@color/primary"
+                    app:strokeColor="@color/light_primary" />
             </LinearLayout>
 
             <androidx.recyclerview.widget.RecyclerView
@@ -160,10 +160,10 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="@string/view_more"
-                    android:textColor="@color/pokemon_yellow"
+                    android:textColor="@color/primary"
                     app:iconTint="@color/black"
-                    app:rippleColor="@color/pokemon_yellow"
-                    app:strokeColor="@color/pokemon_yellow" />
+                    app:rippleColor="@color/primary"
+                    app:strokeColor="@color/light_primary" />
             </LinearLayout>
 
             <androidx.recyclerview.widget.RecyclerView
@@ -211,7 +211,7 @@
         android:layout_gravity="bottom|end"
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="16dp"
-        android:backgroundTint="@color/pokemon_yellow"
+        android:backgroundTint="@color/dark_secondary"
         android:contentDescription="@string/add_btn"
         app:fabSize="normal"
         app:layout_constraintBottom_toBottomOf="parent"

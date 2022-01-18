@@ -8,7 +8,7 @@
         android:enabled="true"
         android:icon="@drawable/img_setings"
         tools:ignore="MenuTitle"
-        android:title="Settings"/>
+        android:title="Settings" />
 
 
 

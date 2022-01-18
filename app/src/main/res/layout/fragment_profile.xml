@@ -188,8 +188,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/catalog_Activity"
-                android:textColor="@color/pokemon_yellow"
-                app:strokeColor="@color/pokemon_yellow" />
+                android:textColor="@color/primary"
+                app:strokeColor="@color/primary" />
 
             <Button
                 android:id="@+id/seeRanking"
@@ -197,8 +197,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/ranking_Activity"
-                android:textColor="@color/pokemon_yellow"
-                app:strokeColor="@color/pokemon_yellow" />
+                android:textColor="@color/primary"
+                app:strokeColor="@color/primary" />
 
             <Button
                 android:id="@+id/seePending"

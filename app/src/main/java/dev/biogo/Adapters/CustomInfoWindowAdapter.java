@@ -1,6 +1,7 @@
 package dev.biogo.Adapters;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TextView;
@@ -28,6 +29,7 @@ public class CustomInfoWindowAdapter implements GoogleMap.InfoWindowAdapter {
 
         if(!title.equals("")){
             tvTitle.setText(title);
+            tvTitle.setTextColor(Color.WHITE);
         }
 
         String snippet = marker.getSnippet();

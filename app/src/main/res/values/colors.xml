@@ -9,4 +9,13 @@
     <color name="white">#FFFFFFFF</color>
     <color name="pokemon_yellow">#FFCC03</color>
     <color name="dark_black">#3F403E</color>
+
+    <color name="dark_primary">#243631</color>
+    <color name="primary">#4d605a</color>
+    <color name="light_primary">#798d87</color>
+
+    <color name="dark_secondary">#999d85</color>
+    <color name="secondary">#caceb5</color>
+    <color name="light_secondary">#fdffe7</color>
+
 </resources>

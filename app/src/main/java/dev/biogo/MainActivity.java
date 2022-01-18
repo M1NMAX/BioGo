@@ -349,7 +349,7 @@ public class MainActivity extends AppCompatActivity implements NavigationBarView
                     .position(location)
                     .title(photosList.get(i).getSpecieName())
                     .snippet(photosList.get(i).getCreatedAt())
-                    .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE))
+                    //.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE))
             );
             marker.showInfoWindow();
         }

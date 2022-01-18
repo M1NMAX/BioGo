@@ -300,14 +300,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                 @Override
                 public void onActivityResult(ActivityResult result) {
                     if (result.getResultCode() == Activity.RESULT_OK) {
-                        Bitmap bitmap;
-                        try {
-                            bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), imageUri);
-                            // imageView.setImageBitmap(bitmap);
-                            getCurrentLocation();
-                        } catch (IOException e) {
-                            Log.w(TAG, "onActivityResult: ", e);
-                        }
+                        getCurrentLocation();
                     }
                 }
             }

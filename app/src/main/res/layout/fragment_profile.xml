@@ -208,6 +208,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/pending_list"
+                android:visibility="gone"
                 android:textColor="@color/primary"
                 app:strokeColor="@color/primary" />
 

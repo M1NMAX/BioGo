@@ -23,8 +23,11 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Date;
 
 import dev.biogo.Adapters.CatalogAdapter;
+import dev.biogo.Helpers.DateHelper;
 import dev.biogo.Models.Photo;
 import dev.biogo.Models.User;
 
@@ -90,6 +93,13 @@ public class CatalogActivity extends AppCompatActivity implements CatalogAdapter
                         photosList.add(photo);
                     }
                 }
+
+                Collections.sort(photosList, Collections.reverseOrder((photo, otherPhoto) -> {
+                    String pattern = "yyyy-MM-dd|HH:mm";
+                    Date dateOne = DateHelper.convertToDate(photo.getCreatedAt(), pattern);
+                    Date dateTwo = DateHelper.convertToDate(otherPhoto.getCreatedAt(), pattern);
+                    return dateOne.compareTo(dateTwo);
+                }));
                 catalogListAdapter.notifyDataSetChanged();
                 if (photosList.size() == 0){
                     emptyCatalog.setVisibility(View.VISIBLE);

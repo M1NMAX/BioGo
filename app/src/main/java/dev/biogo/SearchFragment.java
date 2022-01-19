@@ -98,9 +98,6 @@ public class SearchFragment extends Fragment implements View.OnClickListener {
         });
         recentlyRecyclerView.setAdapter(catalogAdapter);
 
-        //MINI TESTE
-        //Query imagesQuery = mDataBase.child("images").orderByChild("ownerId").equalTo(user.getUid());
-
         Query imagesQuery = mDataBase.child("images").limitToFirst(10);
 
 

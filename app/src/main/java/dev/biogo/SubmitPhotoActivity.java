@@ -168,9 +168,6 @@ public class SubmitPhotoActivity extends AppCompatActivity implements OnMapReady
                             // Add the request to the RequestQueue.
                             queue.add(stringRequestPoints);
 
-
-
-
                             photo.setApiSpecie(apiSpecie);
                             specieName.setText(apiSpecie.getSpecieName());
                             specieName.setTextColor(Color.parseColor("#243631"));

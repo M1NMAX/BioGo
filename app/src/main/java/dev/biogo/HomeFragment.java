@@ -304,6 +304,8 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                 public void onActivityResult(ActivityResult result) {
                     if (result.getResultCode() == Activity.RESULT_OK) {
                         getCurrentLocation();
+                    }else {
+                        Toast.makeText(getContext(), getResources().getString(R.string.fail_msg), Toast.LENGTH_LONG).show();
                     }
                 }
             }

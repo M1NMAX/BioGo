@@ -42,7 +42,7 @@ public class SpecieActivity extends AppCompatActivity {
 
         TextView specie_points_tvView = findViewById(R.id.specie_points);
 
-        String rarity = "(Common Specie)";
+        String rarity = " (Common Specie)";
         if(specie.getPoints().equals("20")){
             rarity = " (Rare Specie)";
         }else if(specie.getPoints().equals("10")){

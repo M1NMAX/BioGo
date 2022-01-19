@@ -28,7 +28,7 @@
     <string name="suggest_specie"> Suggest specie</string>
     
     <!-- Search Fragment -->
-    <string name="search_helper_text">Type at least 4 characters </string>
+    <string name="search_helper_text">Type at least 3 characters </string>
 
 
     <!--    Settings Activity-->

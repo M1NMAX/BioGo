@@ -64,6 +64,9 @@ public class ApiSpecieSearchActivity extends AppCompatActivity implements ApiSpe
         searchButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                ProgressDialog pd = new ProgressDialog(ApiSpecieSearchActivity.this);
+                pd.setMessage("Searching");
+                pd.show();
                 apiSpeciesList.clear();
                 String input = specieInput.getText().toString();
 
@@ -114,6 +117,7 @@ public class ApiSpecieSearchActivity extends AppCompatActivity implements ApiSpe
                                         ;
 
                                         apiSpeciesListAdapter.notifyDataSetChanged();
+                                        pd.dismiss();
                                     }
                                 } catch (JSONException e) {
                                     Log.d("apierror", "onResponse: JSON ERROR");

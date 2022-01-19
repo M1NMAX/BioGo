@@ -27,8 +27,11 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import dev.biogo.Enums.RoleEnum;
 import dev.biogo.Models.User;
@@ -114,9 +117,22 @@ public class StartActivity extends AppCompatActivity {
                             // Sign in success, update UI with the signed-in user's information
                             Log.d(TAG, "signInWithCredential:success");
                             FirebaseUser user = mAuth.getCurrentUser();
-                            User newUser = new User(user.getPhotoUrl().toString(), user.getDisplayName(), RoleEnum.MEMBER.toString(), 0, 9999, 0);
-                            mDataBase.child("users").child(user.getUid()).setValue(newUser);
+                            DatabaseReference userRef = mDataBase.child("users").child(user.getUid());
 
+                            userRef.addValueEventListener(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                    if (!snapshot.exists()) {
+                                        User newUser = new User(user.getPhotoUrl().toString(), user.getDisplayName(), RoleEnum.MEMBER.toString(), 0, 9999, 0);
+                                        mDataBase.child("users").child(user.getUid()).setValue(newUser);
+                                    }
+                                }
+
+                                @Override
+                                public void onCancelled(@NonNull DatabaseError error) {
+                                    Log.w("onCancelled", "onCancelled: ", error.toException());
+                                }
+                            });
                             updateUI(user);
                         } else {
                             // If sign in fails, display a message to the user.

@@ -10,6 +10,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
@@ -144,6 +145,7 @@ public class SubmitPhotoActivity extends AppCompatActivity implements OnMapReady
 
                             photo.setApiSpecie(apiSpecie);
                             specieName.setText(apiSpecie.getSpecieName());
+                            specieName.setTextColor(Color.parseColor("#243631"));
                         }
                     }
                 });

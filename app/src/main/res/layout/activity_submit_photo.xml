@@ -66,7 +66,9 @@
                     android:inputType="text"
                     android:text="Click on Specie Search"
                     android:textAlignment="center"
-                    tools:ignore="TextViewEdits" />
+                    tools:ignore="TextViewEdits"
+                    android:textColor="#ff0000"
+                    android:textSize="20dp"/>
             </LinearLayout>
 
             <Button
@@ -94,7 +96,6 @@
                     android:gravity="center" />
 
             </LinearLayout>
-
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">

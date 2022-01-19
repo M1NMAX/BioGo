@@ -140,6 +140,34 @@ public class SubmitPhotoActivity extends AppCompatActivity implements OnMapReady
                             queue.add(stringRequest);
 
 
+                            //Get specie Points
+                            String urlPoints ="https://api.inaturalist.org/v1/taxa/" + apiSpecie.getId();
+
+                            StringRequest stringRequestPoints = new StringRequest(Request.Method.GET, urlPoints,
+                                    new Response.Listener<String>() {
+                                        @Override
+                                        public void onResponse(String response) {
+                                            try {
+                                                JSONObject jsonResponseObj = new JSONObject (response);
+                                                JSONArray array = jsonResponseObj.getJSONArray("results");
+                                                JSONObject array0 = array.getJSONObject(0);
+                                                Object obsCount = array0.get("observations_count");
+                                                String counts = obsCount.toString();
+                                                apiSpecie.setPoints(calculatePoints(counts));
+                                            } catch (JSONException e) {
+                                                Log.d("apierror", "onResponse: JSON ERROR");
+                                            }
+                                        }
+                                    }, new Response.ErrorListener() {
+                                @Override
+                                public void onErrorResponse(VolleyError error) {
+                                    Log.d("apierror", "onErrorResponse: API Error");
+                                }
+                            });
+
+                            // Add the request to the RequestQueue.
+                            queue.add(stringRequestPoints);
+
 
 
 
@@ -247,5 +275,18 @@ public class SubmitPhotoActivity extends AppCompatActivity implements OnMapReady
 
     public static String removerAcentos(String str) {
         return Normalizer.normalize(str, Normalizer.Form.NFD).replaceAll("[^\\p{ASCII}]", "");
+    }
+
+    public String calculatePoints(String count){
+        int countInt = Integer.parseInt(count);
+        int points;
+        if(countInt < 10000){
+            points = 5;
+        }else if(countInt < 30000){
+            points = 3;
+        }else{
+            points = 1;
+        }
+        return String.valueOf(points);
     }
 }

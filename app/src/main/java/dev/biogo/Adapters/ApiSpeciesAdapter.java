@@ -67,7 +67,6 @@ public class ApiSpeciesAdapter extends RecyclerView.Adapter<ApiSpeciesAdapter.Ap
     public void onBindViewHolder(@NonNull ApiSpeciesAdapter.ApiSpeciesViewHolder holder, int position) {
         ApiSpecie apiSpecie = apiSpeciesList.get(position);
         holder.specieName.setText(apiSpecie.getSpecieName());
-        holder.points.setText(apiSpecie.getPoints());
         Picasso.get().load(apiSpecie.getSpecieImage()).into(holder.image);
     }
 
@@ -78,7 +77,7 @@ public class ApiSpeciesAdapter extends RecyclerView.Adapter<ApiSpeciesAdapter.Ap
 
     public class ApiSpeciesViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         ApiSpeciesAdapter.OnItemListener onItemListener;
-        TextView specieName, points;
+        TextView specieName;
         ImageView image;
 
 
@@ -86,7 +85,6 @@ public class ApiSpeciesAdapter extends RecyclerView.Adapter<ApiSpeciesAdapter.Ap
             super(itemView);
 
             specieName = itemView.findViewById(R.id.apiSearchListView_specieName);
-            points = itemView.findViewById(R.id.apiSearchListView_points);
             image = itemView.findViewById(R.id.apiSearchListView_image);
             this.onItemListener = onItemListener;
 

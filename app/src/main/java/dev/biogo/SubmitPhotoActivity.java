@@ -278,11 +278,11 @@ public class SubmitPhotoActivity extends AppCompatActivity implements OnMapReady
         int countInt = Integer.parseInt(count);
         int points;
         if(countInt < 10000){
-            points = 5;
+            points = 20;
         }else if(countInt < 30000){
-            points = 3;
+            points = 10;
         }else{
-            points = 1;
+            points = 5;
         }
         return String.valueOf(points);
     }

@@ -41,7 +41,16 @@ public class SpecieActivity extends AppCompatActivity {
         specie_scientific_name_tvView.setText(specie.getSpecieScientificName());
 
         TextView specie_points_tvView = findViewById(R.id.specie_points);
-        specie_points_tvView.setText(specie.getPoints());
+
+        String rarity = " (Common Specie)";
+        if(specie.getPoints().equals("20")){
+            rarity = " (Rare Specie)";
+        }else if(specie.getPoints().equals("10")){
+            rarity = " (Semi-rare Specie)";
+        }
+
+        specie_points_tvView.setText(specie.getPoints() + rarity);
+
 
         TextView specie_description_tvView = findViewById(R.id.specie_description);
         if(!(specie.getDescription() == null))

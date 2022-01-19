@@ -114,8 +114,6 @@ public class ApiSpecieSearchActivity extends AppCompatActivity implements ApiSpe
                                                 Log.d("apierror", "API_Error");
                                             }
                                         }
-                                        ;
-
                                         apiSpeciesListAdapter.notifyDataSetChanged();
                                         pd.dismiss();
                                     }

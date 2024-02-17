@@ -4,9 +4,9 @@ This project aimed to collect data about available species in regions through a 
 
 
 ## Technologies
-- Firebase:  Utilized for authentication, Cloud Storage (for user-uploaded pictures), and Cloud Firestore (for data storage).
-- Android SDK, Java and Material UI
-- [INaturalist](https://www.inaturalist.org/) API
+- [INaturalist](https://www.inaturalist.org/) API: Integrated to fetch information about the species captured in the game, providing users with additional details
+- Firebase: User for authentication, Cloud Storage (for user-uploaded pictures), and Cloud Firestore (for data storage).
+- Android SDK, Java and Material UI: Used to develop the mobile game interface and functionality.
 
 ## Demo
 

@@ -8,11 +8,13 @@ This project aimed to collect data about available species in regions through a 
 - Android SDK, Java and Material UI
 - [INaturalist](https://www.inaturalist.org/) API
 
-
 ## Demo
+
+
 <p float="center">
-  <img src="demo/picture1.jpeg" alt="BioGo first screen" width="40%" height="800" />
-  <img src="demo/picture2.jpeg" alt="BioGo dashboard screen" width="40%" height="800"  />
+<img src="demo/video.gif"  height="400" style="display: block; margin-left: auto; margin-right: auto;"/>
+  <img src="demo/picture1.jpeg" alt="BioGo first screen"  height="400" />
+  <img src="demo/picture2.jpeg" alt="BioGo dashboard screen" height="400"  />
 </p>
 
 
